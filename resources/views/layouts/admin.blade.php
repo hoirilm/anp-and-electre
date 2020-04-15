@@ -11,7 +11,7 @@
 
     <title>@yield('title')</title>
 
-    @include('includes.admin.style')
+    @include('includes.master.style')
 
 </head>
 
@@ -28,7 +28,7 @@
             <!-- Main Content -->
             <div id="content">
 
-                @include('includes.admin.topbar')
+                @include('includes.master.topbar')
 
                 @yield('content')
 
@@ -36,7 +36,7 @@
             <!-- End of Main Content -->
 
             <!-- Footer -->
-            @include('includes.admin.footer')
+            @include('includes.master.footer')
             <!-- End of Footer -->
 
         </div>
@@ -50,11 +50,11 @@
         <i class="fas fa-angle-up"></i>
     </a>
 
-    @include('includes.admin.logout-modal')
+    @include('includes.master.logout-modal')
 
     <!-- Bootstrap core JavaScript-->
 
-    @include('includes.admin.script')
+    @include('includes.master.script')
 
 </body>
 

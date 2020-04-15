@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class AdminPengujiController extends Controller
 {
@@ -14,7 +15,12 @@ class AdminPengujiController extends Controller
      */
     public function index()
     {
-        return view('pages.admin.penguji');
+        // return view('pages.admin.penguji');
+
+        $users = DB::table('users')->where('is_admin', '=', 0)->paginate(5);
+
+
+        return view('pages.admin.penguji', ['users' => $users]);
     }
 
     /**

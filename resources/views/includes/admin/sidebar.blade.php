@@ -24,12 +24,12 @@
 
     <!-- Nav Item - Pages Collapse Menu -->
     <li class="nav-item {{ (request()->is('admin/kriteria*')) ? 'active' : '' }}">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true"
-            aria-controls="collapseTwo">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true"
+            aria-controls="collapseOne">
             <i class="fas fa-fw fa-tags"></i>
             <span>Kriteria</span>
         </a>
-        <div id="collapseTwo" class="collapse {{ (request()->is('admin/kriteria*')) ? 'show' : '' }}"
+        <div id="collapseOne" class="collapse {{ (request()->is('admin/kriteria*')) ? 'show' : '' }}"
             aria-labelledby="headingTwo" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Sub Menu Kriteria:</h6>
@@ -41,14 +41,26 @@
         </div>
     </li>
 
-    <li class="nav-item {{ (request()->is('admin/penguji')) ? 'active' : '' }}">
-        <a class="nav-link" href="{{ route('admin.penguji') }}">
+    <li class="nav-item {{ (request()->is('admin/pengguna*')) ? 'active' : '' }}">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true"
+            aria-controls="collapseTwo">
             <i class="fas fa-fw fa-user"></i>
-            <span>Penguji</span></a>
+            <span>Pengguna</span>
+        </a>
+        <div id="collapseTwo" class="collapse {{ (request()->is('admin/pengguna*')) ? 'show' : '' }}"
+            aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <h6 class="collapse-header">Sub Menu Pengguna:</h6>
+                <a class="collapse-item {{ (request()->is('admin/pengguna/admin')) ? 'active' : '' }}"
+                    href="{{ route('admin.daftar-admin') }}">Admin</a>
+                <a class="collapse-item {{ (request()->is('admin/pengguna/penguji')) ? 'active' : '' }}"
+                    href="{{ route('admin.daftar-penguji') }}">Penguji</a>
+            </div>
+        </div>
     </li>
 
     <li class="nav-item {{ (request()->is('admin/peserta')) ? 'active' : '' }}">
-        <a class="nav-link" href="{{ route('admin.peserta') }}">
+        <a class="nav-link" href="{{ route('admin.daftar-peserta') }}">
             <i class="fas fa-fw fa-users"></i>
             <span>Peserta</span></a>
     </li>
