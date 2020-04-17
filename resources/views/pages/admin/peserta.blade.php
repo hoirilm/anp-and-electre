@@ -113,3 +113,13 @@
     });
 </script>
 @endpush
+
+@push('script-modal')
+@if (count($errors) > 0)
+<script>
+    $( document ).ready(function() {
+                $('#tambah-peserta').modal('show');
+            });
+</script>
+@endif
+@endpush

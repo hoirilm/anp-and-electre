@@ -17,4 +17,6 @@
 
 @stack('script-modal')
 
+{{-- @stack('script-modal') --}}
+
 @stack('script-date-picker')
