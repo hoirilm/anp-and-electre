@@ -16,3 +16,5 @@
 <script src={{url("template/js/demo/chart-pie-demo.js")}}></script>
 
 @stack('script-modal')
+
+@stack('script-date-picker')

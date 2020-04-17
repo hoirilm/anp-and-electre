@@ -2,6 +2,12 @@
 
 @section('title', 'Menu Daftar Peserta')
 
+@push('style-date-picker')
+<link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker3.standalone.min.css"
+    integrity="sha256-BqW0zYSKgIYEpELUf5irBCGGR7wQd5VZ/N6OaBEsz5U=" crossorigin="anonymous" />
+@endpush
+
 @section('content')
 <!-- Begin Page Content -->
 <div class="container-fluid">
@@ -20,7 +26,7 @@
         {{ session('massage') }}
     </div>
     @endif
-    
+
     @include('includes.admin.modal.tambah-peserta')
 
     <div class="col-xl-3 col-md-6 mb-4 px-0">
@@ -28,7 +34,6 @@
             <div class="card-body">
                 <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
-                        {{-- <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Pilih tahun daftar: </div> --}}
                         <div class="dropdown row px-2">
                             <select class="form-control col-md-6">
                                 <option>-Pilih tahun-</option>
@@ -74,8 +79,8 @@
                         <td>{{ $user->nomor_pendaftaran }}</td>
                         <td>{{ $user->npsn_sekolah }}</td>
                         <td>{{ $user->jenis_kelamin }}</td>
-                        <td>{{ date('d-m-Y', strtotime($user->tanggal_lahir)) }}</td>
-                        <td>{{ date('d-m-Y', strtotime($user->created_at)) }}</td>
+                        <td>{{ date('d-M-Y', strtotime($user->tanggal_lahir)) }}</td>
+                        <td>{{ date('d-M-Y', strtotime($user->created_at)) }}</td>
                         <td> Update | Delete </td>
                     </tr>
                     @endforeach
@@ -88,3 +93,23 @@
 </div>
 <!-- /.container-fluid -->
 @endsection
+
+@push('script-date-picker')
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"
+    integrity="sha256-bqVeqGdJ7h/lYPq6xrPv/YGzMEb6dNxlfiTUHSgRCp8=" crossorigin="anonymous"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.id.min.js"
+    integrity="sha256-NNMNW7d0OGoiO4RqoKSdLCcr+0E6rgu1hqzpYkh5BIM=" crossorigin="anonymous"></script>
+<script>
+    $(document).ready(function(){
+        $('#tanggal_lahir').datepicker({
+            // todayBtn: "linked",
+            language: "id",
+            keyboardNavigation: false,
+            autoclose: true,
+            todayHighlight: true,
+            format: 'yyyy-mm-dd',
+        });
+    });
+</script>
+@endpush

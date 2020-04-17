@@ -1,7 +1,6 @@
 <?php
 
-namespace App;
-
+// namespace App;
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
@@ -12,7 +11,7 @@ use Illuminate\Support\Facades\Hash;
 
 class AdminPenggunaController extends Controller
 {
-    public function tambahAdmin(Request $req)
+    public function tambahPengguna(Request $req)
     {
         $this->validate($req, [
             'name' => 'required',

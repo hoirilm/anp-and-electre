@@ -62,7 +62,7 @@
                     <div class="form-group">
                         <label for="exampleFormControlInput1">Konfirmasi password: </label>
                         <input type="password" class="form-control @error('password_confirmation') is-invalid @enderror"
-                            id="exampleFormControlInput1" placeholder="Konfirmasu password"
+                            id="exampleFormControlInput1" placeholder="Konfirmasi password"
                             name="password_confirmation">
 
                         @error('password_confirmation')
