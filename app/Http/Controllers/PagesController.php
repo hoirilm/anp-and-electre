@@ -5,21 +5,16 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
+
 class PagesController extends Controller
 {
-    public function daftarAdmin()
+    public function pengguna()
     {
-        $users = DB::table('users')->where('is_admin', '=', 1)->paginate(5);
+        $users = DB::table('users')->paginate(5);
         return view('pages.admin.pengguna', ['users' => $users]);
     }
 
-    public function daftarPenguji()
-    {
-        $users = DB::table('users')->where('is_admin', '=', 0)->paginate(5);
-        return view('pages.admin.pengguna', ['users' => $users]);
-    }
-
-    public function daftarPeserta()
+    public function peserta()
     {
         $peserta = DB::table('peserta')->paginate(5);
         return view('pages.admin.peserta', ['peserta' => $peserta]);

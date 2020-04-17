@@ -24,11 +24,13 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::middleware('is_admin')->group(function () {
     Route::get('/admin', 'HomeController@adminHome')->name('admin.home');
-    Route::get('/admin/pengguna/admin', 'PagesController@daftarAdmin')->name('admin.daftar-admin');
-    Route::get('/admin/pengguna/penguji', 'PagesController@daftarPenguji')->name('admin.daftar-penguji');
+    
+    Route::get('/admin/pengguna', 'PagesController@pengguna')->name('admin.pengguna');
+    Route::post('/admin/pengguna', 'Admin\AdminPenggunaController@tambahAdmin');
+
     Route::get('/admin/kriteria/daftar-kriteria', 'Admin\AdminKriteriaController@daftarKriteria')->name('admin.daftar-kriteria');
     Route::get('/admin/kriteria/keterkaitan-kriteria', 'Admin\AdminKriteriaController@keterkaitanKriteria')->name('admin.keterkaitan-kriteria');
-    Route::get('/admin/peserta', 'PagesController@daftarPeserta')->name('admin.daftar-peserta');
+    Route::get('/admin/peserta', 'PagesController@peserta')->name('admin.peserta');
     Route::get('/admin/keputusan', 'Admin\AdminKeputusanController@keputusan')->name('admin.keputusan');
 });
 

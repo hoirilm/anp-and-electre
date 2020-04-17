@@ -14,3 +14,5 @@
 <!-- Page level custom scripts -->
 <script src={{url("template/js/demo/chart-area-demo.js")}}></script>
 <script src={{url("template/js/demo/chart-pie-demo.js")}}></script>
+
+@stack('script-modal')

@@ -10,19 +10,23 @@
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">Pengguna</h1>
 
-        @if (request()->is('admin/pengguna/admin'))
-        <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
-                class="fas fa-user-plus fa-sm text-white-50"></i> Tambah Admin</a>
+        <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#tambah-pengguna">
+            <i class="fas fa-download fa-sm text-white-50"></i> Tambah Pengguna
+        </button>
 
-        @elseif (request()->is('admin/pengguna/penguji'))
-        <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
-                class="fas fa-user-plus fa-sm text-white-50"></i> Tambah Penguji</a>
-        @endif
     </div>
+
+    @if (session('massage'))
+    <div class="alert alert-success">
+        {{ session('massage') }}
+    </div>
+    @endif
+
+    @include('includes.admin.modal.tambah-pengguna')
 
     <div class="card shadow mb-4">
         <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary">Daftar Penguji</h6>
+            <h6 class="m-0 font-weight-bold text-primary">Daftar Pengguna</h6>
         </div>
         <div class="card-body">
             <table class="table table-hover">
@@ -31,7 +35,8 @@
                         <th scope="col">#</th>
                         <th scope="col">Nama</th>
                         <th scope="col">Username</th>
-                        <th scope="col">Opsi</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -41,11 +46,10 @@
                         <th scope="row">{{$loop->iteration}}</th>
                         <td>{{ $user->name }}</td>
                         <td>{{ $user->username }}</td>
-                        @if (request()->is('admin/pengguna/admin'))
+                        <td>
+                            {{ ($user->is_admin === 1) ? 'Admin' : 'Penguji' }}
+                        </td>
                         <td> Update | Delete </td>
-                        @elseif (request()->is('admin/pengguna/penguji'))
-                        <td> Update | Delete </td>
-                        @endif
                     </tr>
                     @endforeach
                 </tbody>
@@ -57,3 +61,13 @@
 </div>
 <!-- /.container-fluid -->
 @endsection
+
+@push('script-modal')
+@if (count($errors) > 0)
+<script>
+    $( document ).ready(function() {
+                $('#tambah-pengguna').modal('show');
+            });
+</script>
+@endif
+@endpush
