@@ -9,6 +9,43 @@ use Illuminate\Support\Facades\DB;
 
 class AdminKeterkaitanKriteriaController extends Controller
 {
+
+    public function cariKeterkaitan()
+    {
+
+        $tahun = DB::select(DB::raw("SELECT DISTINCT YEAR(created_at) AS tahun FROM kriteria"));
+
+        // merubah hasil db:raw menjadi array agar bisa diakses ke dalam select tahun
+        $tahun = array_map(function ($value) {
+            return (array) $value;
+        }, $tahun);
+
+        $keterkaitan = DB::table('kriteria')->whereYear('created_at', request('tahun'))->get();
+
+        // return $keterkaitan;
+
+        $batas = count($keterkaitan);
+        $a = 0;
+        $b = 1;
+        for ($i = $a; $i < $batas; $i++) {
+            $kriteria1 = $keterkaitan[$i];
+            for ($j = $b; $j < $batas; $j++) {
+                $kriteria2 = $keterkaitan[$j];
+
+                $gabungan[] = [
+                    'satu' => ['nama' => $kriteria1->kriteria, 'id' => $kriteria1->id, 'tahun_kriteria' => $kriteria1->created_at],
+                    'dua' => ['nama' => $kriteria2->kriteria, 'id' => $kriteria2->id, 'tahun_kriteria' => $kriteria2->created_at]
+                ];
+            }
+            $a += 1;
+            $b += 1;
+        }
+
+        // return $gabungan;
+
+        return view('pages.admin.keterkaitan-kriteria', ['gabungan' => $gabungan, 'tahun' => $tahun]);
+    }
+
     public function keterkaitan()
     {
         // return request()->all();

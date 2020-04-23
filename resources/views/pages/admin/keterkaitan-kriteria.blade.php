@@ -4,7 +4,7 @@
 
 @section('content')
 
-{{-- {{dd($tahun[0]['tahun'])}} --}}
+{{-- {{dd($gabungan[0]['satu']['tahun_kriteria'])}} --}}
 
 <!-- Begin Page Content -->
 <div class="container-fluid">
@@ -53,7 +53,8 @@
     @else
     <div class="card shadow mb-4 col">
         <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary">Daftar kriteria tahun "CUSTOM"</h6>
+            <h6 class="m-0 font-weight-bold text-primary">Keterkaitan-kriteria tahun
+                {{ date('Y', strtotime($gabungan[0]['satu']['tahun_kriteria'])) }}</h6>
         </div>
         <div class="card-body">
             <form action="/admin/kriteria/keterkaitan-kriteria" method="POST">
@@ -76,7 +77,8 @@
                             <td>
                                 <input type="hidden" name="keterkaitan_x_{{$loop->iteration}}"
                                     value="{{ $gab['satu']['id'] }}">
-                                <input type="hidden" name="tahun_kriteria_{{$loop->iteration}}" value="{{ $gab['satu']['tahun_kriteria'] }}">
+                                <input type="hidden" name="tahun_kriteria_{{$loop->iteration}}"
+                                    value="{{ $gab['satu']['tahun_kriteria'] }}">
                                 {{ $gab['satu']['nama'] }}</td>
                             <td>
                                 <div class="form-check">
@@ -95,7 +97,8 @@
                             <td>
                                 <input type="hidden" name="keterkaitan_y_{{$loop->iteration}}"
                                     value="{{ $gab['dua']['id'] }}">
-                                <input type="hidden" name="tahun_kriteria_{{$loop->iteration}}" value="{{ $gab['dua']['tahun_kriteria'] }}">
+                                <input type="hidden" name="tahun_kriteria_{{$loop->iteration}}"
+                                    value="{{ $gab['dua']['tahun_kriteria'] }}">
                                 {{ $gab['dua']['nama'] }}
                             </td>
                         </tr>

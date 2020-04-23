@@ -3,6 +3,9 @@
 @section('title', 'Menu Daftar Kriteria')
 
 @section('content')
+
+{{-- {{dd($kriteria[0])}} --}}
+
 <!-- Begin Page Content -->
 <div class="container-fluid">
 
@@ -14,41 +17,50 @@
         </button>
     </div>
 
-    @include('includes.admin.modal.tambah-kriteria')
-
-    <div class="col-xl-3 col-md-6 mb-4 px-0">
-        <div class="card border-left-primary shadow h-100 py-2">
-            <div class="card-body">
-                <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                        {{-- <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Pilih tahun daftar: </div> --}}
-                        <div class="dropdown row px-2">
-                            <select class="form-control col-md-6">
-                                <option>-Pilih tahun-</option>
-                                <option value="">2019</option>
-                                <option value="">2018</option>
-                                <option value="">2017</option>
-                            </select>
-                            <button class="btn btn-primary btn-sm mx-2">Lihat</button>
-                        </div>
-                    </div>
-                    <div class="col-auto">
-                        <i class="fas fa-calendar fa-2x text-gray-300"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
     @if (session('massage'))
     <div class="alert alert-success">
         {{ session('massage') }}
     </div>
     @endif
 
-    <div class="card shadow mb-4 col-md-7">
+    @include('includes.admin.modal.tambah-kriteria')
+
+
+    <div class="col-xl-3 col-md-6 mb-4 px-0">
+        <div class="card border-left-primary shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Data kriteria
+                            tahun: </div>
+                        <form action="/admin/kriteria/daftar-kriteria/" method="POST">
+                            @csrf
+                            @method('put')
+                            <div class="dropdown row px-2">
+                                <select class="form-control col" name="tahun">
+                                    <option>Pilih tahun</option>
+                                    @foreach ($tahun as $item)
+                                    <option value="{{ $item['tahun'] }}">{{ $item['tahun'] }}</option>
+                                    @endforeach
+                                </select>
+                                <button type="submit" class="btn btn-primary btn-sm mx-2">Lihat</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @if (!isset($kriteria))
+    <div class="alert alert-primary">
+        Pilih tahun terlebih dahulu
+    </div>
+    @else
+    <div class="card shadow mb-4 col">
         <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary">Daftar kriteria tahun 2020</h6>
+            <h6 class="m-0 font-weight-bold text-primary">Daftar kriteria tahun
+                {{ date('Y', strtotime($kriteria[0]->created_at))}}</h6>
         </div>
         <div class="card-body">
             <table class="table table-hover">
@@ -67,17 +79,33 @@
                         <th scope="row">{{$loop->iteration}}</th>
                         <td>{{ $krit->kriteria }}</td>
                         <td>{{ date('Y', strtotime($krit->created_at)) }}</td>
-                        <td>
-                            Update | Delete
+                        <td class="row">
+                            <div class="mx-2">
+                                <button type="button" class="btn btn-primary" data-toggle="modal"
+                                    data-target="#update-kriteria-{{ $krit->id }}" data-id="{{ $krit->id }}">Update
+                                </button>
+
+                                @include('includes.admin.modal.update-kriteria')
+                            </div>
+
+                            <div class="mx-2">
+                                <form action="/admin/kriteria/daftar-kriteria/{{ $krit->id }}" method="POST">
+                                    @csrf
+                                    @method('delete')
+                                    <button type="submit" class="btn btn-danger"
+                                        onclick="return confirm('Yakin untuk hapus data?')">Delete</button>
+                                </form>
+                            </div>
                         </td>
                     </tr>
                     @endforeach
 
                 </tbody>
             </table>
-            {{ $kriteria->links() }}
+            {{-- {{ $kriteria->links() }} --}}
         </div>
     </div>
+    @endif
 
 </div>
 <!-- /.container-fluid -->

@@ -32,10 +32,14 @@ Route::middleware('is_admin')->group(function () {
     Route::post('/admin/peserta', 'Admin\AdminPesertaController@tambahPeserta');
 
     Route::get('/admin/kriteria/daftar-kriteria', 'PagesController@kriteria')->name('admin.daftar-kriteria');
+    Route::put('/admin/kriteria/daftar-kriteria', 'Admin\AdminKriteriaController@cariKriteria');
+    Route::put('/admin/kriteria/daftar-kriteria/{id}', 'Admin\AdminKriteriaController@updateKriteria');
     Route::post('/admin/kriteria/daftar-kriteria', 'Admin\AdminKriteriaController@tambahKriteria');
+    Route::delete('/admin/kriteria/daftar-kriteria/{id}', 'Admin\AdminKriteriaController@hapusKriteria');
+    
 
     Route::get('/admin/kriteria/keterkaitan-kriteria', 'PagesController@keterkaitanKriteria')->name('admin.keterkaitan-kriteria');
-    Route::put('/admin/kriteria/keterkaitan-kriteria', 'PagesController@cariKeterkaitan');
+    Route::put('/admin/kriteria/keterkaitan-kriteria', 'Admin\AdminKeterkaitanKriteriaController@cariKeterkaitan');
     Route::post('/admin/kriteria/keterkaitan-kriteria', 'Admin\AdminKeterkaitanKriteriaController@keterkaitan');
     
     Route::get('/admin/keputusan', 'Admin\AdminKeputusanController@keputusan')->name('admin.keputusan');
