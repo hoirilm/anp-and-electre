@@ -40,6 +40,12 @@
         </div>
     </div>
 
+    @if (session('massage'))
+    <div class="alert alert-success">
+        {{ session('massage') }}
+    </div>
+    @endif
+
     <div class="card shadow mb-4 col-md-7">
         <div class="card-header py-3">
             <h6 class="m-0 font-weight-bold text-primary">Daftar kriteria tahun 2020</h6>
@@ -56,22 +62,33 @@
                 </thead>
                 <tbody>
 
+                    @foreach ($kriteria as $krit)
                     <tr>
-                        <td>1</td>
-                        <td>Bahasa Indonesia</td>
-                        <td>2020</td>
+                        <th scope="row">{{$loop->iteration}}</th>
+                        <td>{{ $krit->kriteria }}</td>
+                        <td>{{ date('Y', strtotime($krit->created_at)) }}</td>
                         <td>
                             Update | Delete
                         </td>
                     </tr>
+                    @endforeach
+
                 </tbody>
             </table>
-            {{-- {{ $peserta->links() }} --}}
+            {{ $kriteria->links() }}
         </div>
     </div>
 
 </div>
 <!-- /.container-fluid -->
-
-
 @endsection
+
+@push('script-modal')
+@if (count($errors) > 0)
+<script>
+    $( document ).ready(function() {
+                $('#tambah-kriteria').modal('show');
+            });
+</script>
+@endif
+@endpush

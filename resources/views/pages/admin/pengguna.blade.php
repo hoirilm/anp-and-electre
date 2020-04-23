@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'Menu Penguji')
+@section('title', 'Menu Daftar Pengguna')
 
 @section('content')
 <!-- Begin Page Content -->

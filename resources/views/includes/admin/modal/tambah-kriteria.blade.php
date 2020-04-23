@@ -9,18 +9,28 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body">
-                <form action="">
+            <form action="/admin/kriteria/daftar-kriteria" method="POST">
+                <div class="modal-body">
+
+                    @csrf
                     <div class="form-group">
                         <label for="exampleFormControlInput1">Nama kriteria: </label>
-                        <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Masukkan nama kriteria">
+                        <input type="text" class="form-control @error('kriteria') is-invalid @enderror"
+                            id="exampleFormControlInput1" placeholder="Masukkan nama kriteria" name="kriteria"
+                            value="{{ old('kriteria') }}">
+
+                        @error('kriteria')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                        @enderror
                     </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
-                <button type="button" class="btn btn-primary">Tambah</button>
-            </div>
+                </div>
+                <div class=" modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-primary">Tambah</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
