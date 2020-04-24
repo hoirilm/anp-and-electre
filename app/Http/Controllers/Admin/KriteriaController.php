@@ -23,7 +23,7 @@ class KriteriaController extends Controller
             return (array) $value;
         }, $tahun);
 
-        return view('pages.admin.kriteria', ['tahun' => $tahun]);
+        return view('pages.admin.kriteria', compact('tahun'));
     }
 
     public function selectYear()

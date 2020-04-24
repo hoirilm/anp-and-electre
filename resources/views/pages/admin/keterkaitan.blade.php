@@ -44,7 +44,7 @@
     </div>
 
     @if (!isset($gabungan))
-    <div class="alert alert-primary">
+    <div class="alert alert-primary col-3">
         Pilih tahun terlebih dahulu
     </div>
     @else

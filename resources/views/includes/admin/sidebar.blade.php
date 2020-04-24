@@ -41,19 +41,19 @@
         </div>
     </li>
 
-    <li class="nav-item {{ (request()->is('admin/pengguna')) ? 'active' : '' }}">
+    <li class="nav-item {{ (request()->is('admin/pengguna*')) ? 'active' : '' }}">
     <a class="nav-link" href="{{ route('admin.pengguna') }}">
         <i class="fas fa-fw fa-user"></i>
         <span>Pengguna</span></a>
     </li>
 
-    {{-- <li class="nav-item {{ (request()->is('admin/peserta')) ? 'active' : '' }}">
+    <li class="nav-item {{ (request()->is('admin/peserta*')) ? 'active' : '' }}">
         <a class="nav-link" href="{{ route('admin.peserta') }}">
             <i class="fas fa-fw fa-users"></i>
             <span>Peserta</span></a>
     </li>
 
-    <li class="nav-item {{ (request()->is('admin/keputusan')) ? 'active' : '' }}">
+    {{-- <li class="nav-item {{ (request()->is('admin/keputusan')) ? 'active' : '' }}">
         <a class="nav-link" href="{{ route('admin.keputusan') }}">
             <i class="fas fa-fw fa-check"></i>
             <span>Keputusan</span></a>

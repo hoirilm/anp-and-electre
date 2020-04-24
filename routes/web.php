@@ -41,6 +41,13 @@ Route::middleware('is_admin')->group(function () {
     Route::get('/admin/pengguna/{id}', 'Admin\PenggunaController@edit');
     Route::put('/admin/pengguna/{id}', 'Admin\PenggunaController@update');
     Route::delete('/admin/pengguna/{id}', 'Admin\PenggunaController@destroy');
+
+    Route::get('/admin/peserta/', 'Admin\PesertaController@index')->name('admin.peserta');
+    Route::post('/admin/peserta/', 'Admin\PesertaController@selectYear');
+    Route::post('/admin/peserta/store', 'Admin\PesertaController@store');
+    Route::get('/admin/peserta/{id}', 'Admin\PesertaController@edit');
+    Route::put('/admin/peserta/{id}', 'Admin\PesertaController@update');
+    Route::delete('/admin/peserta/{id}', 'Admin\PesertaController@destroy');
 });
 
 Route::middleware('is_examiner')->group(function () {
