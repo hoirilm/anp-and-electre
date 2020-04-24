@@ -9,7 +9,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form action="/admin/kriteria/daftar-kriteria" method="POST">
+            <form action="/admin/kriteria/list/store" method="POST">
                 <div class="modal-body">
 
                     @csrf

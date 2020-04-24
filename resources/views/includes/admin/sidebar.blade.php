@@ -33,21 +33,21 @@
             aria-labelledby="headingTwo" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Sub Menu Kriteria:</h6>
-                <a class="collapse-item {{ (request()->is('admin/kriteria/daftar-kriteria')) ? 'active' : '' }}"
-                    href="{{ route('admin.daftar-kriteria') }}">Kriteria</a>
-                <a class="collapse-item {{ (request()->is('admin/kriteria/keterkaitan-kriteria')) ? 'active' : '' }}"
-                    href="{{ route('admin.keterkaitan-kriteria') }}">Keterkaitan Kriteria</a>
+                <a class="collapse-item {{ (request()->is('admin/kriteria/list')) ? 'active' : '' }}"
+                    href="{{ route('admin.kriteria') }}">Kriteria</a>
+                <a class="collapse-item {{ (request()->is('admin/kriteria/keterkaitan')) ? 'active' : '' }}" 
+                    href="{{ route('admin.keterkaitan') }}">Keterkaitan Kriteria</a>
             </div>
         </div>
     </li>
 
     <li class="nav-item {{ (request()->is('admin/pengguna')) ? 'active' : '' }}">
-        <a class="nav-link" href="{{ route('admin.pengguna') }}">
-            <i class="fas fa-fw fa-user"></i>
-            <span>Pengguna</span></a>
+    <a class="nav-link" href="{{ route('admin.pengguna') }}">
+        <i class="fas fa-fw fa-user"></i>
+        <span>Pengguna</span></a>
     </li>
 
-    <li class="nav-item {{ (request()->is('admin/peserta')) ? 'active' : '' }}">
+    {{-- <li class="nav-item {{ (request()->is('admin/peserta')) ? 'active' : '' }}">
         <a class="nav-link" href="{{ route('admin.peserta') }}">
             <i class="fas fa-fw fa-users"></i>
             <span>Peserta</span></a>
@@ -57,7 +57,7 @@
         <a class="nav-link" href="{{ route('admin.keputusan') }}">
             <i class="fas fa-fw fa-check"></i>
             <span>Keputusan</span></a>
-    </li>
+    </li> --}}
 
     <!-- Divider -->
     <hr class="sidebar-divider d-none d-md-block">

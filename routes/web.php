@@ -24,25 +24,23 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::middleware('is_admin')->group(function () {
     Route::get('/admin', 'HomeController@adminHome')->name('admin.home');
-    
-    Route::get('/admin/pengguna', 'PagesController@pengguna')->name('admin.pengguna');
-    Route::post('/admin/pengguna', 'Admin\AdminPenggunaController@tambahPengguna');
 
-    Route::get('/admin/peserta', 'PagesController@peserta')->name('admin.peserta');
-    Route::post('/admin/peserta', 'Admin\AdminPesertaController@tambahPeserta');
+    Route::get('/admin/kriteria/list/', 'Admin\KriteriaController@index')->name('admin.kriteria');
+    Route::post('/admin/kriteria/list/', 'Admin\KriteriaController@selectYear');
+    Route::post('/admin/kriteria/list/store', 'Admin\KriteriaController@store');
+    Route::get('/admin/kriteria/list/{id}/', 'Admin\KriteriaController@edit');
+    Route::put('/admin/kriteria/list/{id}/', 'Admin\KriteriaController@update');
+    Route::delete('/admin/kriteria/list{id}/', 'Admin\KriteriaController@destroy');
 
-    Route::get('/admin/kriteria/daftar-kriteria', 'PagesController@kriteria')->name('admin.daftar-kriteria');
-    Route::put('/admin/kriteria/daftar-kriteria', 'Admin\AdminKriteriaController@cariKriteria');
-    Route::put('/admin/kriteria/daftar-kriteria/{id}', 'Admin\AdminKriteriaController@updateKriteria');
-    Route::post('/admin/kriteria/daftar-kriteria', 'Admin\AdminKriteriaController@tambahKriteria');
-    Route::delete('/admin/kriteria/daftar-kriteria/{id}', 'Admin\AdminKriteriaController@hapusKriteria');
-    
+    Route::get('/admin/kriteria/keterkaitan/', 'Admin\KeterkaitanKriteriaController@index')->name('admin.keterkaitan');
+    Route::post('/admin/kriteria/keterkaitan/', 'Admin\KeterkaitanKriteriaController@selectYear');
+    Route::post('/admin/kriteria/keterkaitan/store', 'Admin\KeterkaitanKriteriaController@store');
 
-    Route::get('/admin/kriteria/keterkaitan-kriteria', 'PagesController@keterkaitanKriteria')->name('admin.keterkaitan-kriteria');
-    Route::put('/admin/kriteria/keterkaitan-kriteria', 'Admin\AdminKeterkaitanKriteriaController@cariKeterkaitan');
-    Route::post('/admin/kriteria/keterkaitan-kriteria', 'Admin\AdminKeterkaitanKriteriaController@keterkaitan');
-    
-    Route::get('/admin/keputusan', 'Admin\AdminKeputusanController@keputusan')->name('admin.keputusan');
+    Route::get('/admin/pengguna', 'Admin\PenggunaController@index')->name('admin.pengguna');
+    Route::post('/admin/pengguna/store', 'Admin\PenggunaController@store');
+    Route::get('/admin/pengguna/{id}', 'Admin\PenggunaController@edit');
+    Route::put('/admin/pengguna/{id}', 'Admin\PenggunaController@update');
+    Route::delete('/admin/pengguna/{id}', 'Admin\PenggunaController@destroy');
 });
 
 Route::middleware('is_examiner')->group(function () {

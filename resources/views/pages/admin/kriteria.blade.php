@@ -33,9 +33,9 @@
                     <div class="col mr-2">
                         <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Data kriteria
                             tahun: </div>
-                        <form action="/admin/kriteria/daftar-kriteria/" method="POST">
+                        <form action="/admin/kriteria/list" method="POST">
                             @csrf
-                            @method('put')
+                            {{-- @method('put') --}}
                             <div class="dropdown row px-2">
                                 <select class="form-control col" name="tahun">
                                     <option>Pilih tahun</option>
@@ -81,15 +81,13 @@
                         <td>{{ date('Y', strtotime($krit->created_at)) }}</td>
                         <td class="row">
                             <div class="mx-2">
-                                <button type="button" class="btn btn-primary" data-toggle="modal"
-                                    data-target="#update-kriteria-{{ $krit->id }}" data-id="{{ $krit->id }}">Update
-                                </button>
-
-                                @include('includes.admin.modal.update-kriteria')
+                                <form action="/admin/kriteria/list/{{ $krit->id }}" method="GET">
+                                    <button type="submit" class="btn btn-primary">Edit</button>
+                                </form>
                             </div>
 
                             <div class="mx-2">
-                                <form action="/admin/kriteria/daftar-kriteria/{{ $krit->id }}" method="POST">
+                                <form action="/admin/kriteria/list/{{ $krit->id }}" method="POST">
                                     @csrf
                                     @method('delete')
                                     <button type="submit" class="btn btn-danger"

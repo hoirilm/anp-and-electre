@@ -4,8 +4,6 @@
 
 @section('content')
 
-{{-- {{dd($gabungan[0]['satu']['tahun_kriteria'])}} --}}
-
 <!-- Begin Page Content -->
 <div class="container-fluid">
 
@@ -27,9 +25,8 @@
                     <div class="col mr-2">
                         <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Data keterkaitan-kriteria
                             tahun: </div>
-                        <form action="/admin/kriteria/keterkaitan-kriteria/" method="POST">
+                        <form action="/admin/kriteria/keterkaitan/" method="POST">
                             @csrf
-                            @method('put')
                             <div class="dropdown row px-2">
                                 <select class="form-control col" name="tahun">
                                     <option>Pilih tahun</option>
@@ -57,7 +54,7 @@
                 {{ date('Y', strtotime($gabungan[0]['satu']['tahun_kriteria'])) }}</h6>
         </div>
         <div class="card-body">
-            <form action="/admin/kriteria/keterkaitan-kriteria" method="POST">
+            <form action="/admin/kriteria/keterkaitan/store" method="POST">
                 @csrf
                 <table class="table table-hover">
                     <thead>

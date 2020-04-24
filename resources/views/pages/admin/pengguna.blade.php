@@ -3,6 +3,9 @@
 @section('title', 'Menu Daftar Pengguna')
 
 @section('content')
+
+{{-- {{ dd($errors) }} --}}
+
 <!-- Begin Page Content -->
 <div class="container-fluid">
 
@@ -49,7 +52,22 @@
                         <td>
                             {{ ($user->is_admin === 1) ? 'Admin' : 'Penguji' }}
                         </td>
-                        <td> Update | Delete </td>
+                        <td class="row">
+                            <div class="mx-2">
+                                <form action="/admin/pengguna/{{ $user->id }}" method="GET">
+                                    <button type="submit" class="btn btn-primary">Edit</button>
+                                </form>
+                            </div>
+                        
+                            <div class="mx-2">
+                                <form action="/admin/pengguna/{{ $user->id }}" method="POST">
+                                    @csrf
+                                    @method('delete')
+                                    <button type="submit" class="btn btn-danger"
+                                        onclick="return confirm('Yakin untuk hapus data?')">Delete</button>
+                                </form>
+                            </div>
+                        </td>
                     </tr>
                     @endforeach
                 </tbody>

@@ -1,25 +1,28 @@
-<!-- Modal -->
-<div class="modal fade" id="update-kriteria-{{$krit->id}}" data-backdrop="static" tabindex="-1" role="dialog"
-    aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="staticBackdropLabel">Tambah kriteria</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <form action="/admin/kriteria/daftar-kriteria/{{ $krit->id }}" method="POST">
-                <div class="modal-body">
+@extends('layouts.admin')
 
+@section('title', 'Edit Kriteria')
+
+@section('content')
+
+{{-- {{dd($kriteria['id'])}} --}}
+
+<!-- Begin Page Content -->
+<div class="container-fluid">
+
+    <div class="card shadow mb-4 col-md-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Edit kriteria</h6>
+        </div>
+        <div class="card-body">
+            <form action="/admin/kriteria/{{ $kriteria->id }}" method="POST">
+                <div class="modal-body">
                     @csrf
                     @method('put')
-
                     <div class="form-group">
                         <label for="exampleFormControlInput1">Nama kriteria: </label>
                         <input type="text" class="form-control @error('kriteria') is-invalid @enderror"
                             id="exampleFormControlInput1" placeholder="Masukkan nama kriteria" name="kriteria"
-                            value="{{ $krit->kriteria }}">
+                            value="{{ $kriteria->kriteria }}">
 
                         @error('kriteria')
                         <span class="invalid-feedback" role="alert">
@@ -35,4 +38,7 @@
             </form>
         </div>
     </div>
+
 </div>
+<!-- /.container-fluid -->
+@endsection
