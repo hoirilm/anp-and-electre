@@ -263,21 +263,36 @@
                                     </tr>
                                 
                                     @php
-                                    $index = 0;
+                                    $index1 = 0;
+                                    $index2 = 0;
                                     @endphp
 
                                     @foreach ($kriteria as $mapel)
                                         <tr>
                                             <th>{{ $mapel->kriteria }}</th>
                                             @for ($i = 1; $i <= count($kriteria); $i++)
-                                                @if($loop->iteration === $i)
+                                                <td> 
+                                                    @if ($loop->iteration === $i)
+                                                    1.0
+                                                    @elseif ($loop->iteration > $i)
+                                                    {{ number_format(1/$input_terakhir[$index1]['nilai'], 2)}}
+                                                    @php $index1++; @endphp
+                                                    @elseif ($loop->iteration < $i && $i)
+                                                    {{number_format($input_terakhir[$index2]['nilai'], 2)}}
+                                                    @php $index2++; @endphp
+                                                    @endif
+                                                </td>
+                                            
+                                                
+                                            
+                                                {{-- @if($loop->iteration === $i)
                                                     <td style="color:red"> 1 </td>
                                                 @elseif($loop->iteration > $i)
                                                     <td style="color:green"> kiri </td>
                                                 @elseif($loop->iteration < $i && $i)
                                                     <td> {{$input_terakhir[$index]['nilai']}} </td>                                                    
                                                     @php $index++; @endphp
-                                                @endif
+                                                @endif --}}
                                             @endfor
                                         </tr>
                                     @endforeach
