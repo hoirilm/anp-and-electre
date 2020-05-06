@@ -81,28 +81,19 @@ class KeterkaitanKriteriaController extends Controller
         $tanggal = date('Y', strtotime(request('tahun_kriteria_1')));
         $cek_data = KeterkaitanKriteria::whereYear('tahun_kriteria', $tanggal)->first();
 
-        if (!isset($cek_data)) {
-            for ($i = 1; $i <= request('loop'); $i++) {
-                KeterkaitanKriteria::create([
-                    'kriteria_x' => request('keterkaitan_x_' . $i),
-                    'kriteria_y' => request('keterkaitan_y_' . $i),
-                    'terkait' => request('keterkaitan' . $i),
-                    'tahun_kriteria' => request('tahun_kriteria_' . $i),
-                ]);
-            }
-        } else {
-
+        if (isset($cek_data)) {
             KeterkaitanKriteria::whereYear('tahun_kriteria', $tanggal)->delete();
-            for ($i = 1; $i <= request('loop'); $i++) {
-                KeterkaitanKriteria::create([
-                    'kriteria_x' => request('keterkaitan_x_' . $i),
-                    'kriteria_y' => request('keterkaitan_y_' . $i),
-                    'terkait' => request('keterkaitan' . $i),
-                    'tahun_kriteria' => request('tahun_kriteria_' . $i),
-                ]);
-            }
         }
-
+            
+        for ($i = 1; $i <= request('loop'); $i++) {
+            KeterkaitanKriteria::create([
+                'kriteria_x' => request('keterkaitan_x_' . $i),
+                'kriteria_y' => request('keterkaitan_y_' . $i),
+                'terkait' => request('keterkaitan' . $i),
+                'tahun_kriteria' => request('tahun_kriteria_' . $i),
+            ]);
+        }
+        
         return redirect()->route('admin.keterkaitan')->with('massage', 'Keterkaitan-kriteria berhasil disimpan');
     }
 

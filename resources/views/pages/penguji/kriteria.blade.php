@@ -21,7 +21,7 @@
         </div>
 
         {{-- nilai bobot kriteria --}}
-        <div class="card-body">
+        {{-- <div class="card-body">
             <form action="/examiner/kriteria/" method="POST">
                 @csrf
                 @if (count($gabungan) < 0) 
@@ -93,6 +93,57 @@
                     </tbody>
                 </table>
                 <button type="submit" class="btn btn-primary" style="float:right">Simpan</button>
+                @endif
+            </form>
+        </div> --}}
+
+        <div class="card-body">
+            <form action="/examiner/kriteria/" method="POST">
+                @csrf
+                @if (count($gabungan) < 1) 
+                    <p class="alert alert-warning m-0">Tidak ada kriteria</p>
+                @else
+                    @for ($i = 0; $i < count($gabungan); $i++)
+                    <input type="hidden" name="loop" value="{{$i+1}}">
+                    <div class="row m-3">
+                        <div class="col text-right">
+                            <p> 
+                                <input type="hidden" value="{{ $gabungan[$i]['satu']['id'] }}" name="id_x_{{$i}}">
+                                <input type="hidden" value="{{ $gabungan[$i]['satu']['nama'] }}" name="kriteria_x_{{$i}}">
+                                {{ $gabungan[$i]['satu']['nama'] }} 
+                            </p>
+                        </div>
+                        <div class="col">
+                            <select name="kepentingan_{{$i}}" class="form-control">
+                                <option value="1">1</option>
+                                <option value="0.5">0.5</option>
+                                <option value="2">2</option>
+                                <option value="0.33">0.33</option>
+                                <option value="3">3</option>
+                                <option value="0.25">0.25</option>
+                                <option value="4">4</option>
+                                <option value="0.2">0.2</option>
+                                <option value="5">5</option>
+                                <option value="0.16">0.16</option>
+                                <option value="6">6</option>
+                                <option value="0.14">0.14</option>
+                                <option value="7">7</option>
+                                <option value="0.12">0.12</option>
+                                <option value="8">8</option>
+                                <option value="0.11">0.11</option>
+                                <option value="9">9</option>
+                            </select>
+                        </div>
+                        <div class="col">
+                            <p> 
+                                <input type="hidden" value="{{ $gabungan[$i]['dua']['id'] }}" name="id_y_{{$i}}">
+                                <input type="hidden" value="{{ $gabungan[$i]['dua']['nama'] }}" name="kriteria_y_{{$i}}">
+                                {{ $gabungan[$i]['dua']['nama'] }} 
+                            </p>
+                        </div>
+                    </div>
+                    @endfor
+                    <button type="submit" class="btn btn-primary" style="float:right">Simpan</button>
                 @endif
             </form>
         </div>

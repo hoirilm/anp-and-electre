@@ -17,7 +17,7 @@ class CreateXyKriteriaTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('user_id');
             $table->string('prioritas');
-            $table->integer('nilai');
+            $table->float('nilai');
             $table->unsignedInteger('kriteria_x');
             $table->unsignedInteger('kriteria_y');
             $table->timestamps();
