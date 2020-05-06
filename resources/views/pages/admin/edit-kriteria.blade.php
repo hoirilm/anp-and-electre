@@ -14,7 +14,7 @@
             <h6 class="m-0 font-weight-bold text-primary">Edit kriteria</h6>
         </div>
         <div class="card-body">
-            <form action="/admin/kriteria/{{ $kriteria->id }}" method="POST">
+            <form action="/admin/kriteria/list/{{ $kriteria->id }}" method="POST">
                 <div class="modal-body">
                     @csrf
                     @method('put')

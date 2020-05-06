@@ -30,7 +30,7 @@ Route::middleware('is_admin')->group(function () {
     Route::post('/admin/kriteria/list/store', 'Admin\KriteriaController@store');
     Route::get('/admin/kriteria/list/{id}/', 'Admin\KriteriaController@edit');
     Route::put('/admin/kriteria/list/{id}/', 'Admin\KriteriaController@update');
-    Route::delete('/admin/kriteria/list{id}/', 'Admin\KriteriaController@destroy');
+    Route::delete('/admin/kriteria/list/{id}/', 'Admin\KriteriaController@destroy');
 
     Route::get('/admin/kriteria/keterkaitan/', 'Admin\KeterkaitanKriteriaController@index')->name('admin.keterkaitan');
     Route::post('/admin/kriteria/keterkaitan/', 'Admin\KeterkaitanKriteriaController@selectYear');
@@ -52,7 +52,11 @@ Route::middleware('is_admin')->group(function () {
 
 Route::middleware('is_examiner')->group(function () {
     Route::get('/examiner', 'HomeController@examinerHome')->name('examiner.home');
-    Route::get('/examiner/kriteria', 'Examiner\ExaminerKriteriaController@kriteria')->name('examiner.kriteria');
+
+    Route::get('/examiner/kriteria', 'Examiner\KriteriaController@index')->name('examiner.kriteria');
+    Route::post('/examiner/kriteria', 'Examiner\xyKriteriaController@store');
+
+
     Route::get('/examiner/peserta', 'Examiner\ExaminerPesertaController@peserta')->name('examiner.peserta');
     Route::get('/examiner/penilaian', 'Examiner\ExaminerPenilaianController@penilaian')->name('examiner.penilaian');
 });

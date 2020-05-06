@@ -17,9 +17,15 @@
         </button>
     </div>
 
-    @if (session('massage'))
+    @if (session('success-massage'))
     <div class="alert alert-success">
-        {{ session('massage') }}
+        {{ session('success-massage') }}
+    </div>
+    @endif
+
+    @if (session('fail-massage'))
+    <div class="alert alert-danger">
+        {{ session('fail-massage') }}
     </div>
     @endif
 

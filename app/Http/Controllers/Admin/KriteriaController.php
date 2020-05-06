@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\KeterkaitanKriteria;
 use App\Kriteria;
+use App\xyKriteria;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -120,7 +122,14 @@ class KriteriaController extends Controller
      */
     public function destroy($id)
     {
-        Kriteria::destroy($id);
-        return redirect()->route('admin.kriteria')->with('massage', 'Kriteria berhasil dihapus');
+        $kriteria_x = KeterkaitanKriteria::select('kriteria_x')->where('kriteria_x', $id)->get()->pluck('kriteria_x')->toArray();
+        $kriteria_y = KeterkaitanKriteria::select('kriteria_y')->where('kriteria_y', $id)->get()->pluck('kriteria_y')->toArray();
+        $kriteria_xy = array_merge($kriteria_x, $kriteria_y);
+        if (in_array($id, $kriteria_xy)) {
+            return redirect()->route('admin.kriteria')->with('fail-massage', 'Gagal menghapus kriteria. Kriteria terhubung dengan tabel keterkaitan kriteria');
+        } else {
+            Kriteria::destroy($id);
+            return redirect()->route('admin.kriteria')->with('success-massage', 'Kriteria berhasil dihapus');
+        }
     }
 }

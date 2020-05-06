@@ -4,8 +4,8 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class KeterkatitanKriteria extends Model
+class xyKriteria extends Model
 {
-    protected $table = 'keterkaitan_kriteria';
+    protected $table = 'xy_kriteria';
     protected $guarded = [];
 }

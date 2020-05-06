@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\KeterkatitanKriteria;
+use App\KeterkaitanKriteria;
 use App\Kriteria;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -79,12 +79,11 @@ class KeterkaitanKriteriaController extends Controller
     public function store()
     {
         $tanggal = date('Y', strtotime(request('tahun_kriteria_1')));
-        $cek_data = KeterkatitanKriteria::whereYear('tahun_kriteria', $tanggal)->first();
-
+        $cek_data = KeterkaitanKriteria::whereYear('tahun_kriteria', $tanggal)->first();
 
         if (!isset($cek_data)) {
             for ($i = 1; $i <= request('loop'); $i++) {
-                KeterkatitanKriteria::create([
+                KeterkaitanKriteria::create([
                     'kriteria_x' => request('keterkaitan_x_' . $i),
                     'kriteria_y' => request('keterkaitan_y_' . $i),
                     'terkait' => request('keterkaitan' . $i),
@@ -92,13 +91,15 @@ class KeterkaitanKriteriaController extends Controller
                 ]);
             }
         } else {
+
+            KeterkaitanKriteria::whereYear('tahun_kriteria', $tanggal)->delete();
             for ($i = 1; $i <= request('loop'); $i++) {
-                KeterkatitanKriteria::select('keterkaitan_kriteria')
-                    ->where('kriteria_x', request('keterkaitan_x_' . $i))
-                    ->where('kriteria_y', request('keterkaitan_y_' . $i))
-                    ->whereYear('tahun_kriteria', $tanggal)->update([
-                        'terkait' => request('keterkaitan' . $i)
-                    ]);
+                KeterkaitanKriteria::create([
+                    'kriteria_x' => request('keterkaitan_x_' . $i),
+                    'kriteria_y' => request('keterkaitan_y_' . $i),
+                    'terkait' => request('keterkaitan' . $i),
+                    'tahun_kriteria' => request('tahun_kriteria_' . $i),
+                ]);
             }
         }
 
