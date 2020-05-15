@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddKriteriaToBobotPrioritas extends Migration
+class CreateBobotNormalTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,10 @@ class AddKriteriaToBobotPrioritas extends Migration
      */
     public function up()
     {
-        Schema::table('bobot_prioritas', function (Blueprint $table) {
-            $table->unsignedInteger('kriteria_id');
-            $table->foreign('kriteria_id')->references('id')->on('kriteria');
+        Schema::create('bobot_normal', function (Blueprint $table) {
+            $table->increments('id');
+            $table->float('bobot');
+            $table->timestamps();
         });
     }
 
@@ -26,8 +27,6 @@ class AddKriteriaToBobotPrioritas extends Migration
      */
     public function down()
     {
-        Schema::table('bobot_prioritas', function (Blueprint $table) {
-            //
-        });
+        Schema::dropIfExists('bobot_normal');
     }
 }

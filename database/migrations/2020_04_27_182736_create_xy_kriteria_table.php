@@ -20,11 +20,13 @@ class CreateXyKriteriaTable extends Migration
             $table->float('nilai');
             $table->unsignedInteger('kriteria_x');
             $table->unsignedInteger('kriteria_y');
+            $table->unsignedInteger('jurusan_id');
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('kriteria_x')->references('id')->on('kriteria');
             $table->foreign('kriteria_y')->references('id')->on('kriteria');
+            $table->foreign('jurusan_id')->references('id')->on('jurusan');
         });
     }
 

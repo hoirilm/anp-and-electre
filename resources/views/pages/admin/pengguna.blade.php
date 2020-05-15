@@ -11,8 +11,6 @@
 
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800">Pengguna</h1>
-
         <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#tambah-pengguna">
             <i class="fas fa-download fa-sm text-white-50"></i> Tambah Pengguna
         </button>

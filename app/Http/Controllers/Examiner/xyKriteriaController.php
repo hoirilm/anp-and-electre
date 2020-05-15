@@ -37,7 +37,7 @@ class xyKriteriaController extends Controller
      */
     public function store()
     {
-        // return request('kepentingan_0');
+        // return request()->all();
 
         $id_penguji = Auth::user()->id;
 
@@ -56,7 +56,7 @@ class xyKriteriaController extends Controller
         // dd($cek_data);
 
         if (isset($cek_data)) {
-            xyKriteria::select('user_id', $id_penguji)->delete();
+            xyKriteria::select('user_id', $id_penguji)->where('jurusan_id', request('jurusan_id'))->delete();
         } 
             
         for ($i = 0; $i < request('loop'); $i++) {
@@ -65,7 +65,8 @@ class xyKriteriaController extends Controller
                 'prioritas' => (request('kepentingan_' . $i) < 1) ? (request('kriteria_y_' . $i) . ' | ' . request('kriteria_x_' . $i)) : (request('kriteria_x_' . $i) . ' | ' . request('kriteria_y_' . $i)),
                 'nilai' => request('kepentingan_' . $i),
                 'kriteria_x' => request('id_x_' . $i),
-                'kriteria_y' => request('id_y_' . $i)
+                'kriteria_y' => request('id_y_' . $i),
+                'jurusan_id' => request('jurusan_id')
             ]);
         }
 

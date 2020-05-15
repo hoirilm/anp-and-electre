@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Examiner;
 
 use App\Http\Controllers\Controller;
+use App\Jurusan;
 use App\KeterkaitanKriteria;
 use App\Kriteria;
 use App\xyKriteria;
@@ -19,13 +20,26 @@ class KriteriaController extends Controller
      */
     public function index()
     {
+        $jurusan = Jurusan::all();
+        return view('pages.penguji.kriteria', compact('jurusan'));
+    }
+
+    public function tes()
+    {
+        return request('jurusan');
+    }
+
+    public function selectJurusan(){
+
+        $jurusan = Jurusan::all();
+        $jurusan_id = request('jurusan');
+        $pilih_jurusan = Jurusan::where('id', $jurusan_id)->first();
+
         $gabungan = [];
         $cek_update_kriteria_di_keterkaitan = 'gagal';
         $cek_update_kriteria_di_xykriteria = 'gagal';
 
-        $tahun = date('Y', strtotime(Auth::user()->created_at));
-
-        $kriteria = Kriteria::whereYear('created_at', $tahun)->get();
+        $kriteria = Kriteria::all();
 
         if (!empty($kriteria)) {
             $batas = count($kriteria);
@@ -46,10 +60,10 @@ class KriteriaController extends Controller
         }
 
 
-        $input_terakhir = xyKriteria::where('user_id', Auth::user()->id)->get();
+        $input_terakhir = xyKriteria::where('user_id', Auth::user()->id)->where('jurusan_id', $jurusan_id)->get();
 
         $keterkaitan_kriteria = DB::select(DB::raw("SELECT kriteria_x.kriteria as kriteria_x, kriteria_y.kriteria as kriteria_y, terkait as terkait FROM keterkaitan_kriteria JOIN kriteria as kriteria_x ON keterkaitan_kriteria.kriteria_x = kriteria_x.id JOIN kriteria as kriteria_y ON keterkaitan_kriteria.kriteria_Y = kriteria_Y.id"));
-
+        // dd(isset($keterkaitan_kriteria));
         // $nilai_perbandingan = DB::select(DB::raw("SELECT kriteria_x.kriteria as kriteria_x, kriteria_y.kriteria as kriteria_y, nilai FROM xy_kriteria JOIN kriteria AS kriteria_x ON xy_kriteria.kriteria_x = kriteria_x.id JOIN kriteria AS kriteria_y ON xy_kriteria.kriteria_y = kriteria_y.id"));
 
         // NOTE!!
@@ -101,6 +115,8 @@ class KriteriaController extends Controller
         // =====================================================================================================
 
         return view('pages.penguji.kriteria', [
+            'jurusan' => $jurusan,
+            'pilih_jurusan' => $pilih_jurusan,
             'kriteria' => $kriteria,
             'keterkaitan_kriteria' => $keterkaitan_kriteria,
             'gabungan' => $gabungan,

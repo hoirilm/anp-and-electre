@@ -15,136 +15,93 @@
     </div>
     @endif
 
+    @if (session('bobot_normal'))
+    <div class="alert alert-success">
+        {{ session('bobot_normal') }}
+    </div>
+    @endif
+
+    <div class="col-xl-3 col-md-6 mb-4 px-0">
+        <div class="card border-left-primary shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Pilih Jurusan: </div>
+                        <form action="/examiner/kriteria" method="POST">
+                            @csrf
+                            @method('put')
+                            <div class="dropdown row px-2">
+                                <select class="form-control col" name="jurusan">
+                                    <option>Pilih Jurusan</option>
+                                    @foreach ($jurusan as $item)
+                                        <option value="{{ $item['id'] }}">{{ $item['jurusan'] }}</option>
+                                    @endforeach
+                                </select>
+                                <button type="submit" class="btn btn-primary btn-sm mx-2">Lihat</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    @if (!isset($gabungan))
+    <div class="alert alert-primary col-3">
+        Pilih jurusan terlebih dahulu
+    </div>
+    @else
     <div class="card shadow mb-4">
         <div class="card-header py-3">
             <h6 class="m-0 font-weight-bold text-primary">Kriteria</h6>
         </div>
 
-        {{-- nilai bobot kriteria --}}
-        {{-- <div class="card-body">
-            <form action="/examiner/kriteria/" method="POST">
-                @csrf
-                @if (count($gabungan) < 0) 
-                    <p class="alert alert-warning m-0">Tidak ada kriteria</p>
-                @else
-                <table class="table table-bordered" style="text-align:center">
-                    <thead class="thead-secondary">
-                        <tr>
-                            <th scope="col">Kriteria Prioritas</th>
-                            <th scope="col">Equal</th>
-                            <th scope="col">Tingkat Kepentingan</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @for($i = 0; $i < count($gabungan); $i++)
-                        <input type="hidden" name="loop" value="{{$i+1}}">
-                        <tr>
-                            <td>
-                                <table class="table table-bordered" style="text-align:center">
-                                    <thead class="thead-light">
-                                    <th style="width: 50%"> <input type="hidden" name="id_x_{{$i}}" value="{{ $gabungan[$i]['satu']['id'] }}">  {{ $gabungan[$i]['satu']['nama'] }}</th>
-                                    <th style="width: 50%"> <input type="hidden" name="id_y_{{$i}}" value="{{ $gabungan[$i]['dua']['id'] }}"> {{ $gabungan[$i]['dua']['nama'] }}</th>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                        <td><input type="radio" name="prioritas_{{$i}}" value="{{$gabungan[$i]['satu']['nama']}}_>_{{$gabungan[$i]['dua']['nama']}}" checked></td>
-                                        <td><input type="radio" name="prioritas_{{$i}}" value="{{$gabungan[$i]['dua']['nama']}}_>_{{$gabungan[$i]['satu']['nama']}}"></td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </td>
-
-                            <td>
-                                <table class="table table-bordered" style="text-align:center">
-                                    <thead class="thead-light">
-                                        <th>1</th>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                        <td><input type="radio" name="kepentingan_{{$i}}" value="1" checked></td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </td>
-
-                            <td>
-                                <table class="table table-bordered" style="text-align:center">
-                                    <thead class="thead-light">
-                                        <th>2</th>
-                                        <th>3</th>
-                                        <th>4</th>
-                                        <th>5</th>
-                                        <th>6</th>
-                                        <th>7</th>
-                                        <th>8</th>
-                                        <th>9</th>
-                                    </thead>
-                                    <tbody class="center">
-                                        <tr>
-                                            @for ($j = 1; $j <= 8; $j++)
-                                        <td><input type="radio" name="kepentingan_{{$i}}" value="{{$j+1}}"></td>
-                                            @endfor
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </td>
-                        </tr>
-                        @endfor
-                    </tbody>
-                </table>
-                <button type="submit" class="btn btn-primary" style="float:right">Simpan</button>
-                @endif
-            </form>
-        </div> --}}
-
         <div class="card-body">
             <form action="/examiner/kriteria/" method="POST">
                 @csrf
-                @if (count($gabungan) < 1) 
-                    <p class="alert alert-warning m-0">Tidak ada kriteria</p>
-                @else
-                    @for ($i = 0; $i < count($gabungan); $i++)
-                    <input type="hidden" name="loop" value="{{$i+1}}">
-                    <div class="row m-3">
-                        <div class="col text-right">
-                            <p> 
-                                <input type="hidden" value="{{ $gabungan[$i]['satu']['id'] }}" name="id_x_{{$i}}">
-                                <input type="hidden" value="{{ $gabungan[$i]['satu']['nama'] }}" name="kriteria_x_{{$i}}">
-                                {{ $gabungan[$i]['satu']['nama'] }} 
-                            </p>
-                        </div>
-                        <div class="col">
-                            <select name="kepentingan_{{$i}}" class="form-control">
-                                <option value="1">1</option>
-                                <option value="0.5">0.5</option>
-                                <option value="2">2</option>
-                                <option value="0.33">0.33</option>
-                                <option value="3">3</option>
-                                <option value="0.25">0.25</option>
-                                <option value="4">4</option>
-                                <option value="0.2">0.2</option>
-                                <option value="5">5</option>
-                                <option value="0.16">0.16</option>
-                                <option value="6">6</option>
-                                <option value="0.14">0.14</option>
-                                <option value="7">7</option>
-                                <option value="0.12">0.12</option>
-                                <option value="8">8</option>
-                                <option value="0.11">0.11</option>
-                                <option value="9">9</option>
-                            </select>
-                        </div>
-                        <div class="col">
-                            <p> 
-                                <input type="hidden" value="{{ $gabungan[$i]['dua']['id'] }}" name="id_y_{{$i}}">
-                                <input type="hidden" value="{{ $gabungan[$i]['dua']['nama'] }}" name="kriteria_y_{{$i}}">
-                                {{ $gabungan[$i]['dua']['nama'] }} 
-                            </p>
-                        </div>
+                @for ($i = 0; $i < count($gabungan); $i++)
+                <input type="hidden" name="loop" value="{{$i+1}}">
+                <input type="hidden" name="jurusan_id" value="{{ $pilih_jurusan->id }}">
+                <div class="row m-3">
+                    <div class="col text-right">
+                        <p> 
+                            <input type="hidden" value="{{ $gabungan[$i]['satu']['id'] }}" name="id_x_{{$i}}">
+                            <input type="hidden" value="{{ $gabungan[$i]['satu']['nama'] }}" name="kriteria_x_{{$i}}">
+                            {{ $gabungan[$i]['satu']['nama'] }} 
+                        </p>
                     </div>
-                    @endfor
-                    <button type="submit" class="btn btn-primary" style="float:right">Simpan</button>
-                @endif
+                    <div class="col">
+                        <select name="kepentingan_{{$i}}" class="form-control">
+                            <option value="1">1</option>
+                            <option value="0.5">0.5</option>
+                            <option value="2">2</option>
+                            <option value="0.33">0.33</option>
+                            <option value="3">3</option>
+                            <option value="0.25">0.25</option>
+                            <option value="4">4</option>
+                            <option value="0.2">0.2</option>
+                            <option value="5">5</option>
+                            <option value="0.16">0.16</option>
+                            <option value="6">6</option>
+                            <option value="0.14">0.14</option>
+                            <option value="7">7</option>
+                            <option value="0.12">0.12</option>
+                            <option value="8">8</option>
+                            <option value="0.11">0.11</option>
+                            <option value="9">9</option>
+                        </select>
+                    </div>
+                    <div class="col">
+                        <p> 
+                            <input type="hidden" value="{{ $gabungan[$i]['dua']['id'] }}" name="id_y_{{$i}}">
+                            <input type="hidden" value="{{ $gabungan[$i]['dua']['nama'] }}" name="kriteria_y_{{$i}}">
+                            {{ $gabungan[$i]['dua']['nama'] }} 
+                        </p>
+                    </div>
+                </div>
+                @endfor
+                <button type="submit" class="btn btn-primary" style="float:right">Simpan</button>
             </form>
         </div>
 
@@ -152,7 +109,7 @@
 
     <div class="card shadow mb-4">
         <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary">Detail</h6>
+            <h6 class="m-0 font-weight-bold text-primary">Detail nilai dari jurusan {{ $pilih_jurusan->jurusan }}</h6>
         </div>
         <div class="card-body">
             <div class="accordion" id="accordionExample">
@@ -175,20 +132,22 @@
                             </div>
                         @else
                         <div class="card-body">
-                            <table class="table table-bordered">
-                                <thead class="thead-light">
-                                    <th>Perbandingan Kriteria</th>
-                                    <th>Tingkat Kepentingan</th>
-                                </thead>
-                                <tbody>
-                                    @foreach ($input_terakhir as $item)
-                                        <tr>
-                                            <td>{{ $item->prioritas }}</td>
-                                            <td>{{ number_format($item->nilai,2) }}</td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
+                            <div class="table-responsive">
+                                <table class="table table-bordered">
+                                    <thead class="thead-light">
+                                        <th>Perbandingan Kriteria</th>
+                                        <th>Tingkat Kepentingan</th>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($input_terakhir as $item)
+                                            <tr>
+                                                <td>{{ $item->prioritas }}</td>
+                                                <td>{{ number_format($item->nilai,2) }}</td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                         @endif
                     </div>
@@ -205,34 +164,36 @@
                         </h2>
                     </div>
                     <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
-                        @if ($cek_update_kriteria_di_keterkaitan === 'gagal' or count($keterkaitan_kriteria) < 0)
+                        @if ($cek_update_kriteria_di_keterkaitan === 'gagal' or count($keterkaitan_kriteria) < 1)
                         <div class="card-body">
                            <p class="alert alert-warning m-0">Keterkaitan kriteria belum diisi oleh admin</p>
                         </div>
                         @else
                         <div class="card-body">
-                            <table class="table table-bordered">
-                                <thead class="thead-light">
-                                    <th>Kriteria</th>
-                                    <th>Status</th>
-                                    <th>Kriteria</th>
-                                </thead>
-                                <tbody>
-                                    @foreach ($keterkaitan_kriteria as $item)
-                                    <tr>
-                                        <td>{{ $item->kriteria_x }}</td>
-                                        <td>
-                                            @if($item->terkait === 0)
-                                            <span class="badge badge-danger">Tidak terkait</span>
-                                            @else
-                                            <span class="badge badge-success">Terkait</span>
-                                            @endif
-                                        </td>
-                                        <td>{{ $item->kriteria_y }}</td>
-                                    </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
+                            <div class="table-responsive">
+                                <table class="table table-bordered">
+                                    <thead class="thead-light">
+                                        <th>Kriteria</th>
+                                        <th>Status</th>
+                                        <th>Kriteria</th>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($keterkaitan_kriteria as $item)
+                                        <tr>
+                                            <td>{{ $item->kriteria_x }}</td>
+                                            <td>
+                                                @if($item->terkait === 0)
+                                                    <span class="badge badge-danger">Tidak terkait</span>
+                                                @else
+                                                    <span class="badge badge-success">Terkait</span>
+                                                @endif
+                                            </td>
+                                            <td>{{ $item->kriteria_y }}</td>
+                                        </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                         @endif
                     </div>
@@ -250,53 +211,56 @@
                     </div>
                     <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
                         <div class="card-body">
-                            @if ($cek_update_kriteria_di_xykriteria === 'gagal')
+                            @if ($cek_update_kriteria_di_xykriteria === 'gagal' or count($input_terakhir) < 1)
                                 <p class="alert alert-warning m-0">Kriteria baru ditambahkan oleh admin, segera lakukan penilaian ulang.</p>
                             @else
-                            <table class="table table-bordered">
-                                <tbody class="text-center">
-                                    <tr>
-                                        <th></th>
-                                        @foreach ($kriteria as $mapel)
-                                            <th class="table-secondary">{{ $mapel->kriteria }}</th>
-                                        @endforeach
-                                    </tr>
-                                
-                                    @php
-                                    $nilai1 = 1.0;
-                                    $index1 = 0;
-                                    $index2 = 0;
-                                    @endphp
-
-                                    @foreach ($kriteria as $mapel)
+                            <div class="table-responsive">
+                                <table class="table table-bordered">
+                                    <tbody class="text-center">
                                         <tr>
-                                            <th class="table-secondary">{{ $mapel->kriteria }}</th>
-                                            @for ($i = 1; $i <= count($kriteria); $i++)
-                                                <td> 
-                                                    @if ($loop->iteration === $i)
-                                                    {{ $total_perbandingan[$i][] = $nilai1 }}
-                                                    @elseif ($loop->iteration > $i)
-                                                    {{ $total_perbandingan[$i][] = 1/$input_terakhir[$index1]['nilai'] }}
-                                                    @php $index1++; @endphp
-                                                    @elseif ($loop->iteration < $i && $i)
-                                                    {{ $total_perbandingan[$i][] = $input_terakhir[$index2]['nilai'] }}
-                                                    @php $index2++; @endphp
-                                                    @endif
-                                                </td>
+                                            <th></th>
+                                            @foreach ($kriteria as $mapel)
+                                                <th class="table-secondary">{{ $mapel->kriteria }}</th>
+                                            @endforeach
+                                        </tr>
+                                    
+                                        @php
+                                        $nilai1 = 1.0;
+                                        $index1 = 0;
+                                        $index2 = 0;
+                                        @endphp
+
+                                        @foreach ($kriteria as $mapel)
+                                            <tr>
+                                                <th class="table-secondary">{{ $mapel->kriteria }}</th>
+                                                @for ($i = 1; $i <= count($kriteria); $i++)
+                                                    <td> 
+                                                        @if ($loop->iteration === $i)
+                                                        {{ $total_perbandingan[$i][] = number_format($nilai1,4) }}
+                                                        @elseif ($loop->iteration > $i)
+                                                        {{ $total_perbandingan[$i][] = number_format(1/$input_terakhir[$index1]['nilai'],4) }}
+                                                        @php $index1++; @endphp
+                                                        @elseif ($loop->iteration < $i && $i)
+                                                        {{ $total_perbandingan[$i][] = number_format($input_terakhir[$index2]['nilai'],4) }}
+                                                        @php $index2++; @endphp
+                                                        @endif
+                                                    </td>
+                                                @endfor
+                                            </tr>
+                                        @endforeach
+                                        {{-- {{ dd($total) }} --}}
+                                        <tr>
+                                            <th class="table-success">
+                                                Total
+                                            </th>
+                                            @for ($i = 1; $i <= count($total_perbandingan); $i++)
+                                                <td class="table-success"> {{ number_format(array_sum($total_perbandingan[$i]),4) }}</td>
                                             @endfor
                                         </tr>
-                                    @endforeach
-                                    {{-- {{ dd($total) }} --}}
-                                    <tr>
-                                        <th class="table-success">
-                                            Total
-                                        </th>
-                                        @for ($i = 1; $i <= count($total_perbandingan); $i++)
-                                            <td class="table-success"> {{ array_sum($total_perbandingan[$i]) }}</td>
-                                        @endfor
-                                    </tr>
-                                </tbody>
-                            </table>
+                                    </tbody>
+                                </table>
+                            </div>
+                           
                             @endif
                         </div>
                     </div>
@@ -317,55 +281,58 @@
                             @if (!isset($total_perbandingan) or count($total_perbandingan) < 1) 
                                 <p class="alert alert-warning m-0">Tidak ada nilai yang diinputkan.</p>
                             @else
-                            <table class="table table-bordered">
-                                <tbody>
-                                    <tr>
-                                        <th></th>
-                                        @foreach ($kriteria as $mapel)
-                                            <th class="table-secondary">{{ $mapel->kriteria }}</th>
-                                        @endforeach
-                                    </tr>
-
-                                    @foreach ($kriteria as $mapel)
+                            <div class="table-responsive">
+                                <table class="table table-bordered">
+                                    <tbody>
                                         <tr>
-                                            <th class="table-secondary">{{ $mapel->kriteria }}</th>
-                                            @for ($j = 1; $j <= count($total_perbandingan); $j++) 
-                                                <td>
-                                                    {{ $total_normalisasi[$j][] = $total_perbandingan[$j][$loop->iteration - 1]/array_sum($total_perbandingan[$j]) }}
+                                            <th></th>
+                                            @foreach ($kriteria as $mapel)
+                                                <th class="table-secondary">{{ $mapel->kriteria }}</th>
+                                            @endforeach
+                                        </tr>
+
+                                        @foreach ($kriteria as $mapel)
+                                            <tr>
+                                                <th class="table-secondary">{{ $mapel->kriteria }}</th>
+                                                @for ($j = 1; $j <= count($total_perbandingan); $j++) 
+                                                    <td>
+                                                        {{ $total_normalisasi[$j][] = number_format($total_perbandingan[$j][$loop->iteration - 1]/array_sum($total_perbandingan[$j]),4) }}
+                                                    </td>
+                                                @endfor
+                                            </tr>
+                                        @endforeach
+                                        <tr>
+                                            <th class="table-success"> Total </th>
+                                            @for ($i = 1; $i <= count($total_normalisasi); $i++) 
+                                                <td class="table-success">
+                                                    {{ number_format(array_sum($total_normalisasi[$i]),4) }}
                                                 </td>
                                             @endfor
                                         </tr>
-                                    @endforeach
-                                    <tr>
-                                        <th class="table-success"> Total </th>
-                                        @for ($i = 1; $i <= count($total_normalisasi); $i++) 
-                                            <td class="table-success">
-                                                {{ number_format(array_sum($total_normalisasi[$i]),2) }}
-                                            </td>
-                                        @endfor
-                                    </tr>
 
-                                    <tr>
-                                        <th class="table-secondary"> Eigen </th>
-                                        @for ($i = 1; $i <= count($total_normalisasi); $i++)
-                                            <td>
-                                                {{ $total_eigen[] = pow(array_product($total_normalisasi[$i]), 1/count($total_normalisasi))  }}
-                                            </td>
-                                        @endfor
-                                        <td class="table-success"> Jumlah: {{ number_format(array_sum($total_eigen),2) }} </td>
-                                    </tr>
+                                        <tr>
+                                            <th class="table-secondary"> Eigen </th>
+                                            @for ($i = 1; $i <= count($total_normalisasi); $i++)
+                                                <td>
+                                                    {{ $total_eigen[] = number_format(pow(array_product($total_normalisasi[$i]), 1/count($total_normalisasi)),4)  }}
+                                                </td>
+                                            @endfor
+                                            <td class="table-success"> Jumlah: {{ number_format(array_sum($total_eigen),4) }} </td>
+                                        </tr>
 
-                                    <tr>
-                                        <th class="table-secondary"> Bobot Prioritas </th>
-                                        @for ($i = 0; $i < count($total_eigen); $i++) 
-                                            <td>
-                                                {{ $bobot_prioritas[] = $total_eigen[$i]/array_sum($total_eigen) }}
-                                            </td>
-                                        @endfor
-                                        <td class="table-success"> Jumlah: {{ number_format(array_sum($bobot_prioritas),2) }} </td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                                        <tr>
+                                            <th class="table-secondary"> Bobot Prioritas </th>
+                                            @for ($i = 0; $i < count($total_eigen); $i++) 
+                                                <td>
+                                                    {{ $bobot_prioritas[] = number_format($total_eigen[$i]/array_sum($total_eigen),4) }}
+                                                </td>
+                                            @endfor
+                                            <td class="table-success"> Jumlah: {{ number_format(array_sum($bobot_prioritas),4) }} </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            
                             @endif
                         </div>
                     </div>
@@ -384,9 +351,10 @@
                     <div id="collapseFive" class="collapse" aria-labelledby="headingFive" data-parent="#accordionExample">
                         <div class="card-body">
                             @if (!isset($total_normalisasi) or count($total_normalisasi) < 1) 
-                                <p class="alert alert-warning m-0">Tidak ada nilai yang diinputkan.</p>
+                                <p class="alert alert-warning m-0">Tidak ada nilai bobot prioritas pada normalisasi.</p>
                             @else
-                            <table class="table table-bordered">
+                            <div class="table-responsive">
+                                <table class="table table-bordered">
                                 <thead>
                                     <th class="table-primary">Kriteria</th>
                                     <th class="table-primary">Bobot Sintesa / Bobot Prioritas</th>
@@ -398,25 +366,26 @@
                                     @foreach ($kriteria as $mapel)
                                     <tr>
                                         <th class="table-secondary" style="width: 20%">{{ $mapel->kriteria }}</th>
-                                        <td>{{ $nilai_eigen_max[] = array_sum($total_normalisasi[$loop->iteration]) / $bobot_prioritas[$loop->iteration - 1] }}
+                                        <td>{{ $nilai_eigen_max[] = number_format(array_sum($total_normalisasi[$loop->iteration]) / $bobot_prioritas[$loop->iteration - 1],4) }}
                                         </td>
                                     </tr>
                                     @endforeach
                             
                                     <tr>
                                         <th class="table-success" style="width: 20%"> Total </th>
-                                        <td class="table-success">{{ $total_eigen_max = array_sum($nilai_eigen_max) }}</td>
+                                        <td class="table-success">
+                                            {{ $total_eigen_max = number_format(array_sum($nilai_eigen_max),4) }}</td>
                                     </tr>
                                 </tbody>
                                 
                                 <table class="table table-bordered">
                                     <tr>
                                         <th class="table-secondary" style="width: 20%"> Eigen Maximum </th>
-                                        <td> {{ $eigen_maximum = $total_eigen_max/count($kriteria) }}</td>
+                                        <td> {{ $eigen_maximum = number_format($total_eigen_max/count($kriteria),4) }} </td>
                                     </tr>
                                     <tr>
                                         <th class="table-secondary" style="width: 20%"> CI </th>
-                                        <td> {{ $ci = ($eigen_maximum - count($kriteria)) / (count($kriteria) - 1) }}</td>
+                                        <td> {{ $ci = number_format(($eigen_maximum - count($kriteria)) / (count($kriteria) - 1),4) }} </td>
                                     </tr>
                                     <tr>
                                         <th class="table-secondary" style="width: 20%"> CR </th>
@@ -443,7 +412,7 @@
                                                 $ri = null;
                                             }
                                         @endphp
-                                        <td> {{ $cr = $ci/$ri }}</td>
+                                        <td> {{ number_format($cr = $ci/$ri,4) }}</td>
                                     </tr>
                                     <tr>
                                         <th class="table-secondary" style="width: 20%"> CR < 0.1</th>
@@ -451,6 +420,7 @@
                                     </tr>
                                 </table>
                             </table>
+                            </div>
                             @endif
                         </div>
                     </div>
@@ -469,9 +439,10 @@
                     <div id="collapseSix" class="collapse" aria-labelledby="headingSix" data-parent="#accordionExample">
                         <div class="card-body">
                             @if (!isset($nilai_eigen_max) or count($nilai_eigen_max) < 1) 
-                                <p class="alert alert-warning m-0">Tidak ada nilai yang diinputkan.</p>
+                                <p class="alert alert-warning m-0">Tidak ada nilai eigen pada normalisasi.</p>
                             @else
-                            <table class="table table-bordered">
+                            <div class="table-responsive">
+                                <table class="table table-bordered">
                                 <thead>
                                     <th class="table-primary">Kriteria</th>
                                     @foreach ($kriteria as $mapel)
@@ -483,12 +454,14 @@
                                     <tr>
                                         <th class="table-secondary">{{ $mapel->kriteria }}</th>
                                         @for($i = 0; $i < count($total_eigen); $i++)
-                                            <td> {{ $unweight[] = $total_eigen[$loop->iteration - 1] * $total_eigen[$i] }} </td>
+                                            <td> {{ $unweight[] = number_format($total_eigen[$loop->iteration - 1] * $total_eigen[$i],4) }} </td>
                                         @endfor
                                     </tr>
                                     @endforeach
                                 </tbody>
                             </table>
+                            </div>
+                            
                             @endif
                         </div>
                     </div>
@@ -506,10 +479,11 @@
                     </div>
                     <div id="collapseSeven" class="collapse" aria-labelledby="headingSeven" data-parent="#accordionExample">
                         <div class="card-body">
-                            @if (!isset($nilai_eigen_max) or count($nilai_eigen_max) < 1) 
-                                <p class="alert alert-warning m-0">Tidak ada nilai yang diinputkan.</p>
+                            @if (!isset($nilai_eigen_max) or count($nilai_eigen_max) < 1 or count($keterkaitan_kriteria) < 1) 
+                                <p class="alert alert-warning m-0">Tidak ada nilai unweight / keterkaitan kriteria belum diisi oleh admin</p>
                             @else
-                            <table class="table table-bordered">
+                            <div class="table-responsive">
+                                <table class="table table-bordered">
                                 @php
                                     $weight = [];
                                     $index1 = 0;
@@ -543,25 +517,25 @@
                                         @for($i = 1; $i <= count($kriteria); $i++)
                                             <td>
                                                 @if($loop->iteration === $i)
-                                                    {{ $weight[] = $total_perbandingan[$i][$index1] * $unweight[$index2] }}
+                                                    {{ $weight[] = number_format($total_perbandingan[$i][$index1] * $unweight[$index2],4) }}
                                                     @php $index2++; @endphp
 
                                                 @elseif ($loop->iteration > $i)
                                                     @if ($keterkaitan_kriteria[$index3]->terkait == 0)
-                                                        {{ $weight[] = 0 }}
+                                                        {{ $weight[] = number_format(0,4) }}
                                                         @php $index2++; $index3++; @endphp
                                                     @else
-                                                        {{ $weight[] = $total_perbandingan[$i][$index1] * $unweight[$index2] }}
+                                                        {{ $weight[] = number_format($total_perbandingan[$i][$index1] * $unweight[$index2],4) }}
                                                         @php $index2++; $index3++; @endphp
                                                     @endif
                                                     
                                                 @elseif ($loop->iteration < $i && $i)
                                                     @if ($keterkaitan_kriteria[$index4]->terkait == 0)
-                                                        {{ $weight[] = 0 }}
+                                                        {{ $weight[] = number_format(0,4) }}
                                                         @php $index2++; $index4++; @endphp
 
                                                     @else
-                                                        {{ $weight[] = $total_perbandingan[$i][$index1] * $unweight[$index2] }}
+                                                        {{ $weight[] = number_format($total_perbandingan[$i][$index1] * $unweight[$index2],4) }}
                                                         @php $index2++; $index4++; @endphp
                                                     @endif
                                                 @endif
@@ -572,6 +546,7 @@
                                     @endforeach
                                 </tbody>
                             </table>
+                            </div>
                             @endif
                         </div>
                     </div>
@@ -590,9 +565,10 @@
                     <div id="collapseEight" class="collapse" aria-labelledby="headingEight" data-parent="#accordionExample">
                         <div class="card-body">
                             @if (!isset($weight) or count($weight) < 1) 
-                                <p class="alert alert-warning m-0">Tidak ada nilai yang diinputkan.</p>
+                                <p class="alert alert-warning m-0">Tidak ada nilai weight.</p>
                             @else
-                            <table class="table table-bordered">
+                            <div class="table-responsive">
+                                <table class="table table-bordered">
                                 @php
                                     $limit = [];
                                     $index1 = 0;
@@ -612,25 +588,25 @@
                                         @for($i = 1; $i <= count($kriteria); $i++)
                                             <td>
                                                 @if($loop->iteration === $i)
-                                                    {{ $limit[$i][] = pow($weight[$index1], $weight[$index1])}}
+                                                    {{ $limit[$i][] = number_format(pow($weight[$index1], $weight[$index1]),4)}}
                                                     @php $index1++; @endphp
 
                                                 @elseif ($loop->iteration > $i)
                                                     @if ($keterkaitan_kriteria[$index2]->terkait == 0)
-                                                        {{ $limit[$i][] = 1 }}
+                                                        {{ $limit[$i][] = number_format(1,4) }}
                                                         @php $index1++; $index2++; @endphp
                                                     @else
-                                                        {{ $limit[$i][] = pow($weight[$index1], $weight[$index1])}}
+                                                        {{ $limit[$i][] = number_format(pow($weight[$index1], $weight[$index1]),4)}}
                                                         @php $index1++; $index2++; @endphp
                                                     @endif
                                                     
                                                 @elseif ($loop->iteration < $i && $i)
                                                     @if ($keterkaitan_kriteria[$index3]->terkait == 0)
-                                                        {{ $limit[$i][] = 1 }}
+                                                        {{ $limit[$i][] = number_format(1,4) }}
                                                         @php $index1++; $index3++; @endphp
 
                                                     @else
-                                                        {{ $limit[$i][] = pow($weight[$index1], $weight[$index1])}}
+                                                        {{ $limit[$i][] = number_format(pow($weight[$index1], $weight[$index1]),4)}}
                                                         @php $index1++; $index3++; @endphp
                                                     @endif
                                                 @endif
@@ -641,12 +617,13 @@
                                     <tr>
                                         <th class="table-success">Total</th>
                                         @for($j=1; $j <= count($limit); $j++)
-                                            <td class="table-success">{{ $total_limit[] = array_sum($limit[$j]) }}</td>
+                                            <td class="table-success"> {{ $total_limit[] = number_format(array_sum($limit[$j]),4) }} </td>
                                         @endfor
                                     </tr>
                                     {{-- {{dd($total_limit)}} --}}
                                 </tbody>
                             </table>
+                            </div>
                             @endif
                         </div>
                     </div>
@@ -665,9 +642,10 @@
                     <div id="collapseNineNine" class="collapse" aria-labelledby="headingNine" data-parent="#accordionExample">
                         <div class="card-body">
                             @if (!isset($weight) or count($weight) < 1) 
-                                <p class="alert alert-warning m-0">Tidak ada nilai yang diinputkan.</p>
+                                <p class="alert alert-warning m-0">Tidak ada nilai limit.</p>
                             @else
-                            <table class="table table-bordered">
+                            <div class="table-responsive">
+                                <table class="table table-bordered">
                                 @php
                                     $normalisasi_limit = [];
                                     $index1 = 0;
@@ -688,7 +666,7 @@
                                         <th class="table-secondary">{{ $mapel->kriteria }}</th>
                                         @for($i = 1; $i <= count($limit); $i++)
                                             <td>
-                                                {{ $normalisasi_limit[$i][] = $limit[$i][$loop->iteration - 1] / $total_limit[$i - 1] }}
+                                                {{ $normalisasi_limit[$i][] = number_format($limit[$i][$loop->iteration - 1] / $total_limit[$i - 1],4) }}
                                             </td>
                                         @endfor
                                     </tr>
@@ -696,37 +674,64 @@
                                     <tr>
                                         <th class="table-success">Total</th>
                                         @for($j=1; $j <= count($normalisasi_limit); $j++)
-                                            <td class="table-success">{{ $total_normalisasi_limit[] = array_sum($normalisasi_limit[$j]) }}</td>
+                                            <td class="table-success">
+                                                {{ $total_normalisasi_limit[] = number_format(array_sum($normalisasi_limit[$j]),4) }}
+                                            </td>
                                         @endfor
                                     </tr>
                                 </tbody>
                             </table>
+                            </div>
 
-                            <table class="table table-bordered">
+                            <div class="table-responsive">
+                                <table class="table table-bordered">
                                 <tbody>
                                     <tr>
-                                        <th class="table-secondary" style="width: 20%">Bobot RAW</th>
+                                        <th></th>
+                                        @foreach ($kriteria as $mapel)
+                                            <th class="table-secondary">{{ $mapel->kriteria }}</th>
+                                        @endforeach
+                                    </tr>
+                                    <tr>
+                                        <th class="table-secondary">Bobot RAW</th>
                                         @for($i=1; $i <= count($kriteria); $i++)
-                                            <td> {{ $bobot_raw[] = array_product($normalisasi_limit[$i])/(1/count($total_normalisasi_limit)) }} </td>
+                                            <td> {{ $bobot_raw[] = number_format(array_product($normalisasi_limit[$i])/(1/count($total_normalisasi_limit)),4) }} </td>
                                         @endfor
-                                        <td class="font-weight-bold table-success"> Total : {{ number_format(array_sum($bobot_raw),2) }} </td>
+                                        <td class="font-weight-bold table-success"> Total : {{ number_format(array_sum($bobot_raw),4) }} </td>
                                     </tr>
                                     <tr>
-                                        <th class="table-secondary" style="width: 20%">Bobot Normal</th>
-                                        @for($i=0; $i < count($bobot_raw); $i++)
-                                            <td> {{ $bobot_normal[] = $bobot_raw[$i]/array_sum($bobot_raw) }} </td>
-                                        @endfor
-                                        <td class="font-weight-bold table-success"> Total: {{ number_format(array_sum($bobot_normal),2) }} | (Max: {{max($bobot_normal)}})</td>
+                                        <th class="table-secondary">Bobot Normal</th>
+                                        <form action="/examiner/kriteria/bobot_normal" method="POST">
+                                            @csrf
+                                            <input type="hidden" value="{{ $pilih_jurusan->id }}" name="jurusan_id">
+                                            @for($i=0; $i < count($bobot_raw); $i++)
+                                            <input type="hidden" name="loop" value="{{$i+1}}">
+                                                <td>
+                                                    <input type="hidden" value="{{ $kriteria[$i]->id }}" name="kriteria_id_{{$i}}">
+                                                    <input type="hidden"
+                                                        value="{{ number_format($bobot_raw[$i]/array_sum($bobot_raw),4) }}"
+                                                        name="bobot_normal_{{$i}}">
+                                                    {{ $bobot_normal[] = number_format($bobot_raw[$i]/array_sum($bobot_raw),4) }}
+                                                </td>
+                                            @endfor
+                                            <td class="font-weight-bold table-success"> Total:
+                                                {{ number_format(array_sum($bobot_normal),4) }} | (Max:
+                                                {{ number_format(max($bobot_normal),4) }}) 
+                                                <button type="submit" class="btn btn-primary btn-sm mx-2">Simpan Bobot Normal</button>
+                                            </td>
+                                        </form>
                                     </tr>
                                     <tr>
-                                        <th class="table-secondary" style="width: 20%">Bobot Ideal</th>
+                                        <th class="table-secondary">Bobot Ideal</th>
                                         @for($i=0; $i < count($bobot_normal); $i++)
-                                            <td> {{ $bobot_ideal[] = $bobot_normal[$i]/max($bobot_normal) }} </td>
+                                            <td> {{ $bobot_ideal[] = number_format($bobot_normal[$i]/max($bobot_normal),4) }}
+                                            </td>
                                         @endfor
-                                        <td class="font-weight-bold table-success"> Total: {{ number_format(array_sum($bobot_ideal),2) }} </td>
+                                        <td class="font-weight-bold table-success"> Total: {{ number_format(array_sum($bobot_ideal),4) }} </td>
                                     </tr>
                                 </tbody>
                             </table>
+                            </div>
                             @endif
                         </div>
                     </div>
@@ -734,7 +739,7 @@
             </div>
         </div>
     </div>
-    
+    @endif
 
 </div>
 <!-- /.container-fluid -->

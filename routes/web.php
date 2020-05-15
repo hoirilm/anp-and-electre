@@ -26,14 +26,14 @@ Route::middleware('is_admin')->group(function () {
     Route::get('/admin', 'HomeController@adminHome')->name('admin.home');
 
     Route::get('/admin/kriteria/list/', 'Admin\KriteriaController@index')->name('admin.kriteria');
-    Route::post('/admin/kriteria/list/', 'Admin\KriteriaController@selectYear');
+    // Route::post('/admin/kriteria/list/', 'Admin\KriteriaController@selectYear');
     Route::post('/admin/kriteria/list/store', 'Admin\KriteriaController@store');
     Route::get('/admin/kriteria/list/{id}/', 'Admin\KriteriaController@edit');
     Route::put('/admin/kriteria/list/{id}/', 'Admin\KriteriaController@update');
     Route::delete('/admin/kriteria/list/{id}/', 'Admin\KriteriaController@destroy');
 
     Route::get('/admin/kriteria/keterkaitan/', 'Admin\KeterkaitanKriteriaController@index')->name('admin.keterkaitan');
-    Route::post('/admin/kriteria/keterkaitan/', 'Admin\KeterkaitanKriteriaController@selectYear');
+    // Route::post('/admin/kriteria/keterkaitan/', 'Admin\KeterkaitanKriteriaController@selectYear');
     Route::post('/admin/kriteria/keterkaitan/store', 'Admin\KeterkaitanKriteriaController@store');
 
     Route::get('/admin/pengguna', 'Admin\PenggunaController@index')->name('admin.pengguna');
@@ -54,9 +54,12 @@ Route::middleware('is_examiner')->group(function () {
     Route::get('/examiner', 'HomeController@examinerHome')->name('examiner.home');
 
     Route::get('/examiner/kriteria', 'Examiner\KriteriaController@index')->name('examiner.kriteria');
+    Route::put('/examiner/kriteria', 'Examiner\KriteriaController@selectJurusan');
     Route::post('/examiner/kriteria', 'Examiner\xyKriteriaController@store');
+    
+    Route::post('/examiner/kriteria/bobot_normal', 'Examiner\BobotNormalController@store');
 
 
-    Route::get('/examiner/peserta', 'Examiner\ExaminerPesertaController@peserta')->name('examiner.peserta');
-    Route::get('/examiner/penilaian', 'Examiner\ExaminerPenilaianController@penilaian')->name('examiner.penilaian');
+    // Route::get('/examiner/peserta', 'Examiner\ExaminerPesertaController@peserta')->name('examiner.peserta');
+    // Route::get('/examiner/penilaian', 'Examiner\ExaminerPenilaianController@penilaian')->name('examiner.penilaian');
 });

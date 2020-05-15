@@ -19,26 +19,27 @@ class KriteriaController extends Controller
     public function index()
     {
 
-        $tahun = DB::select(DB::raw("SELECT DISTINCT YEAR(created_at) AS tahun FROM kriteria"));
-        // merubah hasil db:raw menjadi array agar bisa diakses ke dalam select tahun
-        $tahun = array_map(function ($value) {
-            return (array) $value;
-        }, $tahun);
+        // $tahun = DB::select(DB::raw("SELECT DISTINCT YEAR(created_at) AS tahun FROM kriteria"));
+        // // merubah hasil db:raw menjadi array agar bisa diakses ke dalam select tahun
+        // $tahun = array_map(function ($value) {
+        //     return (array) $value;
+        // }, $tahun);
+        $kriteria = Kriteria::all();
 
-        return view('pages.admin.kriteria', compact('tahun'));
+        return view('pages.admin.kriteria', compact('kriteria'));
     }
 
     public function selectYear()
     {
-        $tahun = DB::select(DB::raw("SELECT DISTINCT YEAR(created_at) AS tahun FROM kriteria"));
-        // merubah hasil db:raw menjadi array agar bisa diakses ke dalam select tahun
-        $tahun = array_map(function ($value) {
-            return (array) $value;
-        }, $tahun);
+        // $tahun = DB::select(DB::raw("SELECT DISTINCT YEAR(created_at) AS tahun FROM kriteria"));
+        // // merubah hasil db:raw menjadi array agar bisa diakses ke dalam select tahun
+        // $tahun = array_map(function ($value) {
+        //     return (array) $value;
+        // }, $tahun);
         
-        $kriteria = Kriteria::whereYear('created_at', request('tahun'))->get();
+        // $kriteria = Kriteria::whereYear('created_at', request('tahun'))->get();
 
-        return view('pages.admin.kriteria', ['tahun' => $tahun, 'kriteria' => $kriteria]);
+        // return view('pages.admin.kriteria', ['tahun' => $tahun, 'kriteria' => $kriteria]);
     }
 
     /**

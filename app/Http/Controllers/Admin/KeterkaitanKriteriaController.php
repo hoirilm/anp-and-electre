@@ -17,28 +17,13 @@ class KeterkaitanKriteriaController extends Controller
      */
     public function index()
     {
-        $tahun = DB::select(DB::raw("SELECT DISTINCT YEAR(created_at) AS tahun FROM kriteria"));
-        // merubah hasil db:raw menjadi array agar bisa diakses ke dalam select tahun
-        $tahun = array_map(function ($value) {
-            return (array) $value;
-        }, $tahun);
+        // $tahun = DB::select(DB::raw("SELECT DISTINCT YEAR(created_at) AS tahun FROM kriteria"));
+        // // merubah hasil db:raw menjadi array agar bisa diakses ke dalam select tahun
+        // $tahun = array_map(function ($value) {
+        //     return (array) $value;
+        // }, $tahun);
 
-        // return $tahun;
-
-        return view('pages.admin.keterkaitan', ['tahun' => $tahun]);
-    }
-
-    public function selectYear()
-    {
-        $tahun = DB::select(DB::raw("SELECT DISTINCT YEAR(created_at) AS tahun FROM kriteria"));
-        // merubah hasil db:raw menjadi array agar bisa diakses ke dalam select tahun
-        $tahun = array_map(function ($value) {
-            return (array) $value;
-        }, $tahun);
-
-        $keterkaitan = Kriteria::whereYear('created_at', request('tahun'))->get();
-
-        // return $keterkaitan;
+        $keterkaitan = Kriteria::all();
 
         $batas = count($keterkaitan);
         $a = 0;
@@ -57,7 +42,39 @@ class KeterkaitanKriteriaController extends Controller
             $b += 1;
         }
 
-        return view('pages.admin.keterkaitan', ['tahun' => $tahun, 'gabungan' => $gabungan]);
+        return view('pages.admin.keterkaitan', ['gabungan' => $gabungan]);
+    }
+
+    public function selectYear()
+    {
+        // $tahun = DB::select(DB::raw("SELECT DISTINCT YEAR(created_at) AS tahun FROM kriteria"));
+        // // merubah hasil db:raw menjadi array agar bisa diakses ke dalam select tahun
+        // $tahun = array_map(function ($value) {
+        //     return (array) $value;
+        // }, $tahun);
+
+        // $keterkaitan = Kriteria::whereYear('created_at', request('tahun'))->get();
+
+        // // return $keterkaitan;
+
+        // $batas = count($keterkaitan);
+        // $a = 0;
+        // $b = 1;
+        // for ($i = $a; $i < $batas; $i++) {
+        //     $kriteria1 = $keterkaitan[$i];
+        //     for ($j = $b; $j < $batas; $j++) {
+        //         $kriteria2 = $keterkaitan[$j];
+
+        //         $gabungan[] = [
+        //             'satu' => ['nama' => $kriteria1->kriteria, 'id' => $kriteria1->id, 'tahun_kriteria' => $kriteria1->created_at],
+        //             'dua' => ['nama' => $kriteria2->kriteria, 'id' => $kriteria2->id, 'tahun_kriteria' => $kriteria2->created_at]
+        //         ];
+        //     }
+        //     $a += 1;
+        //     $b += 1;
+        // }
+
+        // return view('pages.admin.keterkaitan', ['tahun' => $tahun, 'gabungan' => $gabungan]);
     }
 
     /**
@@ -84,7 +101,7 @@ class KeterkaitanKriteriaController extends Controller
         if (isset($cek_data)) {
             KeterkaitanKriteria::whereYear('tahun_kriteria', $tanggal)->delete();
         }
-            
+
         for ($i = 1; $i <= request('loop'); $i++) {
             KeterkaitanKriteria::create([
                 'kriteria_x' => request('keterkaitan_x_' . $i),
@@ -93,7 +110,7 @@ class KeterkaitanKriteriaController extends Controller
                 'tahun_kriteria' => request('tahun_kriteria_' . $i),
             ]);
         }
-        
+
         return redirect()->route('admin.keterkaitan')->with('massage', 'Keterkaitan-kriteria berhasil disimpan');
     }
 

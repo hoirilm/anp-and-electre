@@ -7,45 +7,16 @@
 <!-- Begin Page Content -->
 <div class="container-fluid">
 
-    <!-- Page Heading -->
-    <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800">Keterkaitan kriteria</h1>
-    </div>
-
     @if (session('massage'))
     <div class="alert alert-success">
         {{ session('massage') }}
     </div>
     @endif
 
-    <div class="col-xl-3 col-md-6 mb-4 px-0">
-        <div class="card border-left-primary shadow h-100 py-2">
-            <div class="card-body">
-                <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Data keterkaitan-kriteria
-                            tahun: </div>
-                        <form action="/admin/kriteria/keterkaitan/" method="POST">
-                            @csrf
-                            <div class="dropdown row px-2">
-                                <select class="form-control col" name="tahun">
-                                    <option>Pilih tahun</option>
-                                    @foreach ($tahun as $item)
-                                    <option value="{{ $item['tahun'] }}">{{ $item['tahun'] }}</option>
-                                    @endforeach
-                                </select>
-                                <button type="submit" class="btn btn-primary btn-sm mx-2">Lihat</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 
     @if (!isset($gabungan))
     <div class="alert alert-primary col-3">
-        Pilih tahun terlebih dahulu
+        Tidak ada keterkaitan kriteria
     </div>
     @else
     <div class="card shadow mb-4 col">

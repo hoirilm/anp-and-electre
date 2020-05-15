@@ -28,7 +28,7 @@
             <span>Kriteria</span></a>
     </li>
 
-    <li class="nav-item {{ (request()->is('examiner/peserta')) ? 'active' : '' }}">
+    {{-- <li class="nav-item {{ (request()->is('examiner/peserta')) ? 'active' : '' }}">
         <a class="nav-link" href="{{ route('examiner.peserta') }}">
             <i class="fas fa-fw fa-users"></i>
             <span>Peserta</span></a>
@@ -38,7 +38,7 @@
         <a class="nav-link" href="{{ route('examiner.penilaian') }}">
             <i class="fas fa-fw fa-book"></i>
             <span>Penilaian</span></a>
-    </li>
+    </li> --}}
 
     <!-- Divider -->
     <hr class="sidebar-divider d-none d-md-block">
