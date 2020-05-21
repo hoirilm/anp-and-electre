@@ -24,11 +24,6 @@ class KriteriaController extends Controller
         return view('pages.penguji.kriteria', compact('jurusan'));
     }
 
-    public function tes()
-    {
-        return request('jurusan');
-    }
-
     public function selectJurusan(){
 
         $jurusan = Jurusan::all();

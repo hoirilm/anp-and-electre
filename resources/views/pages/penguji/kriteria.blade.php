@@ -52,6 +52,7 @@
         Pilih jurusan terlebih dahulu
     </div>
     @else
+
     <div class="card shadow mb-4">
         <div class="card-header py-3">
             <h6 class="m-0 font-weight-bold text-primary">Kriteria</h6>
@@ -104,7 +105,6 @@
                 <button type="submit" class="btn btn-primary" style="float:right">Simpan</button>
             </form>
         </div>
-
     </div>
 
     <div class="card shadow mb-4">
@@ -416,7 +416,19 @@
                                     </tr>
                                     <tr>
                                         <th class="table-secondary" style="width: 20%"> CR < 0.1</th>
-                                        <td> @if ($cr < 0.1) <span class="text-success"> Konsisten </span> @else <span class="text-danger"> Tidak Konsisten </span> @endif </td>
+                                        <td> 
+                                            @if ($cr < 0.1)
+                                                @php
+                                                    $nilai_cr = true;    
+                                                @endphp
+                                                <span class="text-success"> Konsisten </span> 
+                                            @else 
+                                                @php
+                                                    $nilai_cr = false;
+                                                @endphp
+                                                <span class="text-danger"> Tidak Konsisten </span> 
+                                            @endif 
+                                        </td>
                                     </tr>
                                 </table>
                             </table>
@@ -425,6 +437,9 @@
                         </div>
                     </div>
                 </div>
+
+
+
 
                 {{-- Unweight --}}
                 <div class="card">
@@ -739,6 +754,25 @@
             </div>
         </div>
     </div>
+
+        @if ($nilai_cr === true)
+            <div class="alert alert-success text-center" role="alert">
+                <h4 class="alert-heading"><i class="fas fa-check"></i> Sukses</h4>
+                <p>Nilai <strong>CR</strong> kurang dari 0.1 dengan hasil <strong>Konsisten</strong>. Tekan "Update" untuk update data.
+                </p>
+                <hr>
+                <input type="submit" value="Update" class="btn btn-primary">
+            </div>
+        @elseif($nilai_cr === false)
+        <div class="alert alert-warning text-center" role="alert">
+            <h4 class="alert-heading"><i class="fas fa-exclamation-triangle"></i> Peringatan</h4>
+            <p>Nilai <strong>CR</strong> lebih dari 0.1 dengan hasil <strong>Tidak Konsisten</strong>. Disarankan untuk
+                mengisi bobot nilai kembali.
+            </p>
+            <hr>
+            <input type="submit" value="Simpan dan lanjutkan" class="btn btn-primary">
+        </div>
+        @endif
     @endif
 
 </div>

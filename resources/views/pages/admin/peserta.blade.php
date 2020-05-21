@@ -94,16 +94,22 @@
                         <td>{{ $siswa->jurusan }}</td>
                         <td class="row">
                             <div class="mx-2">
-                                <form action="/admin/peserta/{{ $siswa->id }}" method="GET">
-                                    <button type="submit" class="btn btn-primary">Edit</button>
+                                <form action="/admin/peserta/{{$siswa->id}}" method="GET">
+                                    <button type="submit" class="btn btn-primary btn-sm">Edit</button>
                                 </form>
                             </div>
 
                             <div class="mx-2">
-                                <form action="/admin/peserta/{{ $siswa->id }}" method="POST">
+                                <form action="/admin/peserta/nilai/{{$siswa->id}}" method="GET">
+                                    <button type="submit" class="btn btn-success btn-sm">Nilai</button>
+                                </form>
+                            </div>
+
+                            <div class="mx-2">
+                                <form action="/admin/peserta/{{$siswa->id}}" method="POST">
                                     @csrf
                                     @method('delete')
-                                    <button type="submit" class="btn btn-danger"
+                                    <button type="submit" class="btn btn-danger btn-sm"
                                         onclick="return confirm('Yakin untuk hapus data?')">Delete</button>
                                 </form>
                             </div>

@@ -47,7 +47,13 @@ Route::middleware('is_admin')->group(function () {
     Route::post('/admin/peserta/store', 'Admin\PesertaController@store');
     Route::get('/admin/peserta/{id}', 'Admin\PesertaController@edit');
     Route::put('/admin/peserta/{id}', 'Admin\PesertaController@update');
+    Route::get('/admin/peserta/nilai/{id}', 'Admin\NilaiController@edit');
+    Route::post('/admin/peserta/nilai', 'Admin\NilaiController@store');
+    // Route::put('/admin/peserta/nilai/{id}', 'Admin\NilaiController@update');
+    
     Route::delete('/admin/peserta/{id}', 'Admin\PesertaController@destroy');
+
+    // Route::get('')
 });
 
 Route::middleware('is_examiner')->group(function () {
