@@ -36,6 +36,8 @@ Route::middleware('is_admin')->group(function () {
     // Route::post('/admin/kriteria/keterkaitan/', 'Admin\KeterkaitanKriteriaController@selectYear');
     Route::post('/admin/kriteria/keterkaitan/store', 'Admin\KeterkaitanKriteriaController@store');
 
+    Route::get('/admin/kriteria/supermatrik', 'Admin\SupermatrikController@index')->name('admin.supermatrik');
+
     Route::get('/admin/pengguna', 'Admin\PenggunaController@index')->name('admin.pengguna');
     Route::post('/admin/pengguna/store', 'Admin\PenggunaController@store');
     Route::get('/admin/pengguna/{id}', 'Admin\PenggunaController@edit');
@@ -49,8 +51,10 @@ Route::middleware('is_admin')->group(function () {
     Route::put('/admin/peserta/{id}', 'Admin\PesertaController@update');
     Route::get('/admin/peserta/nilai/{id}', 'Admin\NilaiController@edit');
     Route::post('/admin/peserta/nilai', 'Admin\NilaiController@store');
+
+    Route::get('/admin/ranking/', 'Admin\RankingController@index')->name('admin.ranking');
     // Route::put('/admin/peserta/nilai/{id}', 'Admin\NilaiController@update');
-    
+
     Route::delete('/admin/peserta/{id}', 'Admin\PesertaController@destroy');
 
     // Route::get('')
@@ -61,8 +65,15 @@ Route::middleware('is_examiner')->group(function () {
 
     Route::get('/examiner/kriteria', 'Examiner\KriteriaController@index')->name('examiner.kriteria');
     Route::put('/examiner/kriteria', 'Examiner\KriteriaController@selectJurusan');
-    Route::post('/examiner/kriteria', 'Examiner\xyKriteriaController@store');
-    
+
+    // Route::post('/examiner/kriteria', 'Examiner\xyKriteriaController@create');
+
+    Route::get('/examiner/kriteria/recent', 'Examiner\KriteriaController@recent')->name('examiner.recent');
+    Route::put('/examiner/kriteria/recent', 'Examiner\KriteriaController@selectRecent');
+    Route::post('/examiner/kriteria/create', 'Examiner\xyKriteriaController@create');
+
+    Route::post('/examiner/kriteria/store', 'Examiner\xyKriteriaController@store');
+
     Route::post('/examiner/kriteria/bobot_normal', 'Examiner\BobotNormalController@store');
 
 

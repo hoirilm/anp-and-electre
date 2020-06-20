@@ -35,8 +35,10 @@
                 <h6 class="collapse-header">Sub Menu Kriteria:</h6>
                 <a class="collapse-item {{ (request()->is('admin/kriteria/list')) ? 'active' : '' }}"
                     href="{{ route('admin.kriteria') }}">Kriteria</a>
-                <a class="collapse-item {{ (request()->is('admin/kriteria/keterkaitan')) ? 'active' : '' }}" 
+                <a class="collapse-item {{ (request()->is('admin/kriteria/keterkaitan')) ? 'active' : '' }}"
                     href="{{ route('admin.keterkaitan') }}">Keterkaitan Kriteria</a>
+                <a class="collapse-item {{ (request()->is('admin/kriteria/supermatrik')) ? 'active' : '' }}"
+                    href="{{ route('admin.supermatrik') }}">Supermatrik</a>
             </div>
         </div>
     </li>
@@ -51,6 +53,12 @@
         <a class="nav-link" href="{{ route('admin.peserta') }}">
             <i class="fas fa-fw fa-users"></i>
             <span>Peserta</span></a>
+    </li>
+
+    <li class="nav-item {{ (request()->is('admin/ranking*')) ? 'active' : '' }}">
+        <a class="nav-link" href="{{ route('admin.ranking') }}">
+            <i class="fas fa-fw fa-users"></i>
+            <span>Ranking</span></a>
     </li>
 
     {{-- <li class="nav-item {{ (request()->is('admin/keputusan')) ? 'active' : '' }}">

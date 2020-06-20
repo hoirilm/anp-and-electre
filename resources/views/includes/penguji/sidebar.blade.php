@@ -22,23 +22,29 @@
     <!-- Divider -->
     <hr class="sidebar-divider">
 
-    <li class="nav-item {{ (request()->is('examiner/kriteria')) ? 'active' : '' }}">
+    {{-- <li class="nav-item {{ (request()->is('examiner/kriteria*')) ? 'active' : '' }}">
         <a class="nav-link" href="{{ route('examiner.kriteria') }}">
             <i class="fas fa-fw fa-tags"></i>
             <span>Kriteria</span></a>
-    </li>
-
-    {{-- <li class="nav-item {{ (request()->is('examiner/peserta')) ? 'active' : '' }}">
-        <a class="nav-link" href="{{ route('examiner.peserta') }}">
-            <i class="fas fa-fw fa-users"></i>
-            <span>Peserta</span></a>
-    </li>
-
-    <li class="nav-item {{ (request()->is('examiner/penilaian')) ? 'active' : '' }}">
-        <a class="nav-link" href="{{ route('examiner.penilaian') }}">
-            <i class="fas fa-fw fa-book"></i>
-            <span>Penilaian</span></a>
     </li> --}}
+
+    <li class="nav-item {{ (request()->is('examiner/kriteria*')) ? 'active' : '' }}">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true"
+            aria-controls="collapseOne">
+            <i class="fas fa-fw fa-tags"></i>
+            <span>Kriteria</span>
+        </a>
+        <div id="collapseOne" class="collapse {{ (request()->is('examiner/kriteria*')) ? 'show' : '' }}"
+            aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <h6 class="collapse-header">Sub Menu Kriteria:</h6>
+                <a class="collapse-item {{ (request()->is('examiner/kriteria')) ? 'active' : '' }}"
+                    href="{{ route('examiner.kriteria') }}">Nilai Kriteria</a>
+                <a class="collapse-item {{ (request()->is('examiner/kriteria/recent')) ? 'active' : '' }}"
+                    href="{{ route('examiner.recent') }}">Proses Sebelumnya</a>
+            </div>
+        </div>
+    </li>
 
     <!-- Divider -->
     <hr class="sidebar-divider d-none d-md-block">
