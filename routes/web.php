@@ -37,6 +37,7 @@ Route::middleware('is_admin')->group(function () {
     Route::post('/admin/kriteria/keterkaitan/store', 'Admin\KeterkaitanKriteriaController@store');
 
     Route::get('/admin/kriteria/supermatrik', 'Admin\SupermatrikController@index')->name('admin.supermatrik');
+    Route::post('/admin/kriteria/supermatrik', 'Admin\SupermatrikController@select');
 
     Route::get('/admin/pengguna', 'Admin\PenggunaController@index')->name('admin.pengguna');
     Route::post('/admin/pengguna/store', 'Admin\PenggunaController@store');

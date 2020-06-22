@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Examiner;
 
+use App\BobotNormal;
 use App\Http\Controllers\Controller;
 use App\Kriteria;
 use App\Unweight;
@@ -48,7 +49,7 @@ class xyKriteriaController extends Controller
         $index1 = 0;
         $index2 = 0;
 
-        // menambil data dari perulangan input form sebelumnya
+        // mengambil data dari perulangan input form sebelumnya
         $count_id = [];
         for ($i = count($kriteria) - 1; $i > 0; $i--) {
             array_push($count_id, $i);
@@ -257,6 +258,7 @@ class xyKriteriaController extends Controller
 
         // normalisasi limit - 9
         $normalisasi_limit = [];
+        $keterkaitan_fail = 0;
         $index1 = 0;
         $index2 = 0;
         $index3 = 0;
@@ -289,6 +291,7 @@ class xyKriteriaController extends Controller
 
         // dd($a);
 
+        // cek keterkaitan mempengaruhi nilai bobot normal
         $keterkaitan = [];
         for ($i = 1; $i <= count($a); $i++) {
             $counter = 0;
@@ -312,10 +315,20 @@ class xyKriteriaController extends Controller
             }
         }
 
-        // dd($keterkaitan);
+        for ($i=1; $i <= count($keterkaitan); $i++) {  // menghitung jumlah keterkaitan fail
+            if ($keterkaitan[$i] == "fail") {
+                $keterkaitan_fail++;
+            }
+        }
 
-        for ($i = 1; $i <= count($keterkaitan); $i++) {
-                $bobot_normal[] = floatval($bobot_raw[$i - 1]) / $total_bobot_raw;
+        if ($keterkaitan_fail === count($kriteria)) { // jika jumlah kriteria yg fail sama dengan jumlah kriteria keseluruhan,
+            for ($i = 1; $i <= count($keterkaitan); $i++) {
+                $bobot_normal[] = $bobot_parsial[$i - 1]; // maka bobot normal diisi dengan bobot parsial
+            }
+        } else {
+            for ($i = 1; $i <= count($keterkaitan); $i++) {
+                $bobot_normal[] = floatval($bobot_raw[$i - 1]) / $total_bobot_raw; // jika tidak, maka diisi dengan perhitungan bobot normal
+            }
         }
 
         $total = array_sum($bobot_normal);
@@ -339,11 +352,14 @@ class xyKriteriaController extends Controller
 
         $total_bobot_ideal = floatval(array_sum($bobot_ideal));
 
+        // dd($bobot_parsial, $bobot_normal, $total_bobot_normal);
+
         // cek dengan kondisi mau diapakan
 
         if ($cr < 0.1) {
             return view('pages.penguji.kriteria-confirm', [
                 'cr' => 'konsisten',
+                'kriteria' => $kriteria,
                 'loop' => $loop,
                 'jurusan_id' => $jurusan_id,
                 'id_x' => $id_x,
@@ -362,6 +378,7 @@ class xyKriteriaController extends Controller
         } else {
             return view('pages.penguji.kriteria-confirm', [
                 'cr' => '!konsisten',
+                'kriteria' => $kriteria,
                 'loop' => $loop,
                 'jurusan_id' => $jurusan_id,
                 'id_x' => $id_x,
@@ -394,11 +411,16 @@ class xyKriteriaController extends Controller
         $id_penguji = Auth::user()->id;
 
         $cek_data_xykriteria = xyKriteria::where('user_id', $id_penguji)->first();
+        $cek_bobot_normal = BobotNormal::where('user_id', $id_penguji)->first();
 
         // dd($cek_data);
 
         if (isset($cek_data_xykriteria)) {
             xyKriteria::select('user_id', $id_penguji)->where('jurusan_id', request('jurusan_id'))->delete();
+        }
+
+        if (isset($cek_bobot_normal)) {
+            BobotNormal::select('user_id', $id_penguji)->where('jurusan_id', request('jurusan_id'))->delete();
         }
 
         for ($i = 0; $i < request('loop'); $i++) {
@@ -408,6 +430,15 @@ class xyKriteriaController extends Controller
                 'nilai' => request('kepentingan_' . $i),
                 'kriteria_x' => request('id_x_' . $i),
                 'kriteria_y' => request('id_y_' . $i),
+                'jurusan_id' => request('jurusan_id')
+            ]);
+        }
+
+        for ($i = 0; $i < request('loop'); $i++) {
+            BobotNormal::create([
+                'bobot' => request('bobot_normal_' . $i),
+                'user_id' => $id_penguji,
+                'kriteria_id' => request('kriteria_id_' . $i),
                 'jurusan_id' => request('jurusan_id')
             ]);
         }

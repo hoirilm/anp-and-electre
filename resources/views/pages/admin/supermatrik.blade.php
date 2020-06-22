@@ -1,29 +1,35 @@
-@extends('layouts.penguji')
+@extends('layouts.admin')
 
-@section('title', 'Menu Kriteria')
+@section('title', 'Menu Supermatrik')
 
 @section('content')
 
 <div class="container-fluid">
 
-{{-- {{dd($pilih_jurusan)}} --}}
-    <div class="col-xl-3 col-md-6 mb-4 px-0">
+    {{-- {{dd($pilih_jurusan)}} --}}
+    <div class="col-md-6 col-12 mb-4 px-0">
         <div class="card border-left-primary shadow h-100 py-2">
             <div class="card-body">
                 <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
-                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Pilih Jurusan: </div>
-                        <form action="/examiner/kriteria/recent" method="POST">
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Pilih Penguji: </div>
+                        <form action="/admin/kriteria/supermatrik" method="POST">
                             @csrf
-                            @method('put')
+                            {{-- @method('put') --}}
                             <div class="dropdown row px-2">
-                                <select class="form-control col" name="jurusan">
-                                    <option>Pilih Jurusan</option>
-                                    @foreach ($jurusan as $item)
-                                    <option value="{{ $item['id'] }}">{{ $item['jurusan'] }}</option>
+                                <select class="form-control col-4 mx-2" name="penguji">
+                                    <option>Pilih penguji</option>
+                                    @foreach ($penguji as $item)
+                                    <option value="{{$item->id}}">{{$item->name}}</option>
                                     @endforeach
                                 </select>
-                                <button type="submit" class="btn btn-primary btn-sm mx-2">Lihat</button>
+                                <select class="form-control col-4 mx-2" name="jurusan">
+                                    <option>Pilih jurusan</option>
+                                    @foreach ($jurusan as $item)
+                                    <option value="{{$item->id}}">{{$item->jurusan}}</option>
+                                    @endforeach
+                                </select>
+                                <button type="submit" class="btn btn-primary btn-sm mx-2 col-2">Lihat</button>
                             </div>
                         </form>
                     </div>
@@ -33,9 +39,9 @@
     </div>
 
 
-    @if (!isset($gabungan))
+    @if (!isset($sudah_pilih))
     <div class="alert alert-primary col-3">
-        Pilih jurusan terlebih dahulu
+        Pilih penguji dan jurusan terlebih dahulu
     </div>
     @else
 
@@ -49,349 +55,7 @@
         @endphp
 
         @if ($keterkaitan_fail == count($kriteria)) {{-- jika semua kriteria tidak berkaitan --}}
-            <div class="card shadow mb-4">
-                <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">Detail nilai dari jurusan {{ $pilih_jurusan->jurusan }}</h6>
-                </div>
-                <div class="card-body">
-                    <div class="accordion" id="accordionExample">
-
-                        {{-- detail proses sebelumnya --}}
-                        <div class="card">
-                            <div class="card-header" id="headingOne">
-                                <h2 class="mb-0">
-                                    <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne"
-                                        aria-expanded="true" aria-controls="collapseOne">
-                                        Proses Sebelumnya
-                                    </button>
-                                </h2>
-                            </div>
-
-                            <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
-                                @if (count($input_terakhir) == 0)
-                                    <div class="card-body">
-                                        <p class="alert alert-warning m-0">Tidak ada input sebelumnya</p>
-                                    </div>
-                                @else
-                                <div class="card-body">
-                                    <div class="table-responsive">
-                                        <table class="table table-bordered">
-                                            <thead class="thead-light">
-                                                <th>Perbandingan Kriteria</th>
-                                                <th>Tingkat Kepentingan</th>
-                                            </thead>
-                                            <tbody>
-                                                @foreach ($input_terakhir as $item)
-                                                    <tr>
-                                                        <td>{{ $item->prioritas }}</td>
-                                                        <td>{{ number_format($item->nilai,2) }}</td>
-                                                    </tr>
-                                                @endforeach
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                                @endif
-                            </div>
-                        </div>
-
-                        {{-- detail keterkaitan kriteria --}}
-                        <div class="card">
-                            <div class="card-header" id="headingTwo">
-                                <h2 class="mb-0">
-                                    <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo"
-                                        aria-expanded="false" aria-controls="collapseTwo">
-                                        Keterkaitan Kriteria
-                                    </button>
-                                </h2>
-                            </div>
-                            <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
-                                @if ($cek_update_kriteria_di_keterkaitan === 'gagal' or count($keterkaitan_kriteria) < 1)
-                                <div class="card-body">
-                                <p class="alert alert-warning m-0">Keterkaitan kriteria belum diisi oleh admin</p>
-                                </div>
-                                @else
-                                <div class="card-body">
-                                    <div class="table-responsive">
-                                        <table class="table table-bordered">
-                                            <thead class="thead-light">
-                                                <th>Kriteria</th>
-                                                <th>Status</th>
-                                                <th>Kriteria</th>
-                                            </thead>
-                                            <tbody>
-                                                @foreach ($keterkaitan_kriteria as $item)
-                                                <tr>
-                                                    <td>{{ $item->kriteria_x }}</td>
-                                                    <td>
-                                                        @if($item->terkait === 0)
-                                                            <span class="badge badge-danger">Tidak terkait</span>
-                                                        @else
-                                                            <span class="badge badge-success">Terkait</span>
-                                                        @endif
-                                                    </td>
-                                                    <td>{{ $item->kriteria_y }}</td>
-                                                </tr>
-                                                @endforeach
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                                @endif
-                            </div>
-                        </div>
-
-                        {{-- detail nilai perbandingan --}}
-                        <div class="card">
-                            <div class="card-header" id="headingThree">
-                                <h2 class="mb-0">
-                                    <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseThree"
-                                        aria-expanded="false" aria-controls="collapseThree">
-                                        Nilai Perbandingan
-                                    </button>
-                                </h2>
-                            </div>
-                            <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
-                                <div class="card-body">
-                                    @if ($cek_update_kriteria_di_xykriteria === 'gagal' or count($input_terakhir) < 1)
-                                        <p class="alert alert-warning m-0">Kriteria baru ditambahkan oleh admin, segera lakukan penilaian ulang.</p>
-                                    @else
-                                    <div class="table-responsive">
-                                        <table class="table table-bordered">
-                                            <tbody class="text-center">
-                                                <tr>
-                                                    <th></th>
-                                                    @foreach ($kriteria as $mapel)
-                                                        <th class="table-secondary">{{ $mapel->kriteria }}</th>
-                                                    @endforeach
-                                                </tr>
-
-                                                @php
-                                                $nilai1 = 1.0;
-                                                $index1 = 0;
-                                                $index2 = 0;
-                                                @endphp
-
-                                                @foreach ($kriteria as $mapel)
-                                                    <tr>
-                                                        <th class="table-secondary">{{ $mapel->kriteria }}</th>
-                                                        @for ($i = 1; $i <= count($kriteria); $i++)
-                                                            <td>
-                                                                @if ($loop->iteration === $i)
-                                                                {{ $total_perbandingan[$i][] = floatval($nilai1) }}
-                                                                @elseif ($loop->iteration > $i)
-                                                                {{ $total_perbandingan[$i][] = floatval(1/$input_terakhir[$index1]['nilai']) }}
-                                                                @php $index1++; @endphp
-                                                                @elseif ($loop->iteration < $i && $i)
-                                                                {{ $total_perbandingan[$i][] = floatval($input_terakhir[$index2]['nilai']) }}
-                                                                @php $index2++; @endphp
-                                                                @endif
-                                                            </td>
-                                                        @endfor
-                                                    </tr>
-                                                @endforeach
-                                                <tr>
-                                                    <th class="table-success">
-                                                        Total
-                                                    </th>
-                                                    @for ($i = 1; $i <= count($total_perbandingan); $i++)
-                                                        <td class="table-success"> {{ floatval(array_sum($total_perbandingan[$i])) }}</td>
-                                                    @endfor
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-
-                                    @endif
-                                </div>
-                            </div>
-                        </div>
-
-                        {{-- detail normalisasi --}}
-                        <div class="card">
-                            <div class="card-header" id="headingFour">
-                                <h2 class="mb-0">
-                                    <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseFour"
-                                        aria-expanded="false" aria-controls="collapseFour">
-                                        Normalisasi
-                                    </button>
-                                </h2>
-                            </div>
-                            <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordionExample">
-                                <div class="card-body">
-                                    @if (!isset($total_perbandingan) or count($total_perbandingan) < 1)
-                                        <p class="alert alert-warning m-0">Tidak ada nilai yang diinputkan.</p>
-                                    @else
-                                    <div class="table-responsive">
-                                        <table class="table table-bordered">
-                                            <tbody>
-                                                <tr>
-                                                    <th></th>
-                                                    @foreach ($kriteria as $mapel)
-                                                        <th class="table-secondary">{{ $mapel->kriteria }}</th>
-                                                    @endforeach
-                                                </tr>
-
-                                                @foreach ($kriteria as $mapel)
-                                                    <tr>
-                                                        <th class="table-secondary">{{ $mapel->kriteria }}</th>
-                                                        @for ($j = 1; $j <= count($total_perbandingan); $j++)
-                                                            <td>
-                                                                {{ $total_normalisasi[$j][] = floatval($total_perbandingan[$j][$loop->iteration - 1]/array_sum($total_perbandingan[$j])) }}
-                                                            </td>
-                                                        @endfor
-                                                    </tr>
-                                                @endforeach
-
-                                                <tr>
-                                                    <th class="table-success"> Total </th>
-                                                    @for ($i = 1; $i <= count($total_normalisasi); $i++)
-                                                        <td class="table-success">
-                                                            {{ floatval(array_sum($total_normalisasi[$i])) }}
-                                                        </td>
-                                                    @endfor
-                                                </tr>
-                                            </tbody>
-                                        </table>
-
-                                        <table class="table table-bordered">
-                                            <tbody>
-                                                <tr>
-                                                    @php
-                                                        for ($i=0; $i < count($total_normalisasi); $i++) {
-                                                            for ($j=1; $j <= count($total_normalisasi); $j++) {
-                                                                $tampung_bobot_parsial[$i][] = $total_normalisasi[$j][$i];
-                                                            }
-                                                        }
-                                                    @endphp
-
-                                                    <th class="table-secondary" style="width: 20%"> Bobot Parsial </th>
-                                                    @for ($i = 0; $i < count($total_normalisasi); $i++)
-                                                        <td>
-                                                            {{-- {{ $total_eigen[] = number_format(pow(array_product($total_normalisasi[$i]), 1/count($total_normalisasi)),4)  }} --}}
-                                                            {{ $bobot_parsial[] = floatval(array_sum($tampung_bobot_parsial[$i]) / count($kriteria)) }}
-                                                        </td>
-                                                    @endfor
-                                                    <td class="table-success"> Jumlah:
-                                                        {{ floatval(array_sum($bobot_parsial)) }}
-                                                    </td>
-                                                </tr>
-
-                                                <tr>
-                                                    @php
-                                                        for ($i=0; $i < count($bobot_parsial); $i++) {
-                                                            for ($j=1; $j <=count($total_perbandingan); $j++) {
-                                                                $tampung_eigen_verktor[$i][] = $total_perbandingan[$j][$i] * $bobot_parsial[$j-1];
-                                                            }
-                                                        }
-                                                    @endphp
-
-                                                    <th class="table-secondary">Eigen Vektor</th>
-                                                    @for ($i=0; $i < count($tampung_eigen_verktor); $i++)
-                                                        <td> {{ $eigen_vektor[] = floatval(array_sum($tampung_eigen_verktor[$i])) }} </td>
-                                                    @endfor
-                                                    <td class="table-success"> Jumlah:
-                                                        {{ floatval(array_sum($eigen_vektor)) }}
-                                                    </td>
-                                                </tr>
-
-                                                <tr>
-                                                    <th class="table-secondary">Ternormalisasi Terbobot</th>
-                                                    @for ($i = 0; $i < count($kriteria); $i++)
-                                                        <td> {{ $ternormalisasi_terbobot[] = floatval($eigen_vektor[$i] / $bobot_parsial[$i])}}
-                                                        </td>
-                                                    @endfor
-                                                    <td class="table-success"> Jumlah:
-                                                        {{ floatval(array_sum($ternormalisasi_terbobot)) }}
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                    @endif
-                                </div>
-                            </div>
-                        </div>
-
-                        {{-- Eigen Max --}}
-                        <div class="card">
-                            <div class="card-header" id="headingFive">
-                                <h2 class="mb-0">
-                                    <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseFive"
-                                        aria-expanded="false" aria-controls="collapseFive">
-                                        Eigen Max
-                                    </button>
-                                </h2>
-                            </div>
-                            <div id="collapseFive" class="collapse" aria-labelledby="headingFive" data-parent="#accordionExample">
-                                <div class="card-body">
-                                    @if (!isset($ternormalisasi_terbobot) or count($ternormalisasi_terbobot) < 1)
-                                        <p class="alert alert-warning m-0">Tidak ada nilai bobot ternormalisasi.</p>
-                                    @else
-                                    <div class="table-responsive">
-                                        <table class="table table-bordered">
-                                            <tbody>
-
-                                                <tr>
-                                                    <th class="table-secondary" style="width: 20%">Eigen Max</th>
-                                                    <td>
-                                                        {{ $eigen_maximum = floatval(array_sum($ternormalisasi_terbobot) / count($kriteria)) }}
-                                                    </td>
-                                                </tr>
-
-                                                <tr>
-                                                    <th class="table-secondary" style="width: 20%">CI</th>
-                                                    <td>
-                                                        {{ $ci = floatval(($eigen_maximum - count($kriteria)) / (count($kriteria) - 1)) }}
-                                                    </td>
-                                                </tr>
-
-                                                <tr>
-                                                    <th class="table-secondary" style="width: 20%">CI < 0.1</th>
-                                                    @php
-                                                        if (count($kriteria) == 1 or count($kriteria) == 2) {
-                                                            $ri = 0;
-                                                        } elseif (count($kriteria) == 3) {
-                                                            $ri = 0.58;
-                                                        } elseif (count($kriteria) == 4) {
-                                                            $ri = 0.9;
-                                                        } elseif (count($kriteria) == 5 or count($kriteria) == 6) {
-                                                            $ri = 1.12;
-                                                        } elseif (count($kriteria) == 7) {
-                                                            $ri = 1.34;
-                                                        } elseif (count($kriteria) == 8) {
-                                                            $ri = 1.41;
-                                                        } elseif (count($kriteria) == 9) {
-                                                            $ri = 1.45;
-                                                        } elseif (count($kriteria) == 10) {
-                                                            $ri = 1.49;
-                                                        } else {
-                                                            $ri = null;
-                                                        }
-                                                    @endphp
-
-                                                    <td>
-                                                        {{ $cr = floatval($ci/$ri) }}
-
-                                                        @if ($cr < 0.1)
-                                                            <span class="text-success"> - Konsisten </span>
-                                                        @else
-                                                            <span class="text-danger"> - Tidak Konsisten </span>
-                                                        @endif
-
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                    @endif
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
+            <p class="alert alert-warning m-0">Tidak ada keterkaitan kriteria.</p>
         @else
             <div class="card shadow mb-4">
                 <div class="card-header py-3">
@@ -401,7 +65,7 @@
                     <div class="accordion" id="accordionExample">
 
                         {{-- detail proses sebelumnya --}}
-                        <div class="card">
+                        <div class="card" style="display: none">
                             <div class="card-header" id="headingOne">
                                 <h2 class="mb-0">
                                     <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne"
@@ -440,7 +104,7 @@
                         </div>
 
                         {{-- detail keterkaitan kriteria --}}
-                        <div class="card">
+                        <div class="card" style="display: none">
                             <div class="card-header" id="headingTwo">
                                 <h2 class="mb-0">
                                     <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo"
@@ -486,7 +150,7 @@
                         </div>
 
                         {{-- detail nilai perbandingan --}}
-                        <div class="card">
+                        <div class="card" style="display: none">
                             <div class="card-header" id="headingThree">
                                 <h2 class="mb-0">
                                     <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseThree"
@@ -552,7 +216,7 @@
                         </div>
 
                         {{-- detail normalisasi --}}
-                        <div class="card">
+                        <div class="card" style="display: none">
                             <div class="card-header" id="headingFour">
                                 <h2 class="mb-0">
                                     <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseFour"
@@ -732,7 +396,6 @@
                                 </div>
                             </div>
                         </div>
-
 
                         {{-- Unweight --}}
                         <div class="card">
@@ -1062,7 +725,6 @@
                 </div>
             </div>
         @endif
-
     @endif
 </div>
 
