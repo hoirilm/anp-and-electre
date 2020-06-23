@@ -54,7 +54,7 @@ Route::middleware('is_admin')->group(function () {
     Route::post('/admin/peserta/nilai', 'Admin\NilaiController@store');
 
     Route::get('/admin/ranking/', 'Admin\RankingController@index')->name('admin.ranking');
-    // Route::put('/admin/peserta/nilai/{id}', 'Admin\NilaiController@update');
+    Route::post('/admin/ranking/', 'Admin\RankingController@ranking');
 
     Route::delete('/admin/peserta/{id}', 'Admin\PesertaController@destroy');
 

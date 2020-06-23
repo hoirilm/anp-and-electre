@@ -62,7 +62,8 @@
 
             <div id="panduan" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
                 <div class="card-body">
-                    <img src="https://media.suara.com/pictures/970x544/2019/12/26/49091-gambar.jpg" alt="">
+
+                    <img src="{{ url("template/css/sb-admin-2.min.css") }}" alt="">
                 </div>
             </div>
         </div>

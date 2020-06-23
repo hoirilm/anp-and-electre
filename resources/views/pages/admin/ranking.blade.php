@@ -15,42 +15,40 @@
     </div>
     @endif
 
-
+    {{-- {{dd($penguji, $tahun, $jurusan)}} --}}
 
         {{-- penguji --}}
-        <div class="col-xl-12 col-xl-12 col-md-12 col-sm-12 mb-4 px-0">
+        <div class="col-md-12 col-sm-12 mb-4 px-0">
             <div class="card border-left-primary shadow h-100 py-2">
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1 mx-4">Pilih Penguji:
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1 mx-3">Pilih Penguji:
                             </div>
-                            <form action="/admin/peserta/" method="POST">
+                            <form action="/admin/ranking" method="POST">
                                 @csrf
                                 {{-- @method('put') --}}
                                 <div class="dropdown row px-2">
-                                    <select class="form-control col-sm-12 col-md-3 mx-4" name="tahun">
+                                    <select class="form-control col mx-3" name="penguji">
                                         <option>Pilih penguji</option>
-                                        {{-- @foreach ($tahun as $item)
-                                    <option value="{{ $item['tahun'] }}">{{ $item['tahun'] }}</option>
-                                        @endforeach --}}
-                                        <option value="2020">2020</option>
+                                        @foreach ($penguji as $item)
+                                            <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                        @endforeach
                                     </select>
-                                    <select class="form-control col-sm-12 col-md-3 mx-4" name="tahun">
+                                    <select class="form-control col mx-3" name="jurusan">
                                         <option>Pilih jurusan</option>
-                                        {{-- @foreach ($tahun as $item)
-                                    <option value="{{ $item['tahun'] }}">{{ $item['tahun'] }}</option>
-                                        @endforeach --}}
-                                        <option value="2020">2020</option>
+
+                                        @foreach ($jurusan as $item)
+                                            <option value="{{ $item->id }}">{{ $item->jurusan }}</option>
+                                        @endforeach
                                     </select>
-                                    <select class="form-control col-sm-12 col-md-3 mx-4" name="tahun">
+                                    <select class="form-control col mx-3" name="tahun">
                                         <option>Pilih tahun</option>
-                                        {{-- @foreach ($tahun as $item)
-                                    <option value="{{ $item['tahun'] }}">{{ $item['tahun'] }}</option>
-                                        @endforeach --}}
-                                        <option value="2020">2020</option>
+                                        @foreach ($tahun as $item)
+                                            <option value="{{ $item->tahun }}">{{ $item->tahun }}</option>
+                                        @endforeach
                                     </select>
-                                    <button type="submit" class="btn btn-primary btn-sm mx-2 col-sm-12 col-md-1">Lihat</button>
+                                    <button type="submit" class="btn btn-primary btn-sm mx-3 col">Lihat</button>
                                 </div>
                             </form>
                         </div>

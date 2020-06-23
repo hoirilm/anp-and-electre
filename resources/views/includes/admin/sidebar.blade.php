@@ -57,15 +57,9 @@
 
     <li class="nav-item {{ (request()->is('admin/ranking*')) ? 'active' : '' }}">
         <a class="nav-link" href="{{ route('admin.ranking') }}">
-            <i class="fas fa-fw fa-users"></i>
+            <i class="fas fa-graduation-cap"></i>
             <span>Ranking</span></a>
     </li>
-
-    {{-- <li class="nav-item {{ (request()->is('admin/keputusan')) ? 'active' : '' }}">
-        <a class="nav-link" href="{{ route('admin.keputusan') }}">
-            <i class="fas fa-fw fa-check"></i>
-            <span>Keputusan</span></a>
-    </li> --}}
 
     <!-- Divider -->
     <hr class="sidebar-divider d-none d-md-block">
