@@ -19,6 +19,33 @@
         Tidak ada keterkaitan kriteria
     </div>
     @else
+
+
+    <div class="accordion shadow mb-4" id="accordionExample">
+        <div class="card">
+            <div class="card-header" id="headingOne">
+                <h2 class="mb-0">
+                    <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse"
+                        data-target="#panduan" aria-expanded="true" aria-controls="panduan">
+                        Panduan keterkaitan kriteria
+                    </button>
+                </h2>
+            </div>
+
+            <div id="panduan" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
+                <div class="card-body">
+                    <p>Ada 5 kriteria yaitu IND, ING, MAT, BIO, KIM, FIS</p>
+                    <ul>
+                        <li>Semua mempunyai keterkaitan maka penggambarannya: </li>
+                        <img style="width: 50%" src="{{ url("img/keterkaitan.png") }}" alt="">
+                        <li>Semua tidak mempunyai keterkaitan maka penggambarannya: </li>
+                        <img style="width: 50%" src="{{ url("img/tidak_terkait.png") }}" alt="">
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="card shadow mb-4 col">
         <div class="card-header py-3">
             <h6 class="m-0 font-weight-bold text-primary">Keterkaitan-kriteria tahun

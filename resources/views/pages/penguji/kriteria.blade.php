@@ -28,7 +28,7 @@
                                 <select class="form-control col" name="jurusan">
                                     <option>Pilih Jurusan</option>
                                     @foreach ($jurusan as $item)
-                                        <option value="{{ $item['id'] }}">{{ $item['jurusan'] }}</option>
+                                    <option value="{{ $item['id'] }}">{{ $item['jurusan'] }}</option>
                                     @endforeach
                                 </select>
                                 <button type="submit" class="btn btn-primary btn-sm mx-2">Lihat</button>
@@ -44,9 +44,9 @@
 
 
     @if (!isset($pilih_jurusan))
-        <div class="alert alert-primary col-3">
-            Pilih jurusan terlebih dahulu.
-        </div>
+    <div class="alert alert-primary col-3">
+        Pilih jurusan terlebih dahulu.
+    </div>
     @else
 
     <div class="accordion shadow mb-4" id="accordionExample">
@@ -62,8 +62,21 @@
 
             <div id="panduan" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
                 <div class="card-body">
-
-                    <img src="{{ url("template/css/sb-admin-2.min.css") }}" alt="">
+                    <p>Isilah perbandingan dibawah ini seperti contoh :</p>
+                    <ul>
+                        <li>Nilai kepentingan antara IND DAN ING </li>
+                        <img style="width: 100%" src="{{ url("img/kriteria.png") }}" alt="">
+                        <li>Lalu pilihlah nilai yang sesuai</li>
+                        <img style="width: 30%" src="{{ url("img/opsi.png") }}" alt="">
+                        <li>Jika kriteria IND Lebih Penting dari ING maka nilai yang akan diberi ialah :</li>
+                        <ul>
+                            <li>IND (5) Lebih Penting dari ING</li>
+                        </ul>
+                        <li>Atau jika Jika kriteria ING Lebih Penting dari IND maka nilai yang akan diberi ialah :</li>
+                        <ul>
+                            <li>IND (0,2) Lebih Penting dari ING</li>
+                        </ul>
+                    </ul>
                 </div>
             </div>
         </div>
@@ -79,48 +92,49 @@
         <div class="card-body">
             <form action="/examiner/kriteria/create" method="POST">
                 @csrf
-                @for ($i = 0; $i < count($gabungan); $i++)
-                <input type="hidden" name="loop" value="{{$i+1}}">
-                <input type="hidden" name="jurusan_id" value="{{ $pilih_jurusan->id }}">
-                <div class="row m-3">
-                    <div class="col text-right">
-                        <p>
-                            <input type="hidden" value="{{ $gabungan[$i]['satu']['id'] }}" name="id_x_{{$i}}">
-                            <input type="hidden" value="{{ $gabungan[$i]['satu']['nama'] }}" name="kriteria_x_{{$i}}">
-                            {{ $gabungan[$i]['satu']['nama'] }}
-                        </p>
+                @for ($i = 0; $i < count($gabungan); $i++) <input type="hidden" name="loop" value="{{$i+1}}">
+                    <input type="hidden" name="jurusan_id" value="{{ $pilih_jurusan->id }}">
+                    <div class="row m-3">
+                        <div class="col text-right">
+                            <p>
+                                <input type="hidden" value="{{ $gabungan[$i]['satu']['id'] }}" name="id_x_{{$i}}">
+                                <input type="hidden" value="{{ $gabungan[$i]['satu']['nama'] }}"
+                                    name="kriteria_x_{{$i}}">
+                                {{ $gabungan[$i]['satu']['nama'] }}
+                            </p>
+                        </div>
+                        <div class="col">
+                            <select name="kepentingan_{{$i}}" class="form-control">
+                                <option value="1">1 - Sama pentingnya </option>
+                                {{-- <option value="0.5">0.5</option> --}}
+                                <option value="2">2 - Nilai tengah</option>
+                                <option value="0.33">0.33 - Kriteria kanan sedikit lebih penting</option>
+                                <option value="3">3 - Sedikit lebih penting</option>
+                                {{-- <option value="0.25">0.25</option> --}}
+                                <option value="4">4 - Nilai tengah</option>
+                                <option value="0.2">0.2 - Kriteria kanan lebih penting</option>
+                                <option value="5">5 - Lebih penting</option>
+                                {{-- <option value="0.16">0.16</option> --}}
+                                <option value="6">6 - Nilai tengah</option>
+                                <option value="0.14">0.14 - Kriteria kanan sangat penting</option>
+                                <option value="7">7 - Sangat penting</option>
+                                {{-- <option value="0.12">0.12</option> --}}
+                                <option value="8">8 - Nilai tengah</option>
+                                <option value="0.11">0.11 - Kriteria kanan mutlak lebih penting</option>
+                                <option value="9">9 - Mutlak lebih penting</option>
+                            </select>
+                        </div>
+                        <div class="col">
+                            <p>
+                                <input type="hidden" value="{{ $gabungan[$i]['dua']['id'] }}" name="id_y_{{$i}}">
+                                <input type="hidden" value="{{ $gabungan[$i]['dua']['nama'] }}"
+                                    name="kriteria_y_{{$i}}">
+                                {{ $gabungan[$i]['dua']['nama'] }}
+                            </p>
+                        </div>
                     </div>
-                    <div class="col">
-                        <select name="kepentingan_{{$i}}" class="form-control">
-                            <option value="1">1 - Sama pentingnya </option>
-                            {{-- <option value="0.5">0.5</option> --}}
-                            <option value="2">2 - Nilai tengah</option>
-                            <option value="0.33">0.33 - Kriteria kanan sedikit lebih penting</option>
-                            <option value="3">3 - Sedikit lebih penting</option>
-                            {{-- <option value="0.25">0.25</option> --}}
-                            <option value="4">4 - Nilai tengah</option>
-                            <option value="0.2">0.2 - Kriteria kanan lebih penting</option>
-                            <option value="5">5 - Lebih penting</option>
-                            {{-- <option value="0.16">0.16</option> --}}
-                            <option value="6">6 - Nilai tengah</option>
-                            <option value="0.14">0.14 - Kriteria kanan sangat penting</option>
-                            <option value="7">7 - Sangat penting</option>
-                            {{-- <option value="0.12">0.12</option> --}}
-                            <option value="8">8 - Nilai tengah</option>
-                            <option value="0.11">0.11 - Kriteria kanan mutlak lebih penting</option>
-                            <option value="9">9 - Mutlak lebih penting</option>
-                        </select>
-                    </div>
-                    <div class="col">
-                        <p>
-                            <input type="hidden" value="{{ $gabungan[$i]['dua']['id'] }}" name="id_y_{{$i}}">
-                            <input type="hidden" value="{{ $gabungan[$i]['dua']['nama'] }}" name="kriteria_y_{{$i}}">
-                            {{ $gabungan[$i]['dua']['nama'] }}
-                        </p>
-                    </div>
-                </div>
-                @endfor
-                <button type="submit" class="btn btn-primary" style="float:right">Simpan</button>
+                    @endfor
+                    <button type="submit" class="btn btn-primary" style="float:right">Simpan</button>
             </form>
         </div>
     </div>
