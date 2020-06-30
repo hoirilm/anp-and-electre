@@ -55,6 +55,7 @@ Route::middleware('is_admin')->group(function () {
 
     Route::get('/admin/ranking/', 'Admin\RankingController@index')->name('admin.ranking');
     Route::post('/admin/ranking/', 'Admin\RankingController@ranking');
+    // Route::get('/admin/ranking/result', 'Admin\RankingController@result');
 
     Route::delete('/admin/peserta/{id}', 'Admin\PesertaController@destroy');
 

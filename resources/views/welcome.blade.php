@@ -79,12 +79,11 @@
                 </div>
             @endif
 
-            <div class="content">
-                <div class="title m-b-md">
-                    Laravel
-                </div>
+            <div class="content p-5">
 
-                <div class="links">
+                <h1 class="display-5">MULTI CRITERIA DECISION MAKING UNTUK MENENTUKAN MAHASISWA JALUR SNMPTN MENGGUNAKAN METODE ANALYTIC NETWORK PROCESS (ANP)  DAN ELIMINATION AND CHOICE EXPRESSOMG THE REALITY (ELECTRE)</h1>
+
+                {{-- <div class="links">
                     <a href="https://laravel.com/docs">Docs</a>
                     <a href="https://laracasts.com">Laracasts</a>
                     <a href="https://laravel-news.com">News</a>
@@ -93,7 +92,7 @@
                     <a href="https://forge.laravel.com">Forge</a>
                     <a href="https://vapor.laravel.com">Vapor</a>
                     <a href="https://github.com/laravel/laravel">GitHub</a>
-                </div>
+                </div> --}}
             </div>
         </div>
     </body>

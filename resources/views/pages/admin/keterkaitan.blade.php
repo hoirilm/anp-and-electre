@@ -34,12 +34,14 @@
 
             <div id="panduan" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
                 <div class="card-body">
-                    <p>Ada 5 kriteria yaitu IND, ING, MAT, BIO, KIM, FIS</p>
+                    <p>Ada 5 kriteria yaitu Bahasa Inonesia, Bahasa Inggris, Matematika, Biologi, Kimia, Fisika</p>
                     <ul>
                         <li>Semua mempunyai keterkaitan maka penggambarannya: </li>
                         <img style="width: 50%" src="{{ url("img/keterkaitan.png") }}" alt="">
                         <li>Semua tidak mempunyai keterkaitan maka penggambarannya: </li>
                         <img style="width: 50%" src="{{ url("img/tidak_terkait.png") }}" alt="">
+                        <li>Untuk penelitian yang saya lakukan mempunyai keterkaitan sebagai berikut: </li>
+                        <img style="width: 50%" src="{{ url("img/keterkaitan3.png") }}" alt="">
                     </ul>
                 </div>
             </div>

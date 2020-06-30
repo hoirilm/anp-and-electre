@@ -68,13 +68,13 @@
                         <img style="width: 100%" src="{{ url("img/kriteria.png") }}" alt="">
                         <li>Lalu pilihlah nilai yang sesuai</li>
                         <img style="width: 30%" src="{{ url("img/opsi.png") }}" alt="">
-                        <li>Jika kriteria IND Lebih Penting dari ING maka nilai yang akan diberi ialah :</li>
+                        <li>Jika kriteria Bahasa Indonesia Lebih Penting dari Bahasa Inggris maka nilai yang akan diberi ialah :</li>
                         <ul>
-                            <li>IND (5) Lebih Penting dari ING</li>
+                            <li>Bahasa Indonesia (5) Lebih Penting dari Bahasa Inggris</li>
                         </ul>
-                        <li>Atau jika Jika kriteria ING Lebih Penting dari IND maka nilai yang akan diberi ialah :</li>
+                        <li>Atau jika Jika kriteria Bahasa Inggris Lebih Penting dari Bahasa Indonesia maka nilai yang akan diberi ialah :</li>
                         <ul>
-                            <li>IND (0,2) Lebih Penting dari ING</li>
+                            <li>Bahasa Indonesia (0,2) Lebih Penting dari Bahasa Inggris</li>
                         </ul>
                     </ul>
                 </div>
