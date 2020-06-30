@@ -18,7 +18,7 @@ class RankingController extends Controller
     {
         $penguji = User::where('is_admin', 0)->get();
         $jurusan = Jurusan::all();
-        $tahun = DB::select(DB::raw("SELECT DISTINCT YEAR(created_at) AS tahun FROM xy_kriteria"));
+        $tahun = DB::select(DB::raw("SELECT DISTINCT YEAR(created_at) AS tahun FROM peserta"));
         $isSuccess = false;
 
         return view('pages.admin.ranking', [
@@ -36,7 +36,7 @@ class RankingController extends Controller
         // untuk dipanggil dalam dropdwon
         $penguji = User::where('is_admin', 0)->get();
         $jurusan = Jurusan::all();
-        $tahun = DB::select(DB::raw("SELECT DISTINCT YEAR(created_at) AS tahun FROM xy_kriteria"));
+        $tahun = DB::select(DB::raw("SELECT DISTINCT YEAR(created_at) AS tahun FROM peserta"));
         // ==================================
 
         $kriteria = Kriteria::all(); // kriteria untuk menghitung banyaknya kriteria yang ada.
@@ -138,7 +138,6 @@ class RankingController extends Controller
                 }
             }
 
-            // dd($concordance);
 
             // Langkah 4 Menghitung Matrik Concordance dan Discordance
 
@@ -162,6 +161,8 @@ class RankingController extends Controller
                 }
             }
 
+            // dd($discordance_a);
+
             // discordance b
             for ($i = 0; $i < $jumlah_perserta; $i++) {
                 for ($j = 0; $j < $jumlah_perserta; $j++) {
@@ -178,13 +179,19 @@ class RankingController extends Controller
                 }
             }
 
+            // dd($discordance_b);
+
             for ($i = 0; $i < count($discordance_a); $i++) {
                 if ($discordance_a[$i] === null and $discordance_b[$i] === null) {
                     $gabung_discordance[] = null;
+                } elseif ($discordance_a[$i] == null and $discordance_b[$i] == null) {
+                    $gabung_discordance[] = 0;
                 } else {
                     $gabung_discordance[] = $discordance_a[$i] / $discordance_b[$i];
                 }
             }
+
+
 
             // Langkah 5 Menghitung Matriks Dominan Concordance dan Discordance
             $nilai_c = (array_sum($concordance) / ($jumlah_perserta * ($jumlah_perserta - 1)));

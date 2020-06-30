@@ -32,7 +32,7 @@ class xyKriteriaController extends Controller
     public function create()
     {
 
-        // return request()->all();
+        // dd(request()->all());
 
         $loop = request('loop');
         $jurusan_id = request('jurusan_id');
@@ -92,7 +92,7 @@ class xyKriteriaController extends Controller
             $total_perbandingan[] = floatval(array_sum($nilai_perbandingan[$i]));
         }
 
-
+        // dd($total_perbandingan);
 
         // normalisasi - 2
         for ($i = 0; $i < count($kriteria); $i++) {
@@ -101,9 +101,13 @@ class xyKriteriaController extends Controller
             }
         }
 
+        // dd($nilai_normalisasi);
+
         for ($i = 1; $i <= count($nilai_normalisasi); $i++) {
             $total_normalisasi[] = floatval(array_sum($nilai_normalisasi[$i]));
         }
+
+        // dd($total_normalisasi);
 
         // bobot parsial - 2.1
         for ($i = 0; $i < count($nilai_normalisasi); $i++) {
@@ -112,11 +116,17 @@ class xyKriteriaController extends Controller
             }
         }
 
+        // dd($tampung_bobot_parsial);
+
         for ($i = 0; $i < count($nilai_normalisasi); $i++) {
             $bobot_parsial[] = floatval(array_sum($tampung_bobot_parsial[$i]) / count($kriteria));
         }
 
+        // dd($bobot_parsial);
+
         $total_bobot_parsial = floatval(array_sum($bobot_parsial));
+
+        // dd($total_bobot_parsial);
 
         // eigen vektor - 2.2
         for ($i = 0; $i < count($bobot_parsial); $i++) {
@@ -125,11 +135,15 @@ class xyKriteriaController extends Controller
             }
         }
 
+        // dd($tampung_eigen_verktor);
+
         for ($i = 0; $i < count($tampung_eigen_verktor); $i++) {
             $eigen_vektor[] = floatval(array_sum($tampung_eigen_verktor[$i]));
         }
 
         $total_eigen_vektor = floatval(array_sum($eigen_vektor));
+
+        // dd($eigen_vektor, $total_eigen_vektor);
 
         // ternormalisasi terbobot - 2.3
         for ($i = 0; $i < count($kriteria); $i++) {
@@ -138,12 +152,16 @@ class xyKriteriaController extends Controller
 
         $total_normalisasi_terbobot = floatval(array_sum($ternormalisasi_terbobot));
 
+        // dd($total_normalisasi_terbobot);
+
 
         // eigen maximum - 3
         $eigen_maximum = floatval($total_normalisasi_terbobot / count($kriteria));
 
         // menghitung ci - 4
         $ci = floatval(($eigen_maximum - count($kriteria)) / (count($kriteria) - 1));
+
+        // dd($eigen_maximum, $ci);
 
         // menghitung cr - 5
         if (count($kriteria) == 1 or count($kriteria) == 2) {
@@ -176,6 +194,8 @@ class xyKriteriaController extends Controller
                 $unweight[] = floatval($eigen_vektor[$i] * $eigen_vektor[$j]);
             }
         }
+
+        // dd($unweight);
 
         // weight - 7
         $weight = [];
@@ -214,6 +234,8 @@ class xyKriteriaController extends Controller
             $index1++;
         }
 
+        // dd($weight);
+
 
         // limit - 8
         $limit = [];
@@ -250,10 +272,13 @@ class xyKriteriaController extends Controller
             }
         }
 
+        // dd($limit);
+
         for ($i = 1; $i <= count($limit); $i++) {
             $total_limit[] = floatval(array_sum($limit[$i]));
         }
 
+        // dd($total_limit);
 
 
         // normalisasi limit - 9
@@ -269,9 +294,13 @@ class xyKriteriaController extends Controller
             }
         }
 
+        // dd($normalisasi_limit);
+
         for ($i = 1; $i <= count($normalisasi_limit); $i++) {
             $total_normalisasi_limit[] = floatval(array_sum($normalisasi_limit[$i]));
         }
+
+        // dd($total_normalisasi_limit);
 
         // bobot raw - 9.1
         for ($i = 1; $i <= count($kriteria); $i++) {
@@ -280,6 +309,8 @@ class xyKriteriaController extends Controller
 
 
         $total_bobot_raw = floatval(array_sum($bobot_raw));
+
+        // dd($bobot_raw, $total_bobot_raw);
 
         // bobot normal - 9.2
         for ($i = 0; $i < count($keterkaitan_kriteria); $i++) {
@@ -307,6 +338,8 @@ class xyKriteriaController extends Controller
             }
         }
 
+        // dd($keterkaitan);
+
 
         // jika kriteria tertentu tidak terkait dengan kriteria manapun
         for ($i = 1; $i <= count($keterkaitan); $i++) {
@@ -331,7 +364,11 @@ class xyKriteriaController extends Controller
             }
         }
 
+        // dd($bobot_normal);
+
         $total = array_sum($bobot_normal);
+
+        // dd($total);
 
 
         // dd($bobot_parsial, $bobot_normal, $total);
@@ -405,7 +442,7 @@ class xyKriteriaController extends Controller
      */
     public function store()
     {
-        // return request()->all();
+        // dd(request()->all()) ;
 
         // menyimpan nilai xykriteria
         $id_penguji = Auth::user()->id;
@@ -434,9 +471,11 @@ class xyKriteriaController extends Controller
             ]);
         }
 
-        for ($i = 0; $i < request('loop'); $i++) {
+        for ($i = 0; $i < request('jumlah_bobot_normal'); $i++) {
             BobotNormal::create([
                 'bobot' => request('bobot_normal_' . $i),
+                // 'created_at' => now(),
+                // 'updated_at' => now(),
                 'user_id' => $id_penguji,
                 'kriteria_id' => request('kriteria_id_' . $i),
                 'jurusan_id' => request('jurusan_id')

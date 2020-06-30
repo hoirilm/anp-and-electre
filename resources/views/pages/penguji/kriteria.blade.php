@@ -64,7 +64,7 @@
                 <div class="card-body">
                     <p>Isilah perbandingan dibawah ini seperti contoh :</p>
                     <ul>
-                        <li>Nilai kepentingan antara IND DAN ING </li>
+                        <li>Nilai kepentingan antara Bahasa Indonesia dan Bahasa Inggris </li>
                         <img style="width: 100%" src="{{ url("img/kriteria.png") }}" alt="">
                         <li>Lalu pilihlah nilai yang sesuai</li>
                         <img style="width: 30%" src="{{ url("img/opsi.png") }}" alt="">

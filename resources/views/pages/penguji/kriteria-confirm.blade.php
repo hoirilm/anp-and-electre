@@ -34,10 +34,14 @@
                     <input type="hidden" name="kriteria_y_{{$i}}" value="{{$kriteria_y[$i]}}">
                 @endfor
 
+                {{-- {{dd(count($bobot_normal))}} --}}
+
                 @for ($i=0; $i < count($bobot_normal); $i++)
                     <input type="hidden" name="kriteria_id_{{$i}}" value="{{$kriteria[$i]->id}}">
                     <input type="hidden" name="bobot_normal_{{$i}}" value="{{$bobot_normal[$i]}}">
                 @endfor
+
+                <input type="hidden" name="jumlah_bobot_normal" value="{{count($bobot_normal)}}">
 
                 {{-- {{dd($unweight)}} --}}
 
@@ -73,6 +77,8 @@
                     <input type="hidden" name="kriteria_id_{{$i}}" value="{{$kriteria[$i]->id}}">
                     <input type="hidden" name="bobot_normal_{{$i}}" value="{{$bobot_normal[$i]}}">
                 @endfor
+
+                <input type="hidden" name="jumlah_bobot_normal" value="{{count($bobot_normal)}}">
 
 
 
