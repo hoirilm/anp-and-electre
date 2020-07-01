@@ -118,8 +118,12 @@ class KriteriaController extends Controller
         $kriteria_x = xyKriteria::select('kriteria_x')->distinct()->get()->pluck('kriteria_x')->toArray();
         $kriteria_y = xyKriteria::select('kriteria_y')->distinct()->get()->pluck('kriteria_y')->toArray();
 
+        // dd($kriteria_x);
+
         $kriteria_xy_1 = array_merge($kriteria_x_keterkaitan, $kriteria_y_keterkaitan);
         $kriteria_xy_2 = array_merge($kriteria_x, $kriteria_y);
+
+        // dd($kriteria_xy_1);
 
         if (!empty($kriteria_xy_1)) {
             for ($i = 0; $i < count($kriteria_id); $i++) {
@@ -130,12 +134,18 @@ class KriteriaController extends Controller
                 }
             }
 
+            // dd($result1);
+
             if (in_array('gagal', $result1)) {
                 $cek_update_kriteria_di_keterkaitan = 'gagal';
             } else {
                 $cek_update_kriteria_di_keterkaitan = 'sukses';
             }
+
+            // dd($cek_update_kriteria_di_keterkaitan);
         }
+
+        // dd($kriteria_id, $kriteria_xy_2);
 
         if (!empty($kriteria_xy_2)) {
             for ($i = 0; $i < count($kriteria_id); $i++) {
@@ -145,6 +155,8 @@ class KriteriaController extends Controller
                     $result2[] = 'gagal';
                 }
             }
+
+            // dd($result2);
 
             if (in_array('gagal', $result2)) {
                 $cek_update_kriteria_di_xykriteria = 'gagal';

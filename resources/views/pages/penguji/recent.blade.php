@@ -37,8 +37,9 @@
     <div class="alert alert-primary col-3">
         Pilih jurusan terlebih dahulu
     </div>
-    @else
 
+    @else
+        {{-- {{dd($cek_update_kriteria_di_xykriteria ,$input_terakhir)}} --}}
         @php
             $keterkaitan_fail = 0;
             for ($i = 1; $i <= count($keterkaitan); $i++) {
@@ -101,7 +102,7 @@
                                 <h2 class="mb-0">
                                     <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo"
                                         aria-expanded="false" aria-controls="collapseTwo">
-                                        Keterkaitan Kriteria
+                                        Keterkaitan Kriterias
                                     </button>
                                 </h2>
                             </div>
@@ -141,6 +142,8 @@
                             </div>
                         </div>
 
+
+
                         {{-- detail nilai perbandingan --}}
                         <div class="card">
                             <div class="card-header" id="headingThree">
@@ -153,6 +156,7 @@
                             </div>
                             <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
                                 <div class="card-body">
+
                                     @if ($cek_update_kriteria_di_xykriteria === 'gagal' or count($input_terakhir) < 1)
                                         <p class="alert alert-warning m-0">Kriteria baru ditambahkan oleh admin, segera lakukan penilaian ulang.</p>
                                     @else

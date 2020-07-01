@@ -14,8 +14,7 @@
         {{ session('massage') }}
     </div>
     @endif
-    {{-- {{dd(count($peserta) - 1)}} --}}
-    {{-- {{dd($penguji, $tahun, $jurusan)}} --}}
+
         {{-- penguji --}}
         <div class="col-md-12 col-sm-12 mb-4 px-0">
             <div class="card border-left-primary shadow h-100 py-2">
@@ -62,7 +61,7 @@
             Isi data terlebih dahulu
         </div>
     @else
-
+        {{-- {{$jumlah_peserta}} --}}
         <div class="card shadow mb-4 col">
             <div class="card-header py-3">
                 <h6 class="m-0 font-weight-bold text-primary">Daftar Ranking</h6>
@@ -116,15 +115,15 @@
                                         </thead>
                                         {{-- {{dd(count($nilai_peserta))}} --}}
                                         <tbody>
-                                            {{-- @php $no = 0; @endphp --}}
-                                            @for ($i = 0; $i < count($peserta); $i++)
+                                            @php $no = 0; @endphp
+                                            @for ($i = 0; $i < $jumlah_peserta; $i++)
                                             <tr>
-                                                {{-- <td> {{$peserta[$no]->nama_siswa}} </td> --}}
+                                                <td> {{$peserta[$no]->nama_siswa}} </td>
                                                 @for ($j = 0; $j < count($kriteria); $j++)
                                                     <td>  {{$nilai_peserta[$i][$j]->nilai}} </td>
                                                 @endfor
                                             </tr>
-                                            {{-- @php $no++; @endphp --}}
+                                            @php $no++; @endphp
                                             @endfor
                                         </tbody>
                                     </table>
@@ -162,15 +161,15 @@
                                             @endfor
                                         </thead>
                                         <tbody>
-                                            {{-- @php $no = 0; @endphp --}}
+                                            @php $no = 0; @endphp
                                             @for ($i = 0; $i < count($normalisasi_matriks_keputusan); $i++)
                                             <tr>
-                                                {{-- <td> {{$peserta[$no]->nama_siswa}} </td> --}}
+                                                <td> {{$peserta[$no]->nama_siswa}} </td>
                                                 @for ($j = 0; $j < count($kriteria); $j++)
                                                     <td>  {{$normalisasi_matriks_keputusan[$i][$j]}} </td>
                                                 @endfor
                                             </tr>
-                                            {{-- @php $no++; @endphp --}}
+                                            @php $no++; @endphp
                                             @endfor
                                             <tr>
                                                 <td>Rata-rata</td>
@@ -223,15 +222,15 @@
 
                                         </thead>
                                         <tbody>
-                                            {{-- @php $no = 0; @endphp --}}
+                                            @php $no = 0; @endphp
                                             @for ($i = 0; $i < count($normalisasi_matriks_keputusan); $i++)
                                             <tr>
-                                                {{-- <td> {{$peserta[$no]->nama_siswa}} </td> --}}
+                                                <td> {{$peserta[$no]->nama_siswa}} </td>
                                                 @for ($j = 0; $j < count($kriteria); $j++)
                                                     <td>  {{$normalisasi_matriks_keputusan[$i][$j]}} </td>
                                                 @endfor
                                             </tr>
-                                            {{-- @php $no++; @endphp --}}
+                                            @php $no++; @endphp
                                             @endfor
                                             <tr>
                                                 <td>Rata-rata</td>
@@ -280,7 +279,7 @@
                                                     @if ($concordance[$i] === null)
                                                         <td style="background-color: orange"> 0 </td>
                                                         @php $cek++; @endphp
-                                                    @elseif ($cek == count($peserta))
+                                                    @elseif ($cek == $jumlah_peserta - 1)
                                                         <td> {{$concordance[$i]}} </td>
                                                         <tr></tr>
                                                         @php $cek = 0; @endphp
@@ -327,7 +326,7 @@
                                                     @if ($gabung_discordance[$i] === null)
                                                         <td style="background-color: orange"> 0 </td>
                                                         @php $cek++; @endphp
-                                                    @elseif ($cek == count($peserta))
+                                                    @elseif ($cek == $jumlah_peserta - 1)
                                                         <td> {{$gabung_discordance[$i]}} </td>
                                                         <tr></tr>
                                                         @php $cek = 0; @endphp
@@ -368,7 +367,6 @@
                                 <div class="table-responsive">
                                     <table class="table table-bordered table-sm">
                                         <tbody>
-                                            {{dd($matriks_domain_concordance)}}
                                             <p>Nilai C: {{$nilai_c}}</p>
                                             <tr>
                                                 @php
@@ -377,14 +375,14 @@
                                                 @for ($i = 0; $i < count($matriks_domain_concordance); $i++)
 
                                                     @if ($matriks_domain_concordance[$i] === null)
-                                                        <td style="background-color: orange"> 0 {{$i}}</td>
+                                                        <td style="background-color: orange"> 0</td>
                                                         @php $cek++; @endphp
-                                                    @elseif ($cek == count($peserta) - 1)
-                                                        <td> {{$matriks_domain_concordance[$i]}} {{$i}} </td>
+                                                    @elseif ($cek == $jumlah_peserta - 1)
+                                                        <td> {{$matriks_domain_concordance[$i]}} </td>
                                                         <tr></tr>
                                                         @php $cek = 0; @endphp
                                                     @else
-                                                        <td> {{$matriks_domain_concordance[$i]}} {{$i}} </td>
+                                                        <td> {{$matriks_domain_concordance[$i]}} </td>
                                                         @php $cek++; @endphp
                                                     @endif
                                                 @endfor
@@ -428,7 +426,7 @@
                                                     @if ($matriks_domain_discordance[$i] === null)
                                                         <td style="background-color: orange"> 0 </td>
                                                         @php $cek++; @endphp
-                                                    @elseif ($cek == count($peserta))
+                                                    @elseif ($cek == $jumlah_peserta - 1)
                                                         <td> {{$matriks_domain_discordance[$i]}} </td>
                                                         <tr></tr>
                                                         @php $cek = 0; @endphp
@@ -474,7 +472,7 @@
                                                     $cek = 0;
                                                 @endphp
                                                 @for ($i = 0; $i < count($agregate_view); $i++)
-                                                    @if ($cek == count($peserta))
+                                                    @if ($cek == $jumlah_peserta - 1)
                                                         @if ($agregate_view[$i] == 0 or $agregate_view[$i] == null)
                                                             <td> 0 </td>
                                                         @else

@@ -46,7 +46,7 @@
                     <tr>
                         <th scope="col">#</th>
                         <th scope="col">Nama kriteria</th>
-                        <th scope="col">Tahun kriteria</th>
+                        {{-- <th scope="col">Tahun kriteria</th> --}}
                         <th scope="col">Aksi</th>
                     </tr>
                 </thead>
@@ -56,7 +56,7 @@
                     <tr>
                         <th scope="row">{{$loop->iteration}}</th>
                         <td>{{ $krit->kriteria }}</td>
-                        <td>{{ date('Y', strtotime($krit->created_at)) }}</td>
+                        {{-- <td>{{ date('Y', strtotime($krit->created_at)) }}</td> --}}
                         <td class="row">
                             <div class="mx-2">
                                 <form action="/admin/kriteria/list/{{ $krit->id }}" method="GET">

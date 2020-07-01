@@ -56,9 +56,9 @@ class xyKriteriaController extends Controller
         }
 
         // ambil nilai id x dan y
-        for ($i=0; $i < array_sum($count_id); $i++) {
-            array_push($id_x, request('id_x_'.$i));
-            array_push($id_y, request('id_y_'.$i));
+        for ($i = 0; $i < array_sum($count_id); $i++) {
+            array_push($id_x, request('id_x_' . $i));
+            array_push($id_y, request('id_y_' . $i));
         }
 
         // ambil nilai kriteria x dan y
@@ -272,10 +272,22 @@ class xyKriteriaController extends Controller
             }
         }
 
-        // dd($limit);
+        // dd(gettype($limit[3][3]));
+
+        for ($i=1; $i <= count($limit); $i++) {
+            for ($j=0; $j < count($limit); $j++) {
+                if ($limit[$i][$j] == INF){
+                    $new_limit[$i][$j] = 0;
+                } else {
+                    $new_limit[$i][$j] = $limit[$i][$j];
+                }
+            }
+        }
+
+        // dd(array_sum($new_limit[3]));
 
         for ($i = 1; $i <= count($limit); $i++) {
-            $total_limit[] = floatval(array_sum($limit[$i]));
+            $total_limit[] = floatval(array_sum($new_limit[$i]));
         }
 
         // dd($total_limit);
@@ -289,8 +301,8 @@ class xyKriteriaController extends Controller
         $index3 = 0;
 
         for ($i = 0; $i < count($kriteria); $i++) {
-            for ($j = 1; $j <= count($limit); $j++) {
-                $normalisasi_limit[$j][] = floatval($limit[$j][$i] / $total_limit[$j - 1]);
+            for ($j = 1; $j <= count($new_limit); $j++) {
+                $normalisasi_limit[$j][] = floatval($new_limit[$j][$i] / $total_limit[$j - 1]);
             }
         }
 
@@ -300,12 +312,15 @@ class xyKriteriaController extends Controller
             $total_normalisasi_limit[] = floatval(array_sum($normalisasi_limit[$i]));
         }
 
-        // dd($total_normalisasi_limit);
+        // dd($normalisasi_limit, $total_normalisasi_limit);
 
         // bobot raw - 9.1
         for ($i = 1; $i <= count($kriteria); $i++) {
             $bobot_raw[] = floatval(array_product($normalisasi_limit[$i]) / (1 / count($total_normalisasi_limit)));
+            // $bobot_raw[] = number_format(floatval(array_product($normalisasi_limit[$i]) / (1 / count($total_normalisasi_limit))), 4);
         }
+
+        // dd($limit);
 
 
         $total_bobot_raw = floatval(array_sum($bobot_raw));
@@ -348,7 +363,7 @@ class xyKriteriaController extends Controller
             }
         }
 
-        for ($i=1; $i <= count($keterkaitan); $i++) {  // menghitung jumlah keterkaitan fail
+        for ($i = 1; $i <= count($keterkaitan); $i++) {  // menghitung jumlah keterkaitan fail
             if ($keterkaitan[$i] == "fail") {
                 $keterkaitan_fail++;
             }
@@ -361,10 +376,11 @@ class xyKriteriaController extends Controller
         } else {
             for ($i = 1; $i <= count($keterkaitan); $i++) {
                 $bobot_normal[] = floatval($bobot_raw[$i - 1]) / $total_bobot_raw; // jika tidak, maka diisi dengan perhitungan bobot normal
+
             }
         }
 
-        // dd($bobot_normal);
+        // dd($keterkaitan);
 
         $total = array_sum($bobot_normal);
 
@@ -389,7 +405,7 @@ class xyKriteriaController extends Controller
 
         $total_bobot_ideal = floatval(array_sum($bobot_ideal));
 
-        // dd($bobot_parsial, $bobot_normal, $total_bobot_normal);
+        // dd($bobot_normal);
 
         // cek dengan kondisi mau diapakan
 
@@ -406,13 +422,15 @@ class xyKriteriaController extends Controller
                 'kepentingan' => $kepentingan,
                 'unweight' => $unweight,
                 'weight' => $weight,
-                'limit' => $limit,
+                // 'limit' => $limit,
                 'normalisasi_limit' => $normalisasi_limit,
                 'bobot_raw' => $bobot_raw,
                 'bobot_normal' => $bobot_normal,
                 'bobot_ideal' => $bobot_ideal
             ]);
         } else {
+
+            // dd($bobot_normal);
             return view('pages.penguji.kriteria-confirm', [
                 'cr' => '!konsisten',
                 'kriteria' => $kriteria,
@@ -442,7 +460,7 @@ class xyKriteriaController extends Controller
      */
     public function store()
     {
-        // dd(request()->all()) ;
+        // dd(request()->all());
 
         // menyimpan nilai xykriteria
         $id_penguji = Auth::user()->id;
@@ -483,7 +501,6 @@ class xyKriteriaController extends Controller
         }
 
         return redirect()->route('examiner.kriteria')->with('massage', 'Kriteria berhasil disimpan');
-
     }
 
     /**

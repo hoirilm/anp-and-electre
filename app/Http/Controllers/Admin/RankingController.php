@@ -46,16 +46,21 @@ class RankingController extends Controller
         $selectTahun = request('tahun');
         $isSuccess = false;
 
-        $banyak_peserta = DB::select(DB::raw("SELECT COUNT(DISTINCT(peserta_id)) as jumlah_peserta  FROM nilai"));
+        // $banyak_peserta = DB::select(DB::raw("SELECT COUNT(DISTINCT(peserta_id)) as jumlah_peserta  FROM nilai"));
+        $banyak_peserta = DB::select(DB::raw("SELECT COUNT(id) AS jumlah_peserta FROM peserta WHERE jurusan_id = $selectJurusan"));
+
         $peserta = Peserta::where('jurusan_id', "=", $selectJurusan)->get();
 
-        $jumlah_perserta = $banyak_peserta[0]->jumlah_peserta;
+        $jumlah_peserta = $banyak_peserta[0]->jumlah_peserta;
 
-        $bobot_normal = DB::table('bobot_normal')->select('bobot')->whereYear('created_at', '=', $selectTahun)->where('user_id', '=', $selectPenguji)->where('jurusan_id', '=', $selectJurusan)->get();
+        // $bobot_normal = DB::table('bobot_normal')->select('bobot')->whereYear('created_at', '=', $selectTahun)->where('user_id', '=', $selectPenguji)->where('jurusan_id', '=', $selectJurusan)->get();
+        $bobot_normal = DB::table('bobot_normal')->select('bobot')->where('user_id', '=', $selectPenguji)->where('jurusan_id', '=', $selectJurusan)->get();
 
         $nilai = DB::table('nilai')->select('nilai')->whereYear('created_at', '=', $selectTahun)->get();
 
         // dd($nilai);
+
+        // dd($bobot_normal, $peserta, $nilai);
 
         if (count($bobot_normal) < 1 or count($peserta) < 1 or count($nilai) < 1) {
             return view('pages.admin.ranking', [
@@ -119,9 +124,9 @@ class RankingController extends Controller
             // dd($pembobotan_matriks);
 
             // Langkah 3 Menentukan Himpunan Concordance dan Discordance pada Index
-            for ($i = 0; $i < $jumlah_perserta; $i++) {
-                for ($j = 0; $j < $jumlah_perserta; $j++) {
-                    if ($i == $j) {
+            for ($i = 0; $i < $jumlah_peserta; $i++) {
+                for ($j = 0; $j < $jumlah_peserta; $j++) {
+                    if ($i === $j) {
                         $concordance[] = null;
                     } else {
                         for ($k = 0; $k < count($kriteria); $k++) {
@@ -142,8 +147,8 @@ class RankingController extends Controller
             // Langkah 4 Menghitung Matrik Concordance dan Discordance
 
             // discordance a
-            for ($i = 0; $i < $jumlah_perserta; $i++) {
-                for ($j = 0; $j < $jumlah_perserta; $j++) {
+            for ($i = 0; $i < $jumlah_peserta; $i++) {
+                for ($j = 0; $j < $jumlah_peserta; $j++) {
                     if ($i == $j) {
                         $discordance_a[] = null;
                     } else {
@@ -164,8 +169,8 @@ class RankingController extends Controller
             // dd($discordance_a);
 
             // discordance b
-            for ($i = 0; $i < $jumlah_perserta; $i++) {
-                for ($j = 0; $j < $jumlah_perserta; $j++) {
+            for ($i = 0; $i < $jumlah_peserta; $i++) {
+                for ($j = 0; $j < $jumlah_peserta; $j++) {
                     if ($i == $j) {
                         $discordance_b[] = null;
                     } else {
@@ -191,10 +196,10 @@ class RankingController extends Controller
                 }
             }
 
-
+            // dd($concordance);
 
             // Langkah 5 Menghitung Matriks Dominan Concordance dan Discordance
-            $nilai_c = (array_sum($concordance) / ($jumlah_perserta * ($jumlah_perserta - 1)));
+            $nilai_c = (array_sum($concordance) / ($jumlah_peserta * ($jumlah_peserta - 1)));
             for ($i = 0; $i < count($concordance); $i++) {
                 if ($concordance[$i] === null) {
                     $matriks_domain_concordance[] = null;
@@ -205,7 +210,7 @@ class RankingController extends Controller
                 }
             }
 
-            $nilai_d = (array_sum($gabung_discordance) / ($jumlah_perserta * ($jumlah_perserta - 1)));
+            $nilai_d = (array_sum($gabung_discordance) / ($jumlah_peserta * ($jumlah_peserta - 1)));
             for ($i = 0; $i < count($gabung_discordance); $i++) {
                 // print_r(array_keys($gabung_discordance));
                 if ($gabung_discordance[$i] === null) {
@@ -230,7 +235,7 @@ class RankingController extends Controller
                     $agregate_view[] = $matriks_domain_concordance[$i] * $matriks_domain_discordance[$i]; // untuk ditampilkan dihalaman view
                 }
 
-                if (count($agregate) === $jumlah_perserta) {
+                if (count($agregate) === $jumlah_peserta) {
                     $tampung2[] = array_sum($agregate);
                     $agregate = [];
                 }
@@ -254,6 +259,7 @@ class RankingController extends Controller
                 'nilai_c' => $nilai_c,
                 'nilai_d' => $nilai_d,
                 'peserta' => $peserta,
+                'jumlah_peserta' => $jumlah_peserta,
                 'penguji' => $penguji,
                 'jurusan' => $jurusan,
                 'tahun' => $tahun,

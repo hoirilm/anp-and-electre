@@ -61,7 +61,7 @@
 
                 @for ($i=0; $i < count($id_x); $i++)
                     <input type="hidden" name="id_x_{{$i}}" value="{{$id_x[$i]}}">
-                    <input type="hidden" name="id_y_{{$i}}" value="{{$id_x[$i]}}">
+                    <input type="hidden" name="id_y_{{$i}}" value="{{$id_y[$i]}}">
                 @endfor
 
                 @for ($i=0; $i < $loop; $i++) <input type="hidden" name="kepentingan_{{$i}}"
