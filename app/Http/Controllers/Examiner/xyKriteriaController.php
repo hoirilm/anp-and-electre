@@ -195,7 +195,7 @@ class xyKriteriaController extends Controller
             }
         }
 
-        // dd($unweight);
+        // NOTE: MUNGKIN BISA DIKASI KONDISI JIKA KRITERIA BELUM DIISI
 
         // weight - 7
         $weight = [];
@@ -335,7 +335,7 @@ class xyKriteriaController extends Controller
             ];
         }
 
-        // dd($a);
+        // dd(count($a));
 
         // cek keterkaitan mempengaruhi nilai bobot normal
         $keterkaitan = [];
@@ -355,13 +355,16 @@ class xyKriteriaController extends Controller
 
         // dd($keterkaitan);
 
+        // dd($kriteria);
 
         // jika kriteria tertentu tidak terkait dengan kriteria manapun
-        for ($i = 1; $i <= count($keterkaitan); $i++) {
+        for ($i = 1; $i <= count($kriteria); $i++) {
             if ($keterkaitan[$i] == (count($kriteria) - 1)) {
                 $keterkaitan[$i] = "fail";
             }
         }
+
+        // dd($keterkaitan);
 
         for ($i = 1; $i <= count($keterkaitan); $i++) {  // menghitung jumlah keterkaitan fail
             if ($keterkaitan[$i] == "fail") {

@@ -149,7 +149,7 @@
                             </div>
                         </div>
 
-                        {{-- detail nilai perbandingan --}}
+                         {{-- detail nilai perbandingan --}}
                         <div class="card" style="display: none">
                             <div class="card-header" id="headingThree">
                                 <h2 class="mb-0">
@@ -178,17 +178,32 @@
                                                 $nilai1 = 1.0;
                                                 $index1 = 0;
                                                 $index2 = 0;
+
+                                                if (count($kriteria) == 5) {
+                                                    // khusus 5 kriteria
+                                                     $array = array(0,1,4,2,5,7,3,6,8,9);
+                                                } else if (count($kriteria) == 6) {
+                                                    // khusus 6 kriteria
+                                                    $array = array(0,1,5,2,6,9,3,7,10,12,4,8,11,13,14);
+                                                } else if (count($kriteria) == 7) {
+                                                    // khusus 7 kriteria
+                                                    $array = array(0,1,6,2,7,11,3,8,12,15,4,9,13,16,18,5,10,14,17,19,20);
+                                                }
+
                                                 @endphp
+                                                {{-- {{ dd($input_terakhir[$array[7]]) }} --}}
+                                                {{-- {{dd($input_terakhir[7])}} --}}
 
                                                 @foreach ($kriteria as $mapel)
                                                     <tr>
                                                         <th class="table-secondary">{{ $mapel->kriteria }}</th>
                                                         @for ($i = 1; $i <= count($kriteria); $i++)
+
                                                             <td>
                                                                 @if ($loop->iteration === $i)
                                                                 {{ $total_perbandingan[$i][] = floatval($nilai1) }}
                                                                 @elseif ($loop->iteration > $i)
-                                                                {{ $total_perbandingan[$i][] = floatval(1/$input_terakhir[$index1]['nilai']) }}
+                                                                {{ $total_perbandingan[$i][] = floatval(1/$input_terakhir[$array[$index1]]['nilai']) }}
                                                                 @php $index1++; @endphp
                                                                 @elseif ($loop->iteration < $i && $i)
                                                                 {{ $total_perbandingan[$i][] = floatval($input_terakhir[$index2]['nilai']) }}
@@ -196,6 +211,7 @@
                                                                 @endif
                                                             </td>
                                                         @endfor
+
                                                     </tr>
                                                 @endforeach
                                                 <tr>
@@ -230,99 +246,99 @@
                                     @if (!isset($total_perbandingan) or count($total_perbandingan) < 1)
                                         <p class="alert alert-warning m-0">Tidak ada nilai yang diinputkan.</p>
                                     @else
-                                    <div class="table-responsive">
-                                        <table class="table table-bordered">
-                                            <tbody>
-                                                <tr>
-                                                    <th></th>
-                                                    @foreach ($kriteria as $mapel)
-                                                        <th class="table-secondary">{{ $mapel->kriteria }}</th>
-                                                    @endforeach
-                                                </tr>
-
-                                                @foreach ($kriteria as $mapel)
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered">
+                                                <tbody>
                                                     <tr>
-                                                        <th class="table-secondary">{{ $mapel->kriteria }}</th>
-                                                        @for ($j = 1; $j <= count($total_perbandingan); $j++)
-                                                            <td>
-                                                                {{ $total_normalisasi[$j][] = floatval($total_perbandingan[$j][$loop->iteration - 1]/array_sum($total_perbandingan[$j])) }}
+                                                        <th></th>
+                                                        @foreach ($kriteria as $mapel)
+                                                            <th class="table-secondary">{{ $mapel->kriteria }}</th>
+                                                        @endforeach
+                                                    </tr>
+
+                                                    @foreach ($kriteria as $mapel)
+                                                        <tr>
+                                                            <th class="table-secondary">{{ $mapel->kriteria }}</th>
+                                                            @for ($j = 1; $j <= count($total_perbandingan); $j++)
+                                                                <td>
+                                                                    {{ $total_normalisasi[$j][] = floatval($total_perbandingan[$j][$loop->iteration - 1]/array_sum($total_perbandingan[$j])) }}
+                                                                </td>
+                                                            @endfor
+                                                        </tr>
+                                                    @endforeach
+
+                                                    <tr>
+                                                        <th class="table-success"> Total </th>
+                                                        @for ($i = 1; $i <= count($total_normalisasi); $i++)
+                                                            <td class="table-success">
+                                                                {{ floatval(array_sum($total_normalisasi[$i])) }}
                                                             </td>
                                                         @endfor
                                                     </tr>
-                                                @endforeach
+                                                </tbody>
+                                            </table>
 
-                                                <tr>
-                                                    <th class="table-success"> Total </th>
-                                                    @for ($i = 1; $i <= count($total_normalisasi); $i++)
-                                                        <td class="table-success">
-                                                            {{ floatval(array_sum($total_normalisasi[$i])) }}
-                                                        </td>
-                                                    @endfor
-                                                </tr>
-                                            </tbody>
-                                        </table>
-
-                                        <table class="table table-bordered">
-                                            <tbody>
-                                                <tr>
-                                                    @php
-                                                        for ($i=0; $i < count($total_normalisasi); $i++) {
-                                                            for ($j=1; $j <= count($total_normalisasi); $j++) {
-                                                                $tampung_bobot_parsial[$i][] = $total_normalisasi[$j][$i];
+                                            <table class="table table-bordered">
+                                                <tbody>
+                                                    <tr>
+                                                        @php
+                                                            for ($i=0; $i < count($total_normalisasi); $i++) {
+                                                                for ($j=1; $j <= count($total_normalisasi); $j++) {
+                                                                    $tampung_bobot_parsial[$i][] = $total_normalisasi[$j][$i];
+                                                                }
                                                             }
-                                                        }
-                                                    @endphp
+                                                        @endphp
 
-                                                    <th class="table-secondary" style="width: 20%"> Bobot Parsial </th>
-                                                    @for ($i = 0; $i < count($total_normalisasi); $i++)
-                                                        <td>
-                                                            {{-- {{ $total_eigen[] = number_format(pow(array_product($total_normalisasi[$i]), 1/count($total_normalisasi)),4)  }} --}}
-                                                            {{ $bobot_parsial[] = floatval(array_sum($tampung_bobot_parsial[$i]) / count($kriteria)) }}
+                                                        <th class="table-secondary" style="width: 20%"> Bobot Parsial </th>
+                                                        @for ($i = 0; $i < count($total_normalisasi); $i++)
+                                                            <td>
+                                                                {{-- {{ $total_eigen[] = number_format(pow(array_product($total_normalisasi[$i]), 1/count($total_normalisasi)),4)  }} --}}
+                                                                {{ $bobot_parsial[] = floatval(array_sum($tampung_bobot_parsial[$i]) / count($kriteria)) }}
+                                                            </td>
+                                                        @endfor
+                                                        <td class="table-success"> Jumlah:
+                                                            {{ floatval(array_sum($bobot_parsial)) }}
                                                         </td>
-                                                    @endfor
-                                                    <td class="table-success"> Jumlah:
-                                                        {{ floatval(array_sum($bobot_parsial)) }}
-                                                    </td>
-                                                </tr>
+                                                    </tr>
 
-                                                <tr>
-                                                    @php
-                                                        for ($i=0; $i < count($bobot_parsial); $i++) {
-                                                            for ($j=1; $j <=count($total_perbandingan); $j++) {
-                                                                $tampung_eigen_verktor[$i][] = $total_perbandingan[$j][$i] * $bobot_parsial[$j-1];
+                                                    <tr>
+                                                        @php
+                                                            for ($i=0; $i < count($bobot_parsial); $i++) {
+                                                                for ($j=1; $j <=count($total_perbandingan); $j++) {
+                                                                    $tampung_eigen_verktor[$i][] = $total_perbandingan[$j][$i] * $bobot_parsial[$j-1];
+                                                                }
                                                             }
-                                                        }
-                                                    @endphp
+                                                        @endphp
 
-                                                    <th class="table-secondary">Eigen Vektor</th>
-                                                    @for ($i=0; $i < count($tampung_eigen_verktor); $i++)
-                                                        <td> {{ $eigen_vektor[] = floatval(array_sum($tampung_eigen_verktor[$i])) }} </td>
-                                                    @endfor
-                                                    <td class="table-success"> Jumlah:
-                                                        {{ floatval(array_sum($eigen_vektor)) }}
-                                                    </td>
-                                                </tr>
-
-                                                <tr>
-                                                    <th class="table-secondary">Ternormalisasi Terbobot</th>
-                                                    @for ($i = 0; $i < count($kriteria); $i++)
-                                                        <td> {{ $ternormalisasi_terbobot[] = floatval($eigen_vektor[$i] / $bobot_parsial[$i])}}
+                                                        <th class="table-secondary">Eigen Vektor</th>
+                                                        @for ($i=0; $i < count($tampung_eigen_verktor); $i++)
+                                                            <td> {{ $eigen_vektor[] = floatval(array_sum($tampung_eigen_verktor[$i])) }} </td>
+                                                        @endfor
+                                                        <td class="table-success"> Jumlah:
+                                                            {{ floatval(array_sum($eigen_vektor)) }}
                                                         </td>
-                                                    @endfor
-                                                    <td class="table-success"> Jumlah:
-                                                        {{ floatval(array_sum($ternormalisasi_terbobot)) }}
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <th class="table-secondary">Ternormalisasi Terbobot</th>
+                                                        @for ($i = 0; $i < count($kriteria); $i++)
+                                                            <td> {{ $ternormalisasi_terbobot[] = floatval($eigen_vektor[$i] / $bobot_parsial[$i])}}
+                                                            </td>
+                                                        @endfor
+                                                        <td class="table-success"> Jumlah:
+                                                            {{ floatval(array_sum($ternormalisasi_terbobot)) }}
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
                                     @endif
                                 </div>
                             </div>
                         </div>
 
                         {{-- Eigen Max --}}
-                        <div class="card">
+                        <div class="card" style="display: none">
                             <div class="card-header" id="headingFive">
                                 <h2 class="mb-0">
                                     <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseFive"
@@ -462,6 +478,18 @@
                                             $index2 = 0;
                                             $index3 = 0;
                                             $index4 = 0;
+
+                                            if (count($kriteria) == 5) {
+                                               // khusus 5 kriteria
+                                                $array = array(1,2,7,3,8,13,4,9,14,19);
+                                            } elseif (count($kriteria) == 6) {
+                                                // khusus 6 kriteria
+                                                $array = array(1,2,8,3,9,15,4,10,16,22,5,11,17,23,29);
+                                            } elseif (count($kriteria) == 7) {
+                                               // khusus 7 kriteria
+                                                $array = array(1,2,9,3,10,17,4,11,18,25,5,12,19,26,33,6,13,20,27,34,41);
+                                            }
+
                                         @endphp
                                         {{-- model
                                         [loop-iteration][index1] dan [index2]
@@ -492,8 +520,9 @@
                                                             {{ $weight[] = floatval($total_perbandingan[$i][$index1] * $unweight[$index2]) }}
                                                             @php $index2++; @endphp
 
+                                                        {{-- kiri --}}
                                                         @elseif ($loop->iteration > $i)
-                                                            @if ($keterkaitan_kriteria[$index3]->terkait == 0)
+                                                            @if ($weight[$array[$index3]] == 0)
                                                                 {{ $weight[] = floatval(0) }}
                                                                 @php $index2++; $index3++; @endphp
                                                             @else
@@ -501,6 +530,7 @@
                                                                 @php $index2++; $index3++; @endphp
                                                             @endif
 
+                                                        {{-- kanan --}}
                                                         @elseif ($loop->iteration < $i && $i)
                                                             @if ($keterkaitan_kriteria[$index4]->terkait == 0)
                                                                 {{ $weight[] = floatval(0) }}
@@ -514,6 +544,8 @@
                                                     </td>
                                                 @endfor
                                                 @php $index1++; @endphp
+
+
                                             </tr>
                                             @endforeach
                                         </tbody>
@@ -541,12 +573,53 @@
                                     @else
                                     <div class="table-responsive">
                                         <table class="table table-bordered">
+
                                         @php
                                             $limit = [];
                                             $index1 = 0;
                                             $index2 = 0;
                                             $index3 = 0;
+
+                                            $array = array([1,0],[2,0]);
+
+                                            // dump($array);
+
+                                            for ($i = 1; $i <= count($kriteria); $i++) {
+                                                for ($j = 1; $j <= count($kriteria); $j++) {
+                                                    if ($i === $j) {
+                                                        $limit[$j][] = floatval(pow($weight[$index1], $weight[$index1]));
+                                                        $index1++;
+                                                    } elseif ($i > $j) {
+                                                        $limit[$j][] = floatval(pow($weight[$index1], $weight[$index1]));
+                                                        $index1++;
+                                                        $index2++;
+                                                    } elseif ($i < $j && $j) {
+                                                        $limit[$j][] = floatval(pow($weight[$index1], $weight[$index1]));
+                                                        $index1++;
+                                                        $index3++;
+                                                    }
+                                                }
+                                            }
+
+                                            for ($i=1; $i <= count($limit); $i++) {
+                                                for ($j=0; $j < count($limit); $j++) {
+                                                    if ($limit[$i][$j] == INF){
+                                                        $new_limit[$i][$j] = 0;
+                                                    } else {
+                                                        $new_limit[$i][$j] = $limit[$i][$j];
+                                                    }
+                                                }
+                                            }
                                         @endphp
+
+                                        {{-- {{dd($new_limit)}} --}}
+
+                                        @php
+                                            $a = 0;
+                                            $b = 0;
+                                            $c = 0;
+                                        @endphp
+
                                         <thead>
                                             <th class="table-primary">Kriteria</th>
                                             @foreach ($kriteria as $mapel)
@@ -557,41 +630,44 @@
                                             @foreach ($kriteria as $mapel)
                                             <tr>
                                                 <th class="table-secondary">{{ $mapel->kriteria }}</th>
+
                                                 @for($i = 1; $i <= count($kriteria); $i++)
                                                     <td>
+
+
                                                         @if($loop->iteration === $i)
-                                                            {{ $limit[$i][] = floatval(pow($weight[$index1], $weight[$index1]))}}
-                                                            @php $index1++; @endphp
-
+                                                            @if (floatval(pow($weight[$a], $weight[$a])) == INF)
+                                                                {{ 0 }}
+                                                            @else
+                                                                {{floatval(pow($weight[$a], $weight[$a]))}}
+                                                            @endif
+                                                            @php $a++; @endphp
                                                         @elseif ($loop->iteration > $i)
-                                                            @if ($keterkaitan_kriteria[$index2]->terkait == 0)
-                                                                {{ $limit[$i][] = floatval(1) }}
-                                                                @php $index1++; $index2++; @endphp
+                                                            @if (floatval(pow($weight[$a], $weight[$a])) == INF)
+                                                                {{ 0 }}
                                                             @else
-                                                                {{ $limit[$i][] = floatval(pow($weight[$index1], $weight[$index1]))}}
-                                                                @php $index1++; $index2++; @endphp
+                                                                {{floatval(pow($weight[$a], $weight[$a]))}}
                                                             @endif
-
+                                                            @php $a++; $b++; @endphp
                                                         @elseif ($loop->iteration < $i && $i)
-                                                            @if ($keterkaitan_kriteria[$index3]->terkait == 0)
-                                                                {{ $limit[$i][] = floatval(1) }}
-                                                                @php $index1++; $index3++; @endphp
-
+                                                            @if (floatval(pow($weight[$a], $weight[$a])) == INF)
+                                                                {{ 0 }}
                                                             @else
-                                                                {{ $limit[$i][] = floatval(pow($weight[$index1], $weight[$index1]))}}
-                                                                @php $index1++; $index3++; @endphp
+                                                                {{floatval(pow($weight[$a], $weight[$a]))}}
                                                             @endif
+                                                            @php $a++; $c++; @endphp
                                                         @endif
                                                     </td>
                                                 @endfor
+
                                             </tr>
                                             @endforeach
 
                                             <tr>
                                                 <th class="table-success">Total</th>
-                                                @for($j=1; $j <= count($limit); $j++)
+                                                @for($j=1; $j <= count($new_limit); $j++)
                                                     <td class="table-success">
-                                                        {{ $total_limit[] = floatval(array_sum($limit[$j])) }} </td>
+                                                        {{ $total_limit[] = floatval(array_sum($new_limit[$j])) }} </td>
                                                 @endfor
                                             </tr>
 
@@ -615,7 +691,7 @@
                             </div>
                             <div id="collapseNineNine" class="collapse" aria-labelledby="headingNine" data-parent="#accordionExample">
                                 <div class="card-body">
-                                    @if (!isset($limit) or count($limit) < 1)
+                                    @if (!isset($new_limit) or count($new_limit) < 1)
                                         <p class="alert alert-warning m-0">Tidak ada nilai limit.</p>
                                     @else
                                     <div class="table-responsive">
@@ -638,9 +714,9 @@
                                             @foreach ($kriteria as $mapel)
                                             <tr>
                                                 <th class="table-secondary">{{ $mapel->kriteria }}</th>
-                                                @for($i = 1; $i <= count($limit); $i++)
+                                                @for($i = 1; $i <= count($new_limit); $i++)
                                                     <td>
-                                                        {{ $normalisasi_limit[$i][] = floatval($limit[$i][$loop->iteration - 1] / $total_limit[$i - 1]) }}
+                                                        {{ $normalisasi_limit[$i][] = floatval($new_limit[$i][$loop->iteration - 1] / $total_limit[$i - 1]) }}
                                                     </td>
                                                 @endfor
                                             </tr>
@@ -677,6 +753,9 @@
 
                                                 <td class="font-weight-bold table-success"> Total : {{ floatval(array_sum($bobot_raw)) }} </td>
                                             </tr>
+
+                                            {{-- {{dd($bobot_raw)}} --}}
+
                                             <tr>
                                                 <th class="table-secondary">Bobot Normal</th>
                                                 <form action="/examiner/kriteria/bobot_normal" method="POST">
@@ -701,7 +780,7 @@
                                                 </form>
                                             </tr>
 
-                                            {{-- {{dd($bobot_raw)}} --}}
+                                            {{-- {{dd($bobot_normal)}} --}}
 
                                             <tr>
                                                 <th class="table-secondary">Bobot Ideal</th>

@@ -51,12 +51,14 @@ class RankingController extends Controller
 
         $peserta = Peserta::where('jurusan_id', "=", $selectJurusan)->get();
 
+        // dd($peserta);
+
         $jumlah_peserta = $banyak_peserta[0]->jumlah_peserta;
 
         // $bobot_normal = DB::table('bobot_normal')->select('bobot')->whereYear('created_at', '=', $selectTahun)->where('user_id', '=', $selectPenguji)->where('jurusan_id', '=', $selectJurusan)->get();
         $bobot_normal = DB::table('bobot_normal')->select('bobot')->where('user_id', '=', $selectPenguji)->where('jurusan_id', '=', $selectJurusan)->get();
 
-        $nilai = DB::table('nilai')->select('nilai')->whereYear('created_at', '=', $selectTahun)->get();
+        $nilai = DB::table('nilai')->select('nilai')->whereYear('created_at', '=', $selectTahun)->where('jurusan_id', '=', $selectJurusan)->get();
 
         // dd($nilai);
 

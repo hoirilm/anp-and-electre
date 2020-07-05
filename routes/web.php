@@ -76,7 +76,7 @@ Route::middleware('is_examiner')->group(function () {
 
     Route::post('/examiner/kriteria/store', 'Examiner\xyKriteriaController@store');
 
-    Route::post('/examiner/kriteria/bobot_normal', 'Examiner\BobotNormalController@store');
+    // Route::post('/examiner/kriteria/bobot_normal', 'Examiner\BobotNormalController@store');
 
 
     // Route::get('/examiner/peserta', 'Examiner\ExaminerPesertaController@peserta')->name('examiner.peserta');

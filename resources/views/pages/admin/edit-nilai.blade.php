@@ -23,6 +23,7 @@
                     @csrf
                     {{-- @method('PUT') --}}
                     <input type="hidden" name="peserta_id" value="{{$peserta->id}}">
+                    <input type="hidden" name="jurusan" value="{{$peserta->jurusan_id}}">
                     @foreach ($kriteria as $value)
                     <input type="hidden" name="loop" value="{{$loop->iteration}}">
                     <div class="form-group">
@@ -33,7 +34,6 @@
                             id="exampleFormControlInput{{$loop->iteration}}" placeholder="Masukkan nilai"
                             name="nilai_kriteria_{{$loop->iteration}}"
                             value="{{ old('nilai_kriteria_'.$loop->iteration) }}">
-
                         @error('nilai_kriteria_'. $loop->iteration)
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>

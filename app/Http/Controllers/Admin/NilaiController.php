@@ -66,7 +66,8 @@ class NilaiController extends Controller
             Nilai::create([
                 'nilai' => request('nilai_kriteria_' . $i),
                 'peserta_id' => request('peserta_id'),
-                'kriteria_id' => request('kriteria_id_' . $i)
+                'kriteria_id' => request('kriteria_id_' . $i),
+                'jurusan_id' => request('jurusan')
             ]);
         }
 

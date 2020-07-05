@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'Menu Rankin')
+@section('title', 'Menu Ranking')
 
 @section('content')
 
@@ -87,6 +87,8 @@
             <div class="card-body">
                 <div class="accordion" id="accordionExample">
 
+                    {{-- {{dd($peserta[0]->nama_siswa)}} --}}
+
                     {{-- Nilai --}}
                     <div class="card">
                         <div class="card-header" id="headingOne">
@@ -125,6 +127,12 @@
                                             </tr>
                                             @php $no++; @endphp
                                             @endfor
+                                            <tr>
+                                                <td>Rata-rata</td>
+                                                @for ($i = 0; $i < count($rata_rata); $i++)
+                                                    <td> {{$rata_rata[$i]}} </td>
+                                                @endfor
+                                            </tr>
                                         </tbody>
                                     </table>
                                 </div>
@@ -171,12 +179,6 @@
                                             </tr>
                                             @php $no++; @endphp
                                             @endfor
-                                            <tr>
-                                                <td>Rata-rata</td>
-                                                @for ($i = 0; $i < count($rata_rata); $i++)
-                                                    <td> {{$rata_rata[$i]}} </td>
-                                                @endfor
-                                            </tr>
                                         </tbody>
                                     </table>
                                 </div>
@@ -223,21 +225,16 @@
                                         </thead>
                                         <tbody>
                                             @php $no = 0; @endphp
-                                            @for ($i = 0; $i < count($normalisasi_matriks_keputusan); $i++)
+                                            @for ($i = 0; $i < count($pembobotan_matriks); $i++)
                                             <tr>
                                                 <td> {{$peserta[$no]->nama_siswa}} </td>
                                                 @for ($j = 0; $j < count($kriteria); $j++)
-                                                    <td>  {{$normalisasi_matriks_keputusan[$i][$j]}} </td>
+                                                    <td>  {{$pembobotan_matriks[$i][$j]}} </td>
                                                 @endfor
                                             </tr>
                                             @php $no++; @endphp
                                             @endfor
-                                            <tr>
-                                                <td>Rata-rata</td>
-                                                @for ($i = 0; $i < count($rata_rata); $i++)
-                                                    <td> {{$rata_rata[$i]}} </td>
-                                                @endfor
-                                            </tr>
+
                                         </tbody>
                                     </table>
                                 </div>

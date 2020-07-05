@@ -10,11 +10,11 @@
 <div class="container-fluid">
 
     <!-- Page Heading -->
-    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+    {{-- <div class="d-sm-flex align-items-center justify-content-between mb-4" style="display: none">
         <button type="button" class="btn btn-primary btn-sm float-right" data-toggle="modal" data-target="#tambah-kriteria">
             <i class="fas fa-download fa-sm text-white-50"></i> Tambah kriteria
         </button>
-    </div>
+    </div> --}}
 
     @if (session('success-massage'))
     <div class="alert alert-success">
@@ -37,8 +37,7 @@
     @else
     <div class="card shadow mb-4 col">
         <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary">Daftar kriteria tahun
-                {{ date('Y', strtotime($kriteria[0]->created_at))}}</h6>
+            <h6 class="m-0 font-weight-bold text-primary">Daftar kriteria</h6>
         </div>
         <div class="card-body">
             <table class="table table-hover">
@@ -64,14 +63,14 @@
                                 </form>
                             </div>
 
-                            <div class="mx-2">
+                            {{-- <div class="mx-2">
                                 <form action="/admin/kriteria/list/{{ $krit->id }}" method="POST">
                                     @csrf
                                     @method('delete')
                                     <button type="submit" class="btn btn-danger"
                                         onclick="return confirm('Yakin untuk hapus data?')">Delete</button>
                                 </form>
-                            </div>
+                            </div> --}}
                         </td>
                     </tr>
                     @endforeach
