@@ -25,6 +25,8 @@ class KeterkaitanKriteriaController extends Controller
 
         $keterkaitan = Kriteria::all();
 
+        // dd($keterkaitan[0]->kriteria);
+
         $batas = count($keterkaitan);
         $a = 0;
         $b = 1;
@@ -41,6 +43,8 @@ class KeterkaitanKriteriaController extends Controller
             $a += 1;
             $b += 1;
         }
+
+        // dd($gabungan);
 
         return view('pages.admin.keterkaitan', ['gabungan' => $gabungan]);
     }
@@ -95,6 +99,8 @@ class KeterkaitanKriteriaController extends Controller
      */
     public function store()
     {
+        // return request()->all();
+
         $tanggal = date('Y', strtotime(request('tahun_kriteria_1')));
         $cek_data = KeterkaitanKriteria::whereYear('tahun_kriteria', $tanggal)->first();
 

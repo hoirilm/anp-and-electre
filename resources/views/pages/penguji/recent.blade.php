@@ -1044,7 +1044,7 @@
                             </div>
                         </div>
 
-                        {{-- {{dd(0.11*0.5655)}} --}}
+                        {{-- {{dd($total_limit)}} --}}
 
                         {{-- Normalisasi Limit --}}
                         <div class="card">
@@ -1100,6 +1100,9 @@
 
                                         </tbody>
                                     </table>
+
+                                    {{-- {{dd($normalisasi_limit, $total_normalisasi_limit)}} --}}
+
                                     </div>
 
                                     <div class="table-responsive">

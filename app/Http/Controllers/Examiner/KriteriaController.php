@@ -34,9 +34,9 @@ class KriteriaController extends Controller
 
         // return request()->all();
 
-        $jurusan = Jurusan::all();
-        $jurusan_id = request('jurusan');
-        $pilih_jurusan = Jurusan::where('id', $jurusan_id)->first();
+        $jurusan = Jurusan::all(); // mengambil semua data jurusan
+        $jurusan_id = request('jurusan'); // mengambil data dari dropdown
+        $pilih_jurusan = Jurusan::where('id', $jurusan_id)->first(); // query
 
         $gabungan = [];
         $kriteria = Kriteria::all();

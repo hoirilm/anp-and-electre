@@ -65,6 +65,7 @@ class RankingController extends Controller
         // dd($bobot_normal, $peserta, $nilai);
 
         if (count($bobot_normal) < 1 or count($peserta) < 1 or count($nilai) < 1) {
+            // dd("gagal");
             return view('pages.admin.ranking', [
                 'isSuccess' => $isSuccess,
                 'penguji' => $penguji,
@@ -82,27 +83,32 @@ class RankingController extends Controller
                 $pembanding = 1;
             }
 
+            // dd($nilai_peserta[0][0]->nilai);
+
             // menjumlahkan nilai ditiap kriteria
             for ($i = 0; $i < count($kriteria); $i++) {
                 for ($j = 0; $j < $banyak_peserta[0]->jumlah_peserta; $j++) {
-                    $a[$i][] = $nilai_peserta[$j][$i];
+                    $a[$i][] = $nilai_peserta[$j][$i]; // nilai harus mengakses index contoh: dd($nilai_peserta[0][0]->nilai);
                 }
             }
+
 
             for ($i = 0; $i < count($kriteria); $i++) {
                 for ($j = 0; $j < $banyak_peserta[0]->jumlah_peserta; $j++) {
-                    $b[$i][] = $a[$i][$j]->nilai;
+                    $b[$i][] = $a[$i][$j]->nilai;  // untuk langsung mengambil nilai contoh dd($nilai_peserta[0]->nilai);
                 }
             }
 
             for ($i = 0; $i < count($b); $i++) {
                 for ($j = 0; $j < $banyak_peserta[0]->jumlah_peserta; $j++) {
-                    $c[$i][] = pow($b[$i][$j], 2);
+                    $c[$i][] = pow($b[$i][$j], 2); // untuk pangkat
                 }
             }
 
+            // dd($a, $b, $c);
+
             for ($i = 0; $i < count($b); $i++) {
-                $rata_rata[] = sqrt(array_sum($c[$i]));
+                $rata_rata[] = sqrt(array_sum($c[$i])); // untuk akar
             }
 
             // ==============================================================
@@ -132,18 +138,22 @@ class RankingController extends Controller
                         $concordance[] = null;
                     } else {
                         for ($k = 0; $k < count($kriteria); $k++) {
-                            if ($pembobotan_matriks[$i][$k] >= $pembobotan_matriks[$j][$k]) {
+                            if ($pembobotan_matriks[$i][$k] >= $pembobotan_matriks[$j][$k]) { // k = kriterianya, i = orang A, j = orang B
                                 $tampung[] = $bobot_normal[$k]->bobot;
                             } else {
                                 $tampung[] = 0;
                             }
                         }
 
+
+
                         $concordance[] = array_sum($tampung);
                         $tampung = [];
                     }
                 }
             }
+
+            // dd($concordance);
 
 
             // Langkah 4 Menghitung Matrik Concordance dan Discordance
@@ -237,16 +247,19 @@ class RankingController extends Controller
                     $agregate_view[] = $matriks_domain_concordance[$i] * $matriks_domain_discordance[$i]; // untuk ditampilkan dihalaman view
                 }
 
+                // jika banyak agregate sama dengan jumlah perserta, maka total
                 if (count($agregate) === $jumlah_peserta) {
                     $tampung2[] = array_sum($agregate);
-                    $agregate = [];
+                    $agregate = []; // kosongkan agregate
                 }
             }
 
 
+            // membuat data skor dan nama siswa (belum diurut)
             for ($i = 1; $i <= count($peserta); $i++) {
                 $ranking[$i] = ['skor' => $tampung2[$i - 1], 'nama_siswa' => $peserta[$i - 1]->nama_siswa];
             }
+
 
             foreach ($ranking as $key => $row) {
                 $ranking_siswa[$key] = ['skor' => $row['skor'], 'nama_siswa' => $row['nama_siswa']];

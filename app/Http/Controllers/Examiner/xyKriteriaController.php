@@ -73,26 +73,37 @@ class xyKriteriaController extends Controller
         }
 
 
+        if (count($kriteria) == 5) {
+            // khusus 5 kriteria
+            $array = array(0, 1, 4, 2, 5, 7, 3, 6, 8, 9);
+        } else if (count($kriteria) == 6) {
+            // khusus 6 kriteria
+            $array = array(0, 1, 5, 2, 6, 9, 3, 7, 10, 12, 4, 8, 11, 13, 14);
+        } else if (count($kriteria) == 7) {
+            // khusus 7 kriteria
+            $array = array(0, 1, 6, 2, 7, 11, 3, 8, 12, 15, 4, 9, 13, 16, 18, 5, 10, 14, 17, 19, 20);
+        }
+
 
         for ($i = 1; $i <= count($kriteria); $i++) {
             for ($j = 1; $j <= count($kriteria); $j++) {
                 if ($i === $j) {
-                    $nilai_perbandingan[$j][] = floatval($nilai1);
+                    $nilai_perbandingan[$j][] = floatval($nilai1); //tengah
                 } else if ($i > $j) {
-                    $nilai_perbandingan[$j][] = floatval(1 / request('kepentingan_' . $index1));
+                    $nilai_perbandingan[$j][] = floatval(1 / request('kepentingan_' . $array[$index1])); // segitiga bawah
                     $index1++;
                 } else if ($i < $j && $j) {
-                    $nilai_perbandingan[$j][] = floatval(request('kepentingan_' . $index2));
+                    $nilai_perbandingan[$j][] = floatval(request('kepentingan_' . $index2)); // segitaga atas
                     $index2++;
                 }
             }
         }
 
         for ($i = 1; $i <= count($nilai_perbandingan); $i++) {
-            $total_perbandingan[] = floatval(array_sum($nilai_perbandingan[$i]));
+            $total_perbandingan[] = floatval(array_sum($nilai_perbandingan[$i])); //total dari nilai perbandingan
         }
 
-        // dd($total_perbandingan);
+        // dd($nilai_perbandingan, $total_perbandingan);
 
         // normalisasi - 2
         for ($i = 0; $i < count($kriteria); $i++) {
@@ -101,7 +112,7 @@ class xyKriteriaController extends Controller
             }
         }
 
-        // dd($nilai_normalisasi);
+        // dd($nilai_normalisasi,$nilai_normalisasi[1][0]);
 
         for ($i = 1; $i <= count($nilai_normalisasi); $i++) {
             $total_normalisasi[] = floatval(array_sum($nilai_normalisasi[$i]));
@@ -152,11 +163,13 @@ class xyKriteriaController extends Controller
 
         $total_normalisasi_terbobot = floatval(array_sum($ternormalisasi_terbobot));
 
-        // dd($total_normalisasi_terbobot);
+        // dd($ternormalisasi_terbobot, $total_normalisasi_terbobot);
 
 
         // eigen maximum - 3
         $eigen_maximum = floatval($total_normalisasi_terbobot / count($kriteria));
+
+        // dd($eigen_maximum);
 
         // menghitung ci - 4
         $ci = floatval(($eigen_maximum - count($kriteria)) / (count($kriteria) - 1));
@@ -195,6 +208,10 @@ class xyKriteriaController extends Controller
             }
         }
 
+        // dd($unweight);
+
+        // dd($nilai_perbandingan, $unweight);
+
         // NOTE: MUNGKIN BISA DIKASI KONDISI JIKA KRITERIA BELUM DIISI
 
         // weight - 7
@@ -204,13 +221,24 @@ class xyKriteriaController extends Controller
         $index3 = 0;
         $index4 = 0;
 
+        if (count($kriteria) == 5) {
+            // khusus 5 kriteria
+            $array = array(1, 2, 7, 3, 8, 13, 4, 9, 14, 19);
+        } elseif (count($kriteria) == 6) {
+            // khusus 6 kriteria
+            $array = array(1, 2, 8, 3, 9, 15, 4, 10, 16, 22, 5, 11, 17, 23, 29);
+        } elseif (count($kriteria) == 7) {
+            // khusus 7 kriteria
+            $array = array(1, 2, 9, 3, 10, 17, 4, 11, 18, 25, 5, 12, 19, 26, 33, 6, 13, 20, 27, 34, 41);
+        }
+
         for ($i = 1; $i <= count($kriteria); $i++) {
             for ($j = 1; $j <= count($kriteria); $j++) {
-                if ($i === $j) {
+                if ($i === $j) { //tengah
                     $weight[] = floatval($nilai_perbandingan[$j][$index1] * $unweight[$index2]);
                     $index2++;
-                } elseif ($i > $j) {
-                    if ($keterkaitan_kriteria[$index3]->terkait == 0) {
+                } elseif ($i > $j) {  // segitiga bawah
+                    if ($weight[$array[$index3]] == 0) {
                         $weight[] = floatval(0);
                         $index2++;
                         $index3++;
@@ -219,7 +247,7 @@ class xyKriteriaController extends Controller
                         $index2++;
                         $index3++;
                     }
-                } elseif ($i < $j && $j) {
+                } elseif ($i < $j && $j) { // segitiga atas
                     if ($keterkaitan_kriteria[$index4]->terkait == 0) {
                         $weight[] = floatval(0);
                         $index2++;
@@ -243,31 +271,32 @@ class xyKriteriaController extends Controller
         $index2 = 0;
         $index3 = 0;
 
+        // if ($i === $j) {
+        //     $limit[$j][] = floatval(pow($weight[$index1], $weight[$index1]));
+        //     $index1++;
+        // } elseif ($i > $j) {
+        //     $limit[$j][] = floatval(pow($weight[$index1], $weight[$index1]));
+        //     $index1++;
+        //     $index2++;
+        // } elseif ($i < $j && $j) {
+        //     $limit[$j][] = floatval(pow($weight[$index1], $weight[$index1]));
+        //     $index1++;
+        //     $index3++;
+        // }
+
         for ($i = 1; $i <= count($kriteria); $i++) {
             for ($j = 1; $j <= count($kriteria); $j++) {
                 if ($i === $j) {
                     $limit[$j][] = floatval(pow($weight[$index1], $weight[$index1]));
                     $index1++;
                 } elseif ($i > $j) {
-                    if ($keterkaitan_kriteria[$index2]->terkait == 0) {
-                        $limit[$j][] = floatval(1);
-                        $index1++;
-                        $index2++;
-                    } else {
-                        $limit[$j][] = floatval(pow($weight[$index1], $weight[$index1]));
-                        $index1++;
-                        $index2++;
-                    }
+                    $limit[$j][] = floatval(pow($weight[$index1], $weight[$index1]));
+                    $index1++;
+                    $index2++;
                 } elseif ($i < $j && $j) {
-                    if ($keterkaitan_kriteria[$index3]->terkait == 0) {
-                        $limit[$j][] = floatval(1);
-                        $index1++;
-                        $index3++;
-                    } else {
-                        $limit[$j][] = floatval(pow($weight[$index1], $weight[$index1]));
-                        $index1++;
-                        $index3++;
-                    }
+                    $limit[$j][] = floatval(pow($weight[$index1], $weight[$index1]));
+                    $index1++;
+                    $index3++;
                 }
             }
         }
@@ -276,7 +305,7 @@ class xyKriteriaController extends Controller
 
         for ($i=1; $i <= count($limit); $i++) {
             for ($j=0; $j < count($limit); $j++) {
-                if ($limit[$i][$j] == INF){
+                if ($limit[$i][$j] == INF){ //kondisi jika inf
                     $new_limit[$i][$j] = 0;
                 } else {
                     $new_limit[$i][$j] = $limit[$i][$j];
@@ -290,7 +319,7 @@ class xyKriteriaController extends Controller
             $total_limit[] = floatval(array_sum($new_limit[$i]));
         }
 
-        // dd($total_limit);
+        // dd($new_limit, $total_limit);
 
 
         // normalisasi limit - 9
@@ -320,7 +349,7 @@ class xyKriteriaController extends Controller
             // $bobot_raw[] = number_format(floatval(array_product($normalisasi_limit[$i]) / (1 / count($total_normalisasi_limit))), 4);
         }
 
-        // dd($limit);
+        // dd($bobot_raw);
 
 
         $total_bobot_raw = floatval(array_sum($bobot_raw));
@@ -335,7 +364,7 @@ class xyKriteriaController extends Controller
             ];
         }
 
-        // dd(count($a));
+        // dd($a);
 
         // cek keterkaitan mempengaruhi nilai bobot normal
         $keterkaitan = [];
@@ -383,7 +412,7 @@ class xyKriteriaController extends Controller
             }
         }
 
-        // dd($keterkaitan);
+        // dd($bobot_normal);
 
         $total = array_sum($bobot_normal);
 

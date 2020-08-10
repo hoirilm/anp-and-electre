@@ -36,7 +36,7 @@ class KriteriaController extends Controller
         // $tahun = array_map(function ($value) {
         //     return (array) $value;
         // }, $tahun);
-        
+
         // $kriteria = Kriteria::whereYear('created_at', request('tahun'))->get();
 
         // return view('pages.admin.kriteria', ['tahun' => $tahun, 'kriteria' => $kriteria]);
